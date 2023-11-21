@@ -1,11 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>HTMX-Demo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Allocation</title>
+    <script src="https://unpkg.com/htmx.org@1.6.1/dist/htmx.js"></script>
 </head>
-
 <body>
-WOW
-</body>
 
+<h1>Course Allocation</h1>
+
+<!-- Select Department (Section) -->
+<label for="departmentSelect">Select Department:</label>
+<select id="departmentSelect" hx-trigger="change" hx-get="/get-years" hx-target="#yearSelect">
+    <option value="defaultDepartment">Default Department</option>
+</select>
+
+<!-- Select Year of Study -->
+<label for="yearSelect">Select Year of Study:</label>
+<select id="yearSelect" hx-trigger="change" hx-get="/get-sections" hx-target="#sectionSelect">
+    <option value="defaultYear">Default Year</option>
+</select>
+
+<!-- Select Section -->
+<label for="sectionSelect">Select Section:</label>
+<select id="sectionSelect" hx-trigger="change" hx-get="/get-courses" multiple hx-target="#allocatedCourses">
+    <option value="defaultCourse1">Default Course 1</option>
+    <option value="defaultCourse2">Default Course 2</option>
+</select>
+
+<!-- Button to Allocate Courses -->
+<button hx-post="/allocate-courses" hx-trigger="click" hx-target="#allocatedCourses">Allocate Courses</button>
+
+<!-- Display Allocated Courses -->
+<div id="allocatedCourses">
+    <!-- The allocated courses will be displayed here -->
+</div>
+
+<script>
+    // Function to handle automatic course allocation
+    function allocateCourses() {
+        var department = document.getElementById("departmentSelect").value;
+        var year = document.getElementById("yearSelect").value;
+        var sections = Array.from(document.getElementById("sectionSelect").selectedOptions).map(option => option.value);
+
+        // You should replace this with an actual endpoint for course allocation on your server
+        var allocationEndpoint = "/allocate-courses";
+
+        // Make a POST request to allocate courses
+        htmx.ajax(allocationEndpoint, 'post', {
+            params: { department: department, year: year, sections: sections },
+            target: document.getElementById("allocatedCourses")
+        });
+    }
+
+    // Attach the allocateCourses function to the button click event
+    document.getElementById("allocatedCourses").addEventListener("click", allocateCourses);
+</script>
+
+</body>
 </html>
+
