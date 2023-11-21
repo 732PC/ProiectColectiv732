@@ -1,58 +1,35 @@
 package org.example.controller;
 
+import org.example.exception.BusinessException;
+import org.example.exception.BusinessExceptionCode;
 import org.example.model.Course;
-import org.example.repository.CourseRepository;
+import org.example.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
 
-    private final CourseRepository courseRepo;
+    private final CourseService courseService;
 
     @Autowired
-    public CourseController(CourseRepository courseRepo){
-        this.courseRepo=courseRepo;
+    public CourseController(CourseService courseService){
+        this.courseService=courseService;
     }
 
-    public Course addCourse(Course course){
-        if(validateCourse(course)){
-            return this.courseRepo.save(course);
-        }
-        return null;
-    }
+    @PostMapping("/register")
+    public ResponseEntity<Course> saveCourse(@RequestBody Course course) throws BusinessException{
+        Course savedCourse = this.courseService.saveCourse(course);
 
-    private boolean validateName(String name){
-        if(name==null)
-            return false;
-        List<Course> courseList=this.courseRepo.findAll();
-        for(Course course:courseList){
-            if(Objects.equals(course.getName(),name))
-                return false;
-        }
-        Pattern pattern = Pattern.compile("^[A-Z][a-z]+$");
-        Matcher matcher = pattern.matcher(name);
-        return matcher.find();
-    }
-    public boolean validateCourse(Course course){
-        if (course.getName() == null || course.getAbbreviation() == null ||
-                course.getProf() == null || course.getYearOfStudy() > 3 ||
-                course.getYearOfStudy() < 1 || course.getType() == null ||
-                course.getAbbreviation().length()>course.getName().length())
-            return false;
-        List<Course> courseList=this.courseRepo.findAll();
-        for(Course c:courseList){
-            if(Objects.equals(c,course) || Objects.equals(c.getName(),course.getName()) ||
-            Objects.equals(c.getAbbreviation(),course.getAbbreviation()))
-                return false;
-        }
-        return true;
+        if(savedCourse==null)
+            throw new BusinessException(BusinessExceptionCode.INVALID_COURSE);
+        else
+            return new ResponseEntity<>(savedCourse, HttpStatus.OK);
     }
 }
