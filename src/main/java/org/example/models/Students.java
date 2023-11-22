@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -19,7 +19,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "students")
 public class Students {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,12 +38,15 @@ public class Students {
     @NotNull
     @Size(min = 13, max = 13, message = "CNP must be exactly 13 digits")
     private String cnp;
+
     @Column(name = "birthDate")
     @NotNull
-    private Date birthDate;
+    private LocalDate birthDate;
+
     @Column(name = "studyYear")
     @NotNull
     private int studyYear;
+
     @Column(name = "studyLevel")
     @NotNull
     private String studyLevel;

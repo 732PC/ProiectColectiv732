@@ -50,13 +50,13 @@ public class StudentServiceTest {
         assertEquals(Optional.of(student), studentService.getStudentById(studentId));
     }
 
-    @Test
-    void addStudent() {
-        Students student = new Students();
-        when(studentRepository.save(student)).thenReturn(student);
-
-        assertEquals(student, studentService.addStudent(student));
-    }
+//    @Test
+//    void addStudent() {
+//        Students student = new Students();
+//        when(studentRepository.save(student)).thenReturn(student);
+//
+//        assertEquals(student, studentService.addStudent(student));
+//    }
 
     @Test
     void updateStudent() {

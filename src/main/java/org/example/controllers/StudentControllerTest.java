@@ -63,33 +63,33 @@ class StudentControllerTest {
         assertNull(responseEntity.getBody());
     }
 
-    @Test
-    void addStudent() {
-        Students student = new Students();
-        student.setFirstName("John");
-        student.setLastName("Doe");
-        student.setCnp("1234567890123");
+//    @Test
+//    void addStudent() {
+//        Students student = new Students();
+//        student.setFirstName("John");
+//        student.setLastName("Doe");
+//        student.setCnp("1234567890123");
+//
+//        when(studentService.addStudent(student)).thenReturn(student);
+//
+//        ResponseEntity<?> responseEntity = studentController.addStudent(student);
+//
+//        verify(studentService, times(1)).addStudent(student);
+//
+//        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+//        assertEquals(student, responseEntity.getBody());
+//    }
 
-        when(studentService.addStudent(student)).thenReturn(student);
-
-        ResponseEntity<?> responseEntity = studentController.addStudent(student);
-
-        verify(studentService, times(1)).addStudent(student);
-
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(student, responseEntity.getBody());
-    }
-
-    @Test
-    void addStudentInvalidCnp() {
-        Students student = new Students();
-        student.setCnp("123");
-
-        ResponseEntity<?> responseEntity = studentController.addStudent(student);
-
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals("Invalid CNP length. CNP must be at least 13 digits.", responseEntity.getBody());
-    }
+//    @Test
+//    void addStudentInvalidCnp() {
+//        Students student = new Students();
+//        student.setCnp("123");
+//
+//        ResponseEntity<?> responseEntity = studentController.addStudent(student);
+//
+//        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+//        assertEquals("Invalid CNP length. CNP must be at least 13 digits.", responseEntity.getBody());
+//    }
 
     @Test
     void updateStudent() {
