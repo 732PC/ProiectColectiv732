@@ -1,3 +1,16 @@
+/*
+Button
+    -Border Radius : 30px
+    -Background : #293241
+    -Font size :  15px
+    -Font Color : white/#FFFFFF
+    -Hover color : rgba(33, 39, 52, 0.91)
+Background 1:#D9D9D9
+Background 2: #293241
+Font Family : Inter
+*/
+
+
 body {
     font-family: Inter;
     background-color: #D9D9D9;
@@ -6,50 +19,98 @@ body {
 
 }
 
+.mainDiv {
+    padding: 30px;
+    background: #3D5A80;
+}
+/*                     */
+.student-box {
+    background-color: #EAEAEA;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.edit-form {
+    /*display: none;*/
+}
+/*                     */
+
+.intermediateDiv {
+    background: white;
+    margin-top: 20px;
+    padding : 20px;
+}
+
+.navigation {
+    font-family: Inter;
+    background-color: #D9D9D9;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    overflow: hidden;
+}
+
+.navigation a {
+    display: inline-flex;
+    justify-content: center;
+    text-align: center;
+    padding: 25px;
+    color: #293241;
+    font-size: 30px;
+}
+
+.navigation a.active {
+    background: #293241;
+    color: white;
+}
+
+.option {
+    font-size: 20px;
+}
+
 .selectstyle {
     padding: 8px;
     margin-bottom: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #fffdfd;
     border-radius: 5px;
+    background: white;
 }
 
-#student-list {
-    margin: 20px;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-}
+/*#student-list {*/
+/*    margin: 20px;*/
+/*    padding: 20px;*/
+/*    background-color: white;*/
+/*    border-radius: 10px;*/
+/*}*/
 
 .add-student-form {
-    margin: 20px;
-    padding: 20px;
+    /*margin: 40px;*/
+    padding: 40px;
     background-color: #EAEAEA;
     color: black;
-    border-radius: 10px;
+    background: linear-gradient(to right, #3D5A80 29px, #EAEAEA 0);
 
 }
-
-/*.homeButton{*/
-
-/*    float: left;*/
-/*}*/
 
 form {
     display: flex;
     flex-direction: column;
-    max-width: 300px;
+    max-width: 250px;
     margin: auto;
 }
 
 label {
     margin-bottom: 8px;
+    font-size: 15px;
 }
 
 input {
-    padding: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
+    padding: 4px;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
     border-radius: 5px;
+    font-size: 20px;
 }
 
 button {
@@ -57,10 +118,20 @@ button {
     background-color: #293241;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
+    cursor: auto;
+}
+
+.buttonModify{
+    padding: 10px;
+    position: center;
+    background-color: #293241;
+    color: white;
+    border: none;
+    border-radius: 30px;
     cursor: auto;
 }
 
 button:hover {
-    background-color: rgba(41, 50, 65, 0.81);
+    background-color: rgba(33, 39, 52, 0.91);
 }
