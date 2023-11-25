@@ -1,4 +1,4 @@
-//Sterge : mock data
+// //Sterge : mock data
 // const studentDataList = [
 //     {
 //         id: 'student1',
@@ -47,22 +47,16 @@
 // ];
 
 const studentDataList = [];
-
 function fetchStudents() {
-    fetch('https://localhost:3306/Students')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
+    fetch('http://localhost:8081/api/students')
+        .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
+            studentDataList.push(...data); // Use the actual data received from the server
+            generateStudentBoxes();
         })
-        .catch(error => {
-            console.error('Error fetching students:', error);
-        });
+        .catch(error => console.error('Error fetching students:', error));
 }
+
 fetchStudents();
 
 function generateStudentBoxes() {
