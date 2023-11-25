@@ -48,15 +48,20 @@
 
 const studentDataList = [];
 
-async function fetchStudents() {
-    try {
-        const response = await fetch('/api/students');
-        const students = await response.json();
-        studentDataList.push(...students);
-        generateStudentBoxes();
-    } catch (error) {
-        console.error('Error fetching students:', error);
-    }
+function fetchStudents() {
+    fetch('https://localhost:3306/Students')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch(error => {
+            console.error('Error fetching students:', error);
+        });
 }
 fetchStudents();
 
