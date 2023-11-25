@@ -1,3 +1,99 @@
+//Sterge : mock data
+// const studentDataList = [
+//     {
+//         id: 'student1',
+//         name: 'Marian',
+//         firstname: 'Marian din Dej',
+//         cnp: '1234567890123',
+//         birthdate: '2000-01-01',
+//         anStudiu: '2',
+//         nivStudiu: 'Master',
+//         formaFinantare: 'Buget',
+//         liceu: 'Nu'
+//     },
+//     {
+//         id: 'student2',
+//         name: 'Dorian',
+//         firstname: 'Dorian din Dej',
+//         cnp: '1234567890123',
+//         birthdate: '2000-01-01',
+//         anStudiu: '2',
+//         nivStudiu: 'Master',
+//         formaFinantare: 'Buget',
+//         liceu: 'Nu'
+//     },
+//     {
+//         id: 'student3',
+//         name: 'Dorian',
+//         firstname: 'Dorian din Dej',
+//         cnp: '1234567890123',
+//         birthdate: '2000-01-01',
+//         anStudiu: '2',
+//         nivStudiu: 'Master',
+//         formaFinantare: 'Buget',
+//         liceu: 'Nu'
+//     },
+//     {
+//         id: 'student4',
+//         name: 'Dorian',
+//         firstname: 'Dorian din Dej',
+//         cnp: '1234567890123',
+//         birthdate: '2000-01-01',
+//         anStudiu: '2',
+//         nivStudiu: 'Master',
+//         formaFinantare: 'Buget',
+//         liceu: 'Nu'
+//     }
+// ];
+
+const studentDataList = [];
+
+async function fetchStudents() {
+    try {
+        const response = await fetch('/api/students');
+        const students = await response.json();
+        studentDataList.push(...students);
+        generateStudentBoxes();
+    } catch (error) {
+        console.error('Error fetching students:', error);
+    }
+}
+fetchStudents();
+
+function generateStudentBoxes() {
+    const scrollableDiv = document.querySelector('.scrollableDiv');
+
+    studentDataList.forEach(studentData => {
+        const studentBox = createStudentBox(studentData);
+        scrollableDiv.appendChild(studentBox);
+    });
+}
+
+function createStudentBox(studentData) {
+    const studentBox = document.createElement('div');
+    studentBox.classList.add('student-box');
+    studentBox.id = studentData.id;
+
+    const content = `
+    <p>Nume: ${studentData.name}</p>
+    <p>Prenume: ${studentData.firstname}</p>
+    <p>CNP: ${studentData.cnp}</p>
+    <p>Data de nastere: ${studentData.birthdate}</p>
+    <p>Anul de studiu: ${studentData.anStudiu}</p>
+    <p>Nivelul de studiu: ${studentData.nivStudiu}</p>
+    <p>Forma de finantare: ${studentData.formaFinantare}</p>
+    <p>Liceu absolvit: ${studentData.liceu}</p>
+    <button class="buttonModify" onclick="editStudent('${studentData.id}')">Modifica student</button>
+  `;
+
+    studentBox.innerHTML = content;
+    return studentBox;
+}
+
+
+
+////////////////////////////////////////////////////
+
 function editStudent(studentId) {
     const studentBox = document.getElementById(studentId);
     const form = createEditForm(studentId);
@@ -34,19 +130,19 @@ function createEditForm(studentId) {
                 required/>
             <label>Data de nastere:</label>
             <input type="date" name="birthdate" required>
-            <label>An Studiu</label>
+            <label>Anul de studiu</label>
             <select required class="selectstyle" name="anStudiu">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
             </select>
-            <label>Nivel studiu</label>
+            <label>Nivelul de studiu</label>
             <select required class="selectstyle" name="nivStudiu">
                 <option value="Licenta">Licenta</option>
                 <option value="Master">Master</option>
             </select>
-            <label>Forma finantare</label>
+            <label>Forma de finantare</label>
             <select required class="selectstyle" name="formaFinantare">
                 <option value="Buget">Buget</option>
                 <option value="Taxa">Taxa</option>
@@ -56,7 +152,8 @@ function createEditForm(studentId) {
                 <option value="Da">Da</option>
                 <option value="Nu">Nu</option>
             </select>
-            <button onclick="saveEditedInfo('${studentId}', this.form)">Save</button>
+             <button onclick="${studentId ? `saveEditedInfo('${studentId}', this.form)` : 'saveNewStudent(this)'}">Salvare</button>
+
         </form>
     `;
     return form;
@@ -85,6 +182,36 @@ function getStudentData(studentId) {
         liceu: "Nu"
     };
 }
+function saveNewStudent(button) {
+    const form = button.parentElement;
+    const name = form.elements['name'].value;
+    const firstname = form.elements['firstname'].value;
+    const cnp = form.elements['cnp'].value;
+    const birthdate = form.elements['birthdate'].value;
+    const anStudiu = form.elements['anStudiu'].value;
+    const nivStudiu = form.elements['nivStudiu'].value;
+    const formaFinantare = form.elements['formaFinantare'].value;
+    const liceu = form.elements['liceu'].value;
+
+    const newStudentId = getNextStudentId();
+    const newStudent = {
+        id: newStudentId,
+        name,
+        firstname,
+        cnp,
+        birthdate,
+        anStudiu,
+        nivStudiu,
+        formaFinantare,
+        liceu
+    };
+
+    studentDataList.push(newStudent);
+    const studentBox = createStudentBox(newStudent);
+
+    const scrollableDiv = document.querySelector('.scrollableDiv');
+    scrollableDiv.appendChild(studentBox);
+}
 
 function saveEditedInfo(studentId, form) {
     const name = form.elements['name'].value;
@@ -98,14 +225,35 @@ function saveEditedInfo(studentId, form) {
 
     const studentBox = document.getElementById(studentId);
     studentBox.innerHTML = `
-        <p>Name: ${name}</p>
+        <p>Nume: ${name}</p>
         <p>Prenume: ${firstname}</p>
         <p>CNP: ${cnp}</p>
-        <p>Birthdate: ${birthdate}</p>
-        <p>An Studiu: ${anStudiu}</p>
-        <p>Nivel Studiu: ${nivStudiu}</p>
-        <p>Forma Finantare: ${formaFinantare}</p>
-        <p>Liceu Absolvit: ${liceu}</p>
-        <button onclick="editStudent('${studentId}')">Edit</button>
+        <p>Data de nastere: ${birthdate}</p>
+        <p>Anul de studiu: ${anStudiu}</p>
+        <p>Nivelul de studiu: ${nivStudiu}</p>
+        <p>Forma de finantare: ${formaFinantare}</p>
+        <p>Liceu absolvit: ${liceu}</p>
+        <button class="buttonModify" onclick="editStudent('${studentId}')">Modifica student</button>
     `;
 }
+
+function addStudentForm() {
+    const nextStudentId = getNextStudentId();
+    const form = createEditForm(nextStudentId);
+
+    const scrollableDiv = document.querySelector('.scrollableDiv');
+    scrollableDiv.appendChild(form);
+}
+
+function getNextStudentId() {
+    const existingIds = studentDataList.map(student => student.id);
+    let newId = 1;
+
+    while (existingIds.includes(`student${newId}`)) {
+        newId++;
+    }
+
+    return `student${newId}`;
+}
+
+generateStudentBoxes();
