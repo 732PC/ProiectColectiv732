@@ -46,12 +46,18 @@
 //     }
 // ];
 
+// Cross-Origin Request Blocked:
+//     The Same Origin Policy disallows reading the remote resource at http://localhost:8081/api/students.
+//         (Reason: CORS header ‘Access-Control-Allow-Origin’ missing). Status code: 200.
+//     Error fetching students: TypeError: NetworkError when attempting to fetch resource. script.js:57:33
+//Ajutor
+
 const studentDataList = [];
 function fetchStudents() {
     fetch('http://localhost:8081/api/students')
         .then(response => response.json())
         .then(data => {
-            studentDataList.push(...data); // Use the actual data received from the server
+            studentDataList.push(...data);
             generateStudentBoxes();
         })
         .catch(error => console.error('Error fetching students:', error));
