@@ -63,7 +63,7 @@ public class EnrollmentService {
                 enrollment.setStudent(student);
                 enrollment.setCourse(course);
                 student.getEnrollments().add(enrollment);
-            }
+            }//
         }
 
 

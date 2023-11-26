@@ -32,7 +32,7 @@ public class CourseAllocationController {
     public void assignCoursesToStudentAutomatically(@PathVariable("studentId") int studentId,@PathVariable("courseId") int courseId) {
         enrollmentService.assignRequiredCoursesToStudentAutomatically(studentId,courseId);
 
-//        return ResponseEntity.ok("Courses assigned automatically based on current study year");
+//     /   return ResponseEntity.ok("Courses assigned automatically based on current study year");
 
     }
     @GetMapping("/all")

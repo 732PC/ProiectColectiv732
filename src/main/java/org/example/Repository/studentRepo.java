@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface studentRepo extends JpaRepository<Students,Integer> {
     List<Students> findRequiredStudentsByStudyYear(int studyYear);
+    //
 }
