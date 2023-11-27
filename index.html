@@ -5,6 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Allocation</title>
     <script src="https://unpkg.com/htmx.org@1.6.1/dist/htmx.js"></script>
+<!--    <script>-->
+<!--        // Fetch and populate study years-->
+<!--        function fetchStudyYears() {-->
+<!--            var yearSelect = document.getElementById("yearSelect");-->
+<!--            var getYearsEndpoint = "/getStudyYears";-->
+
+<!--            htmx.ajax(getYearsEndpoint, 'get', {-->
+<!--                target: yearSelect,-->
+<!--                headers: {'Accept': 'application/json'},-->
+<!--                evalScripts: true,-->
+<!--                onComplete: function(xhr) {-->
+<!--                    console.log("Request completed. Status:", xhr.status);-->
+
+<!--                    try {-->
+<!--                        // Parse the JSON response-->
+<!--                        var yearData = JSON.parse(xhr.responseText);-->
+
+<!--                        // Log the received data-->
+<!--                        console.log("Year data:", yearData);-->
+<!--                    } catch (error) {-->
+<!--                        console.error("Error parsing JSON:", error);-->
+<!--                    }-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+
+<!--        // Fetch study years when the page loads-->
+<!--        window.onload = fetchStudyYears;-->
+<!--    </script>-->
     <style>
         body {
             background-color: #3d5a80;
@@ -62,72 +91,6 @@
             box-sizing: content-box;
         }
 
-        .title-overlay {
-            color: #3d5a80;
-            text-align: center;
-            font-size: xx-large;
-        }
-
-        .course-container {
-            margin-top: 5%;
-            display: flex;
-            /*flex-direction: column;*/
-            /*align-items: center;*/
-            padding-left: 7%;
-            padding-right: 7%;
-            flex-wrap: wrap; /* Allow items to wrap to the next line */
-            justify-content: space-between; /* Spread items evenly */
-        }
-
-        .course-title {
-            color: #293241;
-            font-size: x-large;
-            font-weight: bold;
-            margin-bottom: 5%;
-            text-align: center;
-            width: 100%;
-        }
-
-        .course-window {
-            background-color: white;
-            display: flex;
-            width: 45%;
-            margin-bottom: 5%;
-            box-shadow: 0 2px 4px #293241;
-        }
-
-        .blue-ribbon {
-            background-color: #3d5a80;
-            width: 8%; /* Adjust the width of the ribbon as needed */
-            margin: 0;
-        }
-
-        .course-details {
-            margin-left: 10%;
-            margin-bottom: 15%;
-            margin-top: 10%;
-            width: 92%;
-            text-align: right;
-        }
-
-        .title {
-            font-size: large;
-            text-align: center;
-            color: #3d5a80;
-            font-weight: bold;
-            margin-bottom: 3%;
-            width: 92%;
-        }
-
-        .subtitle {
-            font-size: x-large;
-            color: #3d5a80;
-            text-align: center;
-            margin-bottom: 7%;
-            font-weight: bold;
-            width: 92%;
-        }
-
         .text {
             color: #293241;
             margin-top: 3%;
@@ -136,51 +99,31 @@
     </style>
 </head>
 <body>
-<div class="header">
-    <div class="logo-container">
-        <span class="ubb">UBB</span>
-        <span class="oard">oard</span>
+    <div class="header">
+        <div class="logo-container">
+            <span class="ubb">UBB</span>
+            <span class="oard">oard</span>
+        </div>
+        <div class="button-container-menu">
+            <button class="button">Membrii</button>
+            <button class="button">Cursuri</button>
+            <button class="button">Contul meu</button>
+        </div>
     </div>
-    <div class="button-container-menu">
-        <button class="button">Membrii</button>
-        <button class="button">Cursuri</button>
-        <button class="button">Contul meu</button>
+    <div class="overlay">
+        <h1 class="text" >Course Allocation</h1>
+        <!-- Select Year of Study -->
+        <label class="text" for="yearSelect">Select Year of Study:</label>
+        <select id="yearSelect" hx-trigger="change" hx-get="http://localhost:8080/getStudyYears" hx-target="#yearSelect">
+        </select>
+
+        <!-- Button to Allocate Courses -->
+        <button hx-post="http://localhost:8080/course-allocation/assign-courses-for-study-year" hx-trigger="click" hx-target="#allocatedCourses">Allocate Courses</button>
+
+        <!-- Display Allocated Courses -->
+        <div id="allocatedCourses">
+            <!-- The allocated courses will be displayed here -->
+        </div>
     </div>
-</div>
-<div class="overlay">
-    <h1 class="text" >Course Allocation</h1>
-    <!-- Select Year of Study -->
-    <label class="text" for="yearSelect">Select Year of Study:</label>
-    <select id="yearSelect" hx-trigger="change" hx-get="/get-years" hx-target="#yearSelect">
-    </select>
-
-    <!-- Button to Allocate Courses -->
-    <button hx-post="/allocate-courses" hx-trigger="click" hx-target="#allocatedCourses">Allocate Courses</button>
-
-    <!-- Display Allocated Courses -->
-    <div id="allocatedCourses">
-        <!-- The allocated courses will be displayed here -->
-    </div>
-    <script>
-        // Function to handle automatic course allocation
-        function allocateCourses() {
-            var year = document.getElementById("yearSelect").value;
-            // You should replace this with an actual endpoint for course allocation on your server
-            var allocationEndpoint = "/allocate-courses";
-
-            // Make a POST request to allocate courses
-            htmx.ajax(allocationEndpoint, 'post', {
-                params: {year: year},
-                target: document.getElementById("allocatedCourses")
-            });
-        }
-
-        // Attach the allocateCourses function to the button click event
-        document.getElementById("allocatedCourses").addEventListener("click", allocateCourses);
-    </script>
-</div>
-</div>
-
-
 </body>
 </html>
