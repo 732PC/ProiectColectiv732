@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.model.ERole;
 import org.example.model.User;
+import org.example.model.dto.LoginUserRequestDTO;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,16 @@ public class UserController {
             return new ResponseEntity<>("Invalid user", HttpStatus.OK);
         } else{
             return new ResponseEntity<>("User successfully created", HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password)
+    {
+        if(this.userService.loginUser(new LoginUserRequestDTO(email, password))==null){
+            return new ResponseEntity<>("Invalid credentials", HttpStatus.INTERNAL_SERVER_ERROR);
+    }else{
+            return new ResponseEntity<>("Login succesfully", HttpStatus.OK);
         }
     }
 }

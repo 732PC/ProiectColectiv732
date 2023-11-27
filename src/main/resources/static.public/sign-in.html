@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignIn</title>
+
+    <link rel="stylesheet" href="createAccounts.css">
+
+    <script src="https://kit.fontawesome.com/3c8aef11b9.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.7.0/dist/htmx.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <h2 class="text-center">Log in</h2>
+    <form name="sign-in" hx-post="http://localhost:8080/users/login" hx-target="#login-message">
+        <label>
+            <input class="form-group" name="email" type="text" placeholder="email">
+        </label>
+
+        <label>
+            <input class="form-group" name="password" type="text" placeholder="password">
+        </label>
+
+        <input type="submit" value="LOG IN">
+    </form>
+</div>
+
+<div id="login-message"></div>
+
+</body>
+</html>
