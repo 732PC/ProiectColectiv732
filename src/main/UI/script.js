@@ -1,57 +1,3 @@
-// //Sterge : mock data
-// const studentDataList = [
-//     {
-//         id: 'student1',
-//         name: 'Marian',
-//         firstname: 'Marian din Dej',
-//         cnp: '1234567890123',
-//         birthdate: '2000-01-01',
-//         anStudiu: '2',
-//         nivStudiu: 'Master',
-//         formaFinantare: 'Buget',
-//         liceu: 'Nu'
-//     },
-//     {
-//         id: 'student2',
-//         name: 'Dorian',
-//         firstname: 'Dorian din Dej',
-//         cnp: '1234567890123',
-//         birthdate: '2000-01-01',
-//         anStudiu: '2',
-//         nivStudiu: 'Master',
-//         formaFinantare: 'Buget',
-//         liceu: 'Nu'
-//     },
-//     {
-//         id: 'student3',
-//         name: 'Dorian',
-//         firstname: 'Dorian din Dej',
-//         cnp: '1234567890123',
-//         birthdate: '2000-01-01',
-//         anStudiu: '2',
-//         nivStudiu: 'Master',
-//         formaFinantare: 'Buget',
-//         liceu: 'Nu'
-//     },
-//     {
-//         id: 'student4',
-//         name: 'Dorian',
-//         firstname: 'Dorian din Dej',
-//         cnp: '1234567890123',
-//         birthdate: '2000-01-01',
-//         anStudiu: '2',
-//         nivStudiu: 'Master',
-//         formaFinantare: 'Buget',
-//         liceu: 'Nu'
-//     }
-// ];
-
-// Cross-Origin Request Blocked:
-//     The Same Origin Policy disallows reading the remote resource at http://localhost:8081/api/students.
-//         (Reason: CORS header ‘Access-Control-Allow-Origin’ missing). Status code: 200.
-//     Error fetching students: TypeError: NetworkError when attempting to fetch resource. script.js:57:33
-//Ajutor
-
 const studentDataList = [];
 function fetchStudents() {
     fetch('http://localhost:8081/api/students')
@@ -96,9 +42,6 @@ function createStudentBox(studentData) {
 }
 
 
-
-////////////////////////////////////////////////////
-
 function editStudent(studentId) {
     const studentBox = document.getElementById(studentId);
     const form = createEditForm(studentId);
@@ -124,7 +67,7 @@ function editStudent(studentId) {
 function createEditForm(studentId) {
     const form = document.createElement('div');
     form.innerHTML = `
-        <form onsubmit="event.preventDefault();">
+        <form onsubmit="event.preventDefault();saveNewStudent(this, '$(studentId}')">
             <label>Nume:</label>
             <input type="text" name="name" required>
             <label>Prenume:</label>
@@ -157,8 +100,8 @@ function createEditForm(studentId) {
                 <option value="Da">Da</option>
                 <option value="Nu">Nu</option>
             </select>
-             <button onclick="${studentId ? `saveEditedInfo('${studentId}', this.form)` : 'saveNewStudent(this)'}">Salvare</button>
-
+<!--             <button onclick="${studentId ? `saveEditedInfo('${studentId}', this.form)` : 'saveNewStudent(this)'}">Salvare</button>-->
+                <button type="submit">Salvare</button>
         </form>
     `;
     return form;
@@ -188,6 +131,27 @@ function getStudentData(studentId) {
     };
 }
 function saveNewStudent(button) {
+    const formData = new FormData(form);
+    const jsonData = {};
+    formData.forEach((value, key)=>{
+        jsonData[key] = value;
+    });
+
+    fetch('http://localhost:8081/api/students', {
+        method: 'POST',
+        mode : 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonData),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Student added:', data);
+            fetchStudents();
+        })
+        .catch(error => console.error('Error fetching students:', error));
+
     const form = button.parentElement;
     const name = form.elements['name'].value;
     const firstname = form.elements['firstname'].value;

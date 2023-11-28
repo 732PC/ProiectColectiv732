@@ -6,8 +6,7 @@ import org.example.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +16,10 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+    private static final int CNP_LENGTH = 13;
+
     private boolean isValidCnpLength(String cnp) {
-        return cnp != null && cnp.length() >= 13;
+        return cnp != null && cnp.length() == CNP_LENGTH;
     }
 
     public List<Students> getAllStudents() {
@@ -35,6 +36,7 @@ public class StudentService {
         if (existingStudent.isPresent()) {
             Students savedStudent = existingStudent.get();
 
+            // Use setters directly for brevity
             savedStudent.setFirstName(updatedStudent.getFirstName());
             savedStudent.setLastName(updatedStudent.getLastName());
             savedStudent.setCnp(updatedStudent.getCnp());
@@ -66,7 +68,7 @@ public class StudentService {
             String firstName,
             String lastName,
             String cnp,
-            Date birthDate,
+            LocalDate birthDate,
             int studyYear,
             String studyLevel,
             String fundingForm,
@@ -76,7 +78,7 @@ public class StudentService {
         student.setFirstName(firstName);
         student.setLastName(lastName);
         student.setCnp(cnp);
-        student.setBirthDate(birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        student.setBirthDate(birthDate);
         student.setStudyYear(studyYear);
         student.setStudyLevel(studyLevel);
         student.setFundingForm(fundingForm);
@@ -88,6 +90,5 @@ public class StudentService {
             throw new IllegalArgumentException("Invalid CNP length. CNP must be exactly 13 digits.");
         }
     }
-
 
 }
