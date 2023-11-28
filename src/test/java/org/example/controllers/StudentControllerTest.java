@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -63,33 +64,46 @@ class StudentControllerTest {
         assertNull(responseEntity.getBody());
     }
 
-//    @Test
-//    void addStudent() {
-//        Students student = new Students();
-//        student.setFirstName("John");
-//        student.setLastName("Doe");
-//        student.setCnp("1234567890123");
-//
-//        when(studentService.addStudent(student)).thenReturn(student);
-//
-//        ResponseEntity<?> responseEntity = studentController.addStudent(student);
-//
-//        verify(studentService, times(1)).addStudent(student);
-//
-//        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-//        assertEquals(student, responseEntity.getBody());
-//    }
-//
-//    @Test
-//    void addStudentInvalidCnp() {
-//        Students student = new Students();
-//        student.setCnp("123");
-//
-//        ResponseEntity<?> responseEntity = studentController.addStudent(student);
-//
+    @Test
+    void addStudent() {
+        Students student = new Students();
+        student.setFirstName("John");
+        student.setLastName("Doe");
+        student.setCnp("1234567890123");
+
+        when(studentService.addStudent(anyString(), anyString(), anyString(), any(LocalDate.class),
+                anyInt(), anyString(), anyString(), anyString())).thenReturn(student);
+
+        ResponseEntity<?> responseEntity = studentController.addStudent(
+                "John", "Doe", "1234567890123",
+                LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
+
+        verify(studentService, times(1)).addStudent(
+                anyString(), anyString(), anyString(), any(LocalDate.class),
+                anyInt(), anyString(), anyString(), anyString());
+
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals(student, responseEntity.getBody());
+    }
+
+    @Test
+    void addStudentInvalidCnp() {
+        Students student = new Students();
+        student.setCnp("123");
+
+        ResponseEntity<?> responseEntity = studentController.addStudent(
+                "John", "Doe", "123",
+                LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
+
 //        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-//        assertEquals("Invalid CNP length. CNP must be at least 13 digits.", responseEntity.getBody());
-//    }
+        assertEquals("Invalid CNP length. CNP must be at least 13 digits.", responseEntity.getBody());
+
+        verify(studentService, never()).addStudent(anyString(), anyString(), anyString(), any(LocalDate.class),
+                anyInt(), anyString(), anyString(), anyString());
+    }
+
+
+
 
     @Test
     void updateStudent() {
