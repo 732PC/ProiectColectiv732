@@ -1,8 +1,7 @@
 package org.example.service;
 
-import org.example.models.Students;
+import org.example.model.Students;
 import org.example.repository.StudentRepository;
-import org.example.services.StudentService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

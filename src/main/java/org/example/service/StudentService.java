@@ -1,7 +1,7 @@
-package org.example.services;
+package org.example.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.example.models.Students;
+import org.example.model.Students;
 import org.example.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

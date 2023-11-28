@@ -1,8 +1,8 @@
 package org.example.controllers;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.example.models.Students;
-import org.example.services.StudentService;
+import org.example.model.Students;
+import org.example.service.StudentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
