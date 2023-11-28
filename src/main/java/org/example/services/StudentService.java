@@ -1,11 +1,11 @@
 package org.example.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.models.Students;
 import org.example.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;

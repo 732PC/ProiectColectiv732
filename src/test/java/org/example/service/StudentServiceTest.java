@@ -1,7 +1,9 @@
-package org.example.services;
+package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.models.Students;
 import org.example.repository.StudentRepository;
+import org.example.services.StudentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.Optional;
 

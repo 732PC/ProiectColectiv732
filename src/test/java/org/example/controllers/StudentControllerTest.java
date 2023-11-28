@@ -1,5 +1,6 @@
 package org.example.controllers;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.models.Students;
 import org.example.services.StudentService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

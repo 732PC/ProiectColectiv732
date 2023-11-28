@@ -1,14 +1,14 @@
 package org.example.models;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 @Entity
@@ -26,7 +26,6 @@ public class Students {
     private Integer id;
 
     @Column(name = "firstName")
-    @Size(min = 1)
     @NotNull
     private String firstName;
 
@@ -36,7 +35,6 @@ public class Students {
 
     @Column(name = "cnp")
     @NotNull
-    @Size(min = 13, max = 13, message = "CNP must be exactly 13 digits")
     private String cnp;
 
     @Column(name = "birthDate")

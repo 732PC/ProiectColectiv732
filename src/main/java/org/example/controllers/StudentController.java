@@ -1,6 +1,7 @@
 package org.example.controllers;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.models.Students;
 import org.example.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
