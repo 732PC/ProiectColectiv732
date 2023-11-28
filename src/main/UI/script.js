@@ -53,6 +53,7 @@
 //Ajutor
 
 const studentDataList = [];
+
 function fetchStudents() {
     fetch('http://localhost:8081/api/students')
         .then(response => response.json())
@@ -94,7 +95,6 @@ function createStudentBox(studentData) {
     studentBox.innerHTML = content;
     return studentBox;
 }
-
 
 
 ////////////////////////////////////////////////////
@@ -187,6 +187,7 @@ function getStudentData(studentId) {
         liceu: "Nu"
     };
 }
+
 function saveNewStudent(button) {
     const form = button.parentElement;
     const name = form.elements['name'].value;
@@ -216,6 +217,27 @@ function saveNewStudent(button) {
 
     const scrollableDiv = document.querySelector('.scrollableDiv');
     scrollableDiv.appendChild(studentBox);
+
+    const formData = new FormData(form);
+    const jsonData = {};
+    formData.forEach((value, key) => {
+        jsonData[key] = value;
+    });
+
+    fetch('http://localhost:8081/api/students/addStudent', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonData),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Student added:', data);
+            fetchStudents();
+        })
+        .catch(error => console.error('Error adding student:', error));
 }
 
 function saveEditedInfo(studentId, form) {
