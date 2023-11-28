@@ -39,4 +39,22 @@ public class CourseService {
         }
         return true;
     }
+
+    public List<Course> getAllCourses(){
+        return courseRepository.findAll();
+    }
+
+    public Course getCourseById(int cId){
+        return courseRepository.findById(cId).orElse(null);
+    }
+    public Course updateCourse(Course course){
+        if(courseRepository.existsById(course.getId())){
+            return courseRepository.save(course);
+        }
+        return null;
+    }
+
+    public void deleteCourse(int cId){
+        courseRepository.deleteById(cId);
+    }
 }

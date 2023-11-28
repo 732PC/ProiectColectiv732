@@ -7,10 +7,9 @@ import org.example.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/courses")
@@ -31,5 +30,37 @@ public class CourseController {
             throw new BusinessException(BusinessExceptionCode.INVALID_COURSE);
         else
             return new ResponseEntity<>(savedCourse, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Course>> getAllCourses(){
+        List<Course> courses=courseService.getAllCourses();
+        return new ResponseEntity<>(courses,HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable int id){
+        Course course=courseService.getCourseById(id);
+        if (course != null) {
+            return new ResponseEntity<>(course, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Course> updateCourse(@RequestBody Course course) {
+        Course updatedCourse = courseService.updateCourse(course);
+        if (updatedCourse != null) {
+            return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable int id) {
+        courseService.deleteCourse(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
