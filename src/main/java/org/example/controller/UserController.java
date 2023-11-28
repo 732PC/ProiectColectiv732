@@ -38,7 +38,7 @@ public class UserController {
     public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password)
     {
         if(this.userService.loginUser(new LoginUserRequestDTO(email, password))==null){
-            return new ResponseEntity<>("Invalid credentials", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Invalid credentials", HttpStatus.OK);
     }else{
             return new ResponseEntity<>("Login succesfully", HttpStatus.OK);
         }
