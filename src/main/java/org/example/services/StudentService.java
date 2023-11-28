@@ -36,7 +36,6 @@ public class StudentService {
         if (existingStudent.isPresent()) {
             Students savedStudent = existingStudent.get();
 
-            // Use setters directly for brevity
             savedStudent.setFirstName(updatedStudent.getFirstName());
             savedStudent.setLastName(updatedStudent.getLastName());
             savedStudent.setCnp(updatedStudent.getCnp());
