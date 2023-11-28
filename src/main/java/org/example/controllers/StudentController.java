@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +59,7 @@ public class StudentController {
             @RequestParam String firstName,
             @RequestParam String lastName,
             @RequestParam String cnp,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
             @RequestParam int studyYear,
             @RequestParam String studyLevel,
             @RequestParam String fundingForm,
