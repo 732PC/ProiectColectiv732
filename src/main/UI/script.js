@@ -1,50 +1,50 @@
 // //Sterge : mock data
-// const studentDataList = [
-//     {
-//         id: 'student1',
-//         name: 'Marian',
-//         firstname: 'Marian din Dej',
-//         cnp: '1234567890123',
-//         birthdate: '2000-01-01',
-//         anStudiu: '2',
-//         nivStudiu: 'Master',
-//         formaFinantare: 'Buget',
-//         liceu: 'Nu'
-//     },
-//     {
-//         id: 'student2',
-//         name: 'Dorian',
-//         firstname: 'Dorian din Dej',
-//         cnp: '1234567890123',
-//         birthdate: '2000-01-01',
-//         anStudiu: '2',
-//         nivStudiu: 'Master',
-//         formaFinantare: 'Buget',
-//         liceu: 'Nu'
-//     },
-//     {
-//         id: 'student3',
-//         name: 'Dorian',
-//         firstname: 'Dorian din Dej',
-//         cnp: '1234567890123',
-//         birthdate: '2000-01-01',
-//         anStudiu: '2',
-//         nivStudiu: 'Master',
-//         formaFinantare: 'Buget',
-//         liceu: 'Nu'
-//     },
-//     {
-//         id: 'student4',
-//         name: 'Dorian',
-//         firstname: 'Dorian din Dej',
-//         cnp: '1234567890123',
-//         birthdate: '2000-01-01',
-//         anStudiu: '2',
-//         nivStudiu: 'Master',
-//         formaFinantare: 'Buget',
-//         liceu: 'Nu'
-//     }
-// ];
+const studentDataList = [
+    {
+        id: 'student1',
+        name: 'Marian',
+        firstname: 'Marian din Dej',
+        cnp: '1234567890123',
+        birthdate: '2000-01-01',
+        anStudiu: '2',
+        nivStudiu: 'Master',
+        formaFinantare: 'Buget',
+        liceu: 'Nu'
+    },
+    {
+        id: 'student2',
+        name: 'Dorian',
+        firstname: 'Dorian din Dej',
+        cnp: '1234567890123',
+        birthdate: '2000-01-01',
+        anStudiu: '2',
+        nivStudiu: 'Master',
+        formaFinantare: 'Buget',
+        liceu: 'Nu'
+    },
+    {
+        id: 'student3',
+        name: 'Dorian',
+        firstname: 'Dorian din Dej',
+        cnp: '1234567890123',
+        birthdate: '2000-01-01',
+        anStudiu: '2',
+        nivStudiu: 'Master',
+        formaFinantare: 'Buget',
+        liceu: 'Nu'
+    },
+    {
+        id: 'student4',
+        name: 'Dorian',
+        firstname: 'Dorian din Dej',
+        cnp: '1234567890123',
+        birthdate: '2000-01-01',
+        anStudiu: '2',
+        nivStudiu: 'Master',
+        formaFinantare: 'Buget',
+        liceu: 'Nu'
+    }
+];
 
 // Cross-Origin Request Blocked:
 //     The Same Origin Policy disallows reading the remote resource at http://localhost:8081/api/students.
@@ -52,7 +52,7 @@
 //     Error fetching students: TypeError: NetworkError when attempting to fetch resource. script.js:57:33
 //Ajutor
 
-const studentDataList = [];
+// const studentDataList = [];
 
 function fetchStudents() {
     fetch('http://localhost:8081/api/students')
