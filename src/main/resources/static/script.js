@@ -1,70 +1,79 @@
+// //https://localhost:3306/api/students
+// async function loadStudents() {
+//     try {
+//         const response = await fetch('api/students');
+//         if (!response.ok) {
+//             throw new Error(`Failed to fetch student data: ${response.status} ${response.statusText}`);
+//         }
+//         const students = await response.json();
+//         const scrollableDiv = document.querySelector('.scrollableDiv');
+//
+//         scrollableDiv.innerHTML = '';
+//
+//         students.forEach(student => {
+//             const studentInfo = document.createElement('div');
+//             studentInfo.textContent = JSON.stringify(student);
+//             scrollableDiv.appendChild(studentInfo);
+//         });
+//     } catch (error) {
+//         console.error('Error loading student data:', error);
+//     }
+// }
+//
+// htmx.onLoad(function () {
+//     loadStudents();
+// });
+
 // //Sterge : mock data
-const studentDataList = [
-    {
-        id: 'student1',
-        name: 'Marian',
-        firstname: 'Marian din Dej',
-        cnp: '1234567890123',
-        birthdate: '2000-01-01',
-        anStudiu: '2',
-        nivStudiu: 'Master',
-        formaFinantare: 'Buget',
-        liceu: 'Nu'
-    },
-    {
-        id: 'student2',
-        name: 'Dorian',
-        firstname: 'Dorian din Dej',
-        cnp: '1234567890123',
-        birthdate: '2000-01-01',
-        anStudiu: '2',
-        nivStudiu: 'Master',
-        formaFinantare: 'Buget',
-        liceu: 'Nu'
-    },
-    {
-        id: 'student3',
-        name: 'Dorian',
-        firstname: 'Dorian din Dej',
-        cnp: '1234567890123',
-        birthdate: '2000-01-01',
-        anStudiu: '2',
-        nivStudiu: 'Master',
-        formaFinantare: 'Buget',
-        liceu: 'Nu'
-    },
-    {
-        id: 'student4',
-        name: 'Dorian',
-        firstname: 'Dorian din Dej',
-        cnp: '1234567890123',
-        birthdate: '2000-01-01',
-        anStudiu: '2',
-        nivStudiu: 'Master',
-        formaFinantare: 'Buget',
-        liceu: 'Nu'
-    }
-];
+// const studentDataList = [
+//     {
+//         id: 'student1',
+//         name: 'Marian',
+//         firstname: 'Marian din Dej',
+//         cnp: '1234567890123',
+//         birthdate: '2000-01-01',
+//         anStudiu: '2',
+//         nivStudiu: 'Master',
+//         formaFinantare: 'Buget',
+//         liceu: 'Nu'
+//     },
+//     {
+//         id: 'student2',
+//         name: 'Dorian',
+//         firstname: 'Dorian din Dej',
+//         cnp: '1234567890123',
+//         birthdate: '2000-01-01',
+//         anStudiu: '2',
+//         nivStudiu: 'Master',
+//         formaFinantare: 'Buget',
+//         liceu: 'Nu'
+//     },
+//     {
+//         id: 'student3',
+//         name: 'Dorian',
+//         firstname: 'Dorian din Dej',
+//         cnp: '1234567890123',
+//         birthdate: '2000-01-01',
+//         anStudiu: '2',
+//         nivStudiu: 'Master',
+//         formaFinantare: 'Buget',
+//         liceu: 'Nu'
+//     },
+//     {
+//         id: 'student4',
+//         name: 'Dorian',
+//         firstname: 'Dorian din Dej',
+//         cnp: '1234567890123',
+//         birthdate: '2000-01-01',
+//         anStudiu: '2',
+//         nivStudiu: 'Master',
+//         formaFinantare: 'Buget',
+//         liceu: 'Nu'
+//     }
+// ];
 
-// Cross-Origin Request Blocked:
-//     The Same Origin Policy disallows reading the remote resource at http://localhost:8081/api/students.
-//         (Reason: CORS header ‘Access-Control-Allow-Origin’ missing). Status code: 200.
-//     Error fetching students: TypeError: NetworkError when attempting to fetch resource. script.js:57:33
-//Ajutor
+const studentDataList = [];
 
-// const studentDataList = [];
-
-function fetchStudents() {
-    fetch('http://localhost:8081/api/students')
-        .then(response => response.json())
-        .then(data => {
-            studentDataList.push(...data);
-            generateStudentBoxes();
-        })
-        .catch(error => console.error('Error fetching students:', error));
-}
-
-fetchStudents();
 
 function generateStudentBoxes() {
     const scrollableDiv = document.querySelector('.scrollableDiv');
@@ -91,13 +100,9 @@ function createStudentBox(studentData) {
     <p>Liceu absolvit: ${studentData.liceu}</p>
     <button class="buttonModify" onclick="editStudent('${studentData.id}')">Modifica student</button>
   `;
-
     studentBox.innerHTML = content;
     return studentBox;
 }
-
-
-////////////////////////////////////////////////////
 
 function editStudent(studentId) {
     const studentBox = document.getElementById(studentId);
@@ -190,54 +195,8 @@ function getStudentData(studentId) {
 
 function saveNewStudent(button) {
     const form = button.parentElement;
-    const name = form.elements['name'].value;
-    const firstname = form.elements['firstname'].value;
-    const cnp = form.elements['cnp'].value;
-    const birthdate = form.elements['birthdate'].value;
-    const anStudiu = form.elements['anStudiu'].value;
-    const nivStudiu = form.elements['nivStudiu'].value;
-    const formaFinantare = form.elements['formaFinantare'].value;
-    const liceu = form.elements['liceu'].value;
+    htmx.ajax(form, {method: 'POST', url: '/api/students/addStudent'});
 
-    const newStudentId = getNextStudentId();
-    const newStudent = {
-        id: newStudentId,
-        name,
-        firstname,
-        cnp,
-        birthdate,
-        anStudiu,
-        nivStudiu,
-        formaFinantare,
-        liceu
-    };
-
-    studentDataList.push(newStudent);
-    const studentBox = createStudentBox(newStudent);
-
-    const scrollableDiv = document.querySelector('.scrollableDiv');
-    scrollableDiv.appendChild(studentBox);
-
-    const formData = new FormData(form);
-    const jsonData = {};
-    formData.forEach((value, key) => {
-        jsonData[key] = value;
-    });
-
-    fetch('http://localhost:8081/api/students/addStudent', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(jsonData),
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Student added:', data);
-            fetchStudents();
-        })
-        .catch(error => console.error('Error adding student:', error));
 }
 
 function saveEditedInfo(studentId, form) {
@@ -274,13 +233,15 @@ function addStudentForm() {
 
 function getNextStudentId() {
     const existingIds = studentDataList.map(student => student.id);
-    let newId = 1;
-
-    while (existingIds.includes(`student${newId}`)) {
-        newId++;
+    if (existingIds.length === 0) {
+        return 1;
     }
-
-    return `student${newId}`;
+    const nextId = Math.max(...existingIds) + 1;
+    return nextId;
 }
+
+// htmx.onLoad(function () {
+//     htmx.ajax('api/studentsdents')
+// });
 
 generateStudentBoxes();

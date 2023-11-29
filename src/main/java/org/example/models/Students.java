@@ -19,6 +19,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Table(name = "students")
 public class Students {
+    public Students(String firstName, String lastName, String cnp, LocalDate birthDate, int studyYear, String studyLevel, String fundingForm, String graduatedHighSchool) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.cnp = cnp;
+        this.birthDate = birthDate;
+        this.studyYear = studyYear;
+        this.studyLevel = studyLevel;
+        this.fundingForm = fundingForm;
+        this.graduatedHighSchool = graduatedHighSchool;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

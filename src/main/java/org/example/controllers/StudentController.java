@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*",allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
@@ -25,14 +25,14 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping
-    public List<Students> getAllStudents(){
+    public List<Students> getAllStudents() {
         return studentService.getAllStudents();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Students> getStudentById(@PathVariable Integer id){
+    public ResponseEntity<Students> getStudentById(@PathVariable Integer id) {
         Students student = studentService.getStudentById(id).orElse(null);
-        return (student!=null) ? ResponseEntity.ok(student):ResponseEntity.notFound().build();
+        return (student != null) ? ResponseEntity.ok(student) : ResponseEntity.notFound().build();
 
     }
 
@@ -69,7 +69,6 @@ public class StudentController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
     }
-
 
 
 //    @PostMapping
@@ -150,7 +149,6 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
 
 
 }
