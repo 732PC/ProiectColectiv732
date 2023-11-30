@@ -4,11 +4,9 @@ import org.example.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -32,7 +30,18 @@ public class CourseController {
             return new ResponseEntity<>(courses, HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
+        }
+    }
+
+    @PostMapping(value = "/course")
+    public ResponseEntity<String> addCourses(@RequestParam List<String> ids, @RequestParam String email){
+        boolean successful = this.courseService.addListOfCourses(ids, email);
+        if(successful){
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(null, HttpStatus.NOT_IMPLEMENTED);
         }
     }
 }

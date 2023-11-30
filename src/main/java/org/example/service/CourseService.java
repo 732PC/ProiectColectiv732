@@ -1,6 +1,11 @@
 package org.example.service;
 
+import org.example.model.Course;
+import org.example.model.Student;
+import org.example.model.User;
 import org.example.repository.CourseRepository;
+import org.example.repository.StudentRepository;
+import org.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +16,14 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository){
+    public CourseService(CourseRepository courseRepository, UserRepository userRepository, StudentRepository studentRepository){
         this.courseRepository = courseRepository;
+        this.userRepository = userRepository;
+        this.studentRepository = studentRepository;
     }
 
     public String getAllOptionalCourses(){
@@ -63,5 +72,22 @@ public class CourseService {
                     "</tr>";
         }
         return response;
+    }
+
+    public boolean addListOfCourses(List<String> ids, String email){
+        User user = this.userRepository.findByEmail(email);
+        Student student = this.studentRepository.findByUser(user);
+        for(String id:ids){
+            Course course = this.courseRepository.findByCourseName(id);
+            List<Student> students = course.getStudents();
+            students.add(student);
+            course.setStudents(students);
+            List<Course> courses = student.getCourses();
+            courses.add(course);
+            student.setCourses(courses);
+            this.studentRepository.save(student);
+            this.courseRepository.save(course);
+        }
+        return true;
     }
 }

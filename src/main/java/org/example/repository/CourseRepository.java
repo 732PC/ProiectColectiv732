@@ -27,4 +27,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "JOIN course_schedule cs ON c.id = cs.course_id " +
             "WHERE us.email = :email", nativeQuery = true)
     List<Object[]> findEnrolledCoursesOfStudent(String email);
+
+    Course findByCourseName(String courseName);
 }
