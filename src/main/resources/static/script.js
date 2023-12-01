@@ -9,9 +9,7 @@ function fetchStudents() {
 }
 
 fetchStudents();
-
 const studentDataList = [];
-
 
 function generateStudentBoxes() {
     const scrollableDiv = document.querySelector('.scrollableDiv');
@@ -43,8 +41,8 @@ function createStudentBox(studentData) {
 }
 
 function editStudent(studentId) {
-    const studentBox = document.getElementById(studentId);
     const form = createEditForm(studentId);
+    const studentBox = document.getElementById(studentId);
 
     if (studentBox.classList.contains('edit-form')) {
         saveEditedInfo(studentId, form);
@@ -69,9 +67,9 @@ function createEditForm(studentId) {
     form.innerHTML = `
         <form onsubmit="event.preventDefault();">
             <label>Nume:</label>
-            <input type="text" name="name" required>
-            <label>Prenume:</label>
             <input type="text" name="firstName" required>
+            <label>Prenume:</label>
+            <input type="text" name="lastName" required>
             <label>CNP:</label>
             <input type="text" name="cnp" minlength="13" maxlength="13"
                 onkeypress='return event.charCode >= 48 && event.charCode <= 57'
@@ -79,28 +77,28 @@ function createEditForm(studentId) {
             <label>Data de nastere:</label>
             <input type="date" name="birthDate" required>
             <label>Anul de studiu</label>
-            <select required class="selectstyle" name="anStudiu">
+            <select required class="selectstyle" name="studyYear">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
             </select>
             <label>Nivelul de studiu</label>
-            <select required class="selectstyle" name="nivStudiu">
+            <select required class="selectstyle" name="studyLevel">
                 <option value="Licenta">Licenta</option>
                 <option value="Master">Master</option>
             </select>
             <label>Forma de finantare</label>
-            <select required class="selectstyle" name="formaFinantare">
+            <select required class="selectstyle" name="fundingForm">
                 <option value="Buget">Buget</option>
                 <option value="Taxa">Taxa</option>
             </select>
             <label>Liceu absolvit</label>
-            <select class="selectstyle" name="liceu">
+            <select class="selectstyle" name="graduatedHighSchool">
                 <option value="Da">Da</option>
                 <option value="Nu">Nu</option>
             </select>
-             <button onclick="${studentId ? saveEditedInfo(studentId, this.form) : saveNewStudent(this)}">Salvare</button>
+             <button onclick="${studentId ? `saveEditedInfo('${studentId}', this.form)` : 'saveNewStudent(this, this.form)'}">Salvare</button>
 
         </form>
     `;
@@ -108,59 +106,68 @@ function createEditForm(studentId) {
 }
 
 function setFormValues(form, studentData) {
-    form.querySelector('input[name="name"]').value = studentData.firstName;
-    form.querySelector('input[name="firstName"]').value = studentData.lastName;
+    form.querySelector('input[name="firstName"]').value = studentData.firstName;
+    form.querySelector('input[name="lastName"]').value = studentData.lastName;
     form.querySelector('input[name="cnp"]').value = studentData.cnp;
     form.querySelector('input[name="birthDate"]').value = studentData.birthDate;
-    form.querySelector('select[name="anStudiu"]').value = studentData.studyYear;
-    form.querySelector('select[name="nivStudiu"]').value = studentData.studyLevel;
-    form.querySelector('select[name="formaFinantare"]').value = studentData.fundingForm;
-    form.querySelector('select[name="liceu"]').value = studentData.graduatedHighSchool;
+    form.querySelector('select[name="studyYear"]').value = studentData.studyYear;
+    form.querySelector('select[name="studyLevel"]').value = studentData.studyLevel;
+    form.querySelector('select[name="fundingForm"]').value = studentData.fundingForm;
+    form.querySelector('select[name="graduatedHighSchool"]').value = studentData.graduatedHighSchool;
 }
 
 function getStudentData(studentId) {
     return {
-        name: "Marian",
-        firstName: "Marian din dej",
+        firstName: "Marian",
+        lastName: "Marian din dej",
         cnp: "1234567890123",
         birthDate: "2000-01-01",
-        anStudiu: "2",
-        nivStudiu: "Master",
-        formaFinantare: "Buget",
-        liceu: "Nu"
+        studyYear: "2",
+        studyLevel: "Master",
+        fundingForm: "Buget",
+        graduatedHighSchool: "Nu"
     };
 }
 
-function saveNewStudent(button) {
+function saveNewStudent(button, form) {
     const newStudent = saveEditedInfo(form);
     studentDataList.push(newStudent);
     generateStudentBoxes();
 
 }
 
-function saveEditedInfo(studentId, form) {
-    const firstName = form.elements['firstName'].value;
-    const lastName = form.elements['lastName'].value;
-    const cnp = form.elements['cnp'].value;
-    const birthDate = form.elements['birthDate'].value;
-    const studyYear = form.elements['studyYear'].value;
-    const studyLevel = form.elements['studyLevel'].value;
-    const fundingForm = form.elements['fundingForm'].value;
-    const graduatedHighSchool = form.elements['graduatedHighSchool'].value;
-
+async function saveEditedInfo(studentId, form) {
     const studentBox = document.getElementById(studentId);
+    const updatedStudentData = {
+        firstName: form.elements['firstName'].value,
+        lastName: form.elements['lastName'].value,
+        cnp: form.elements['cnp'].value,
+        birthDate: form.elements['birthDate'].value,
+        studyYear: form.elements['studyYear'].value,
+        studyLevel: form.elements['studyLevel'].value,
+        fundingForm: form.elements['fundingForm'].value,
+        graduatedHighSchool: form.elements['graduatedHighSchool'].value
+    };
+    await updateStudentInDatabase(studentId, updatedStudentData);
+    const studentDataIndex = studentDataList.findIndex(student => student.id === studentId);
+    if (studentDataIndex !== -1) {
+        studentDataList[studentDataIndex] = {id: studentId, ...updatedStudentData};
+    }
+
     studentBox.innerHTML = `
-        <p>Nume: ${studentData.firstName}</p>
-        <p>Prenume: ${studentData.lastName}</p>
-        <p>CNP: ${studentData.cnp}</p>
-        <p>Data de nastere: ${studentData.birthDate}</p>
-        <p>Anul de studiu: ${studentData.studyYear}</p>
-        <p>Nivelul de studiu: ${studentData.studyLevel}</p>
-        <p>Forma de finantare: ${studentData.fundingForm}</p>
-        <p>Liceu absolvit: ${studentData.graduatedHighSchool}</p>
-        <button class="buttonModify" onclick="editStudent(studentId)">Modifica student</button>
+        <p>Nume: ${updatedStudentData.firstName}</p>
+        <p>Prenume: ${updatedStudentData.lastName}</p>
+        <p>CNP: ${updatedStudentData.cnp}</p>
+        <p>Data de nastere: ${updatedStudentData.birthDate}</p>
+        <p>Anul de studiu: ${updatedStudentData.studyYear}</p>
+        <p>Nivelul de studiu: ${updatedStudentData.studyLevel}</p>
+        <p>Forma de finantare: ${updatedStudentData.fundingForm}</p>
+        <p>Liceu absolvit: ${updatedStudentData.graduatedHighSchool}</p>
+        <button class="buttonModify" onclick="editStudent('${studentId}')">Modifica student</button>
     `;
+
 }
+
 
 function addStudentForm() {
     const nextStudentId = getNextStudentId();
@@ -179,9 +186,24 @@ function getNextStudentId() {
     return nextId;
 }
 
-//
-// htmx.onLoad(function () {
-//     htmx.ajax('api/studentsdents')
-// });
+async function updateStudentInDatabase(studentId, updatedStudentData) {
+    try {
+        const response = await fetch(`http://localhost:8081/api/students/${studentId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedStudentData)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update student data: ${response.status} ${response.statusText}`);
+        }
+
+        console.log('Student data updated successfully.');
+    } catch (error) {
+        console.error('Error updating student data:', error);
+    }
+}
 
 generateStudentBoxes();

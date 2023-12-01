@@ -16,7 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
         config.addAllowedOrigin("*");
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
-        source.registerCorsConfiguration("/api/students", config);
+        source.registerCorsConfiguration("/api/students/**", config);
+        source.registerCorsConfiguration("/addStudent", config);
         return new CorsFilter(source);
     }
 }
