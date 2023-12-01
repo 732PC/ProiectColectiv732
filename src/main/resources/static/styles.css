@@ -131,3 +131,31 @@ button:hover {
 .dropdown-content:hover {
     display: block;
 }
+
+.table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: center; /* Center the content */
+    vertical-align: middle; /* Vertically center the content */
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Adjust checkbox alignment */
+td input[type='checkbox'] {
+    margin: 0; /* Remove default margin */
+    vertical-align: middle; /* Align checkbox vertically */
+}

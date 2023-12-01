@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Select Courses</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="centered header">
+    <p class="title" style="font-weight: bold"><span class="orange-text">UBB</span><span class="black-text">oard</span>
+    </p>
+</div>
+<div class="spacer"></div>
+<div class="centered content">
+    <p class="title">Select Courses</p>
+
+    <form id="courseForm">
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Select</th>
+                    <th>Course Name</th>
+                    <th>Optional</th>
+                    <th>Teacher</th>
+                    <th>Day of Week</th>
+                    <th>Time</th>
+                </tr>
+                <tr>
+                    <td><label>
+                        <input type='checkbox' name='ids' value='Course 1'>
+                    </label></td>
+                    <td>Course 1</td>
+                    <td>true</td>
+                    <td>Teacher Name</td>
+                    <td>Monday</td>
+                    <td>10:00 AM</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- fetch available courses -->
+        <button type="button" hx-get="/courses/course?type=allOptionals&email=user@example.com" hx-target="#courseForm"
+                hx-swap="outerHTML">Load Courses
+        </button>
+
+        <!-- save selected courses -->
+        <button type="button" hx-post="/courses/course" hx-trigger="click" hx-target="#courseForm"
+                hx-vals="closest('form').serialize()" hx-swap="outerHTML">Save Courses
+        </button>
+    </form>
+</div>
+</body>
+</html>
