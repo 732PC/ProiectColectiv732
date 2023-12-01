@@ -34,10 +34,11 @@ using Students;]]></console>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files>
-      <object connection-id="f34c1c9b-6ee1-4f01-a1fe-22fb510cce1d" object-ref="consoles/Connection" />
+      <object connection-id="f34c1c9b-6ee1-4f01-a1fe-22fb510cce1d" object-ref="schemas/students/tables/users" />
     </open-files>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="f34c1c9b-6ee1-4f01-a1fe-22fb510cce1d" dataset="students.users" active-filter-id="" />
     <filter-actions connection-id="f34c1c9b-6ee1-4f01-a1fe-22fb510cce1d" dataset="students.students" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">

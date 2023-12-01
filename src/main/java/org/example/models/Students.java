@@ -35,12 +35,12 @@ public class Students {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     @Size(min = 1)
     @NotNull
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     @NotNull
     private String lastName;
 
@@ -49,23 +49,23 @@ public class Students {
     @Size(min = 13, max = 13, message = "CNP must be exactly 13 digits")
     private String cnp;
 
-    @Column(name = "birthDate")
+    @Column(name = "birth_date")
     @NotNull
     private LocalDate birthDate;
 
-    @Column(name = "studyYear")
+    @Column(name = "study_year")
     @NotNull
     private int studyYear;
 
-    @Column(name = "studyLevel")
+    @Column(name = "study_level")
     @NotNull
     private String studyLevel;
 
-    @Column(name = "fundingForm")
+    @Column(name = "funding_form")
     @NotNull
     private String fundingForm;
 
-    @Column(name = "graduatedHighSchool")
+    @Column(name = "graduated_high_school")
     @NotNull
     private String graduatedHighSchool;
 }
