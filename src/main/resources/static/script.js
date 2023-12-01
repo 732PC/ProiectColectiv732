@@ -130,8 +130,7 @@ function getStudentData(studentId) {
 }
 
 function saveNewStudent(button, form) {
-    const newStudent = saveEditedInfo(form);
-    studentDataList.push(newStudent);
+    addStudent(form);
     generateStudentBoxes();
 
 }
@@ -153,7 +152,6 @@ async function saveEditedInfo(studentId, form) {
     if (studentDataIndex !== -1) {
         studentDataList[studentDataIndex] = {id: studentId, ...updatedStudentData};
     }
-
     studentBox.innerHTML = `
         <p>Nume: ${updatedStudentData.firstName}</p>
         <p>Prenume: ${updatedStudentData.lastName}</p>
@@ -165,17 +163,15 @@ async function saveEditedInfo(studentId, form) {
         <p>Liceu absolvit: ${updatedStudentData.graduatedHighSchool}</p>
         <button class="buttonModify" onclick="editStudent('${studentId}')">Modifica student</button>
     `;
-
 }
-
 
 function addStudentForm() {
     const nextStudentId = getNextStudentId();
-    const form = createEditForm(nextStudentId);
-
+    const form = createNewEditForm(nextStudentId);
     const scrollableDiv = document.querySelector('.scrollableDiv');
     scrollableDiv.appendChild(form);
 }
+
 
 function getNextStudentId() {
     const existingIds = studentDataList.map(student => student.id);
@@ -184,6 +180,49 @@ function getNextStudentId() {
     }
     const nextId = Math.max(...existingIds) + 1;
     return nextId;
+}
+
+function createNewEditForm(studentId) {
+    const form = document.createElement('div');
+    form.innerHTML = `
+        <form onsubmit="event.preventDefault();">
+            <label>Nume:</label>
+            <input type="text" name="firstName" required>
+            <label>Prenume:</label>
+            <input type="text" name="lastName" required>
+            <label>CNP:</label>
+            <input type="text" name="cnp" minlength="13" maxlength="13"
+                onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                required/>
+            <label>Data de nastere:</label>
+            <input type="date" name="birthDate" required>
+            <label>Anul de studiu</label>
+            <select required class="selectstyle" name="studyYear">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            <label>Nivelul de studiu</label>
+            <select required class="selectstyle" name="studyLevel">
+                <option value="Licenta">Licenta</option>
+                <option value="Master">Master</option>
+            </select>
+            <label>Forma de finantare</label>
+            <select required class="selectstyle" name="fundingForm">
+                <option value="Buget">Buget</option>
+                <option value="Taxa">Taxa</option>
+            </select>
+            <label>Liceu absolvit</label>
+            <select class="selectstyle" name="graduatedHighSchool">
+                <option value="Da">Da</option>
+                <option value="Nu">Nu</option>
+            </select>
+             <button onclick="saveNewStudent(this, this.form)">Salvare</button>
+
+        </form>
+    `;
+    return form;
 }
 
 async function updateStudentInDatabase(studentId, updatedStudentData) {
@@ -203,6 +242,42 @@ async function updateStudentInDatabase(studentId, updatedStudentData) {
         console.log('Student data updated successfully.');
     } catch (error) {
         console.error('Error updating student data:', error);
+    }
+}
+
+async function addStudent(form) {
+    const formData = {
+        birthDate: form.elements['birthDate'].value,
+        cnp: form.elements['cnp'].value,
+        firstName: form.elements['firstName'].value,
+        fundingForm: form.elements['fundingForm'].value,
+        graduatedHighSchool: form.elements['graduatedHighSchool'].value,
+        lastName: form.elements['lastName'].value,
+        studyLevel: form.elements['studyLevel'].value,
+        studyYear: parseInt(form.elements['studyYear'].value, 10)
+    };
+    const jsonString = `{
+        "firstName":${formData.firstName},
+        "lastName":${formData.lastName},
+        "cnp":${formData.cnp},
+        "birthDate":${formData.birthDate},
+        "studyYear":${formData.studyYear},
+        "studyLevel":${formData.studyLevel},
+        "fundingForm":${formData.fundingForm},
+        "graduatedHighSchool":${formData.graduatedHighSchool}
+    }`;
+    const response = await fetch('http://localhost:8081/api/students/addStudent', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData),
+    });
+    try {
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
     }
 }
 

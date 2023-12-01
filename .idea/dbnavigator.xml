@@ -13,20 +13,16 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="f34c1c9b-6ee1-4f01-a1fe-22fb510cce1d">
-      <console name="Connection" type="STANDARD" schema="students" session="Main"><![CDATA[INSERT INTO students(first_name, last_name, cnp, birth_date, study_year, study_level, funding_form, graduated_high_school)
+      <console name="Connection" type="STANDARD" schema="performance_schema" session="Main"><![CDATA[INSERT INTO students (firstName, lastName, cnp, birthDate, studyYear, studyLevel, fundingForm, graduatedHighSchool)
 VALUES 
     ('John', 'Doe', '1234567890123', '1999-01-15', 1, 'Licenta', 'Budget', 'Da'),
     ('Jane', 'Smith', '9876543210123', '2000-03-22', 2, 'Licenta', 'Taxa', 'Da'),
     ('Alice', 'Johnson', '3456789012345', '1998-07-10', 3, 'Licenta', 'Taxa', 'Da'),
     ('Bob', 'Williams', '5678901234567', '1997-11-30', 4, 'Master', 'Taxa', 'Nu');
-INSERT INTO students (first_name, last_name, cnp, birth_date, study_year, study_level, funding_form, graduated_high_school)
-VALUES 
-    ('DADAADAD', 'Doe', '1234567890125', '1999-01-15', 2, 'Licenta', 'Budget', 'Nu');
+
 select * from students;
 
-drop table Students.students;
-
-using Students;]]></console>
+drop table students;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">

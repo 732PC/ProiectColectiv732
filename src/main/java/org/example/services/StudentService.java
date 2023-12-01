@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,7 +67,7 @@ public class StudentService {
             String firstName,
             String lastName,
             String cnp,
-            Date birthDate,
+            LocalDate birthDate,
             int studyYear,
             String studyLevel,
             String fundingForm,
@@ -76,7 +77,7 @@ public class StudentService {
         student.setFirstName(firstName);
         student.setLastName(lastName);
         student.setCnp(cnp);
-        student.setBirthDate(birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        student.setBirthDate(birthDate);
         student.setStudyYear(studyYear);
         student.setStudyLevel(studyLevel);
         student.setFundingForm(fundingForm);

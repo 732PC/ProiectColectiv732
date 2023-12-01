@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -53,12 +56,12 @@ public class StudentController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
 //    }
 
-    @PostMapping(value = "/addStudent")
+    @PostMapping("/addStudent")
     public ResponseEntity<?> addStudent(
             @RequestParam String firstName,
             @RequestParam String lastName,
             @RequestParam String cnp,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
             @RequestParam int studyYear,
             @RequestParam String studyLevel,
             @RequestParam String fundingForm,
