@@ -5,12 +5,12 @@
       <option name="myValues">
         <value>
           <list size="6">
-            <item index="0" class="java.lang.String" itemvalue="hx-get" />
-            <item index="1" class="java.lang.String" itemvalue="hx-target" />
-            <item index="2" class="java.lang.String" itemvalue="hx-swap" />
-            <item index="3" class="java.lang.String" itemvalue="hx-post" />
-            <item index="4" class="java.lang.String" itemvalue="hx-trigger" />
-            <item index="5" class="java.lang.String" itemvalue="hx-vals" />
+            <item index="0" class="java.lang.String" itemvalue="hx-post" />
+            <item index="1" class="java.lang.String" itemvalue="hx-trigger" />
+            <item index="2" class="java.lang.String" itemvalue="hx-target" />
+            <item index="3" class="java.lang.String" itemvalue="hx-swap" />
+            <item index="4" class="java.lang.String" itemvalue="hx-vals" />
+            <item index="5" class="java.lang.String" itemvalue="hx-get" />
           </list>
         </value>
       </option>
