@@ -33,7 +33,7 @@ public class StudentController {
 
     }
 
-    @PostMapping()
+    @PostMapping("/addStudent")
     public ResponseEntity<?> addStudent(
             @RequestParam String firstName,
             @RequestParam String lastName,
@@ -72,4 +72,10 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @GetMapping("/modificareStudent")
+    public String getModificareStudentPage() {
+        return "modificareStudent"; 
+    }
+
 }
