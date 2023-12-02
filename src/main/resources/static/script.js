@@ -13,7 +13,6 @@ const studentDataList = [];
 
 function generateStudentBoxes() {
     const scrollableDiv = document.querySelector('.scrollableDiv');
-
     studentDataList.forEach(studentData => {
         const studentBox = createStudentBox(studentData);
         scrollableDiv.appendChild(studentBox);
@@ -24,7 +23,6 @@ function createStudentBox(studentData) {
     const studentBox = document.createElement('div');
     studentBox.classList.add('student-box');
     studentBox.id = studentData.id;
-
     const content = `
     <p>Nume: ${studentData.firstName}</p>
     <p>Prenume: ${studentData.lastName}</p>
@@ -43,22 +41,17 @@ function createStudentBox(studentData) {
 function editStudent(studentId) {
     const form = createEditForm(studentId);
     const studentBox = document.getElementById(studentId);
-
     if (studentBox.classList.contains('edit-form')) {
         saveEditedInfo(studentId, form);
         studentBox.classList.remove('edit-form');
         studentBox.innerHTML = form.querySelector('form').innerHTML;
         studentBox.querySelector('button').addEventListener('click', () => editStudent(studentId));
-
-        const studentData = getStudentData(studentId);
-        setFormValues(form, studentData);
+        setFormValues(form, studentId);
     } else {
         studentBox.classList.add('edit-form');
         studentBox.innerHTML = '';
         studentBox.appendChild(form);
-
-        const studentData = getStudentData(studentId);
-        setFormValues(form, studentData);
+        setFormValues(form, studentId);
     }
 }
 
@@ -99,40 +92,31 @@ function createEditForm(studentId) {
                 <option value="Nu">Nu</option>
             </select>
              <button onclick="${studentId ? `saveEditedInfo('${studentId}', this.form)` : 'saveNewStudent(this, this.form)'}">Salvare</button>
-
         </form>
     `;
     return form;
 }
 
-function setFormValues(form, studentData) {
-    form.querySelector('input[name="firstName"]').value = studentData.firstName;
-    form.querySelector('input[name="lastName"]').value = studentData.lastName;
-    form.querySelector('input[name="cnp"]').value = studentData.cnp;
-    form.querySelector('input[name="birthDate"]').value = studentData.birthDate;
-    form.querySelector('select[name="studyYear"]').value = studentData.studyYear;
-    form.querySelector('select[name="studyLevel"]').value = studentData.studyLevel;
-    form.querySelector('select[name="fundingForm"]').value = studentData.fundingForm;
-    form.querySelector('select[name="graduatedHighSchool"]').value = studentData.graduatedHighSchool;
-}
-
-function getStudentData(studentId) {
-    return {
-        firstName: "Marian",
-        lastName: "Marian din dej",
-        cnp: "1234567890123",
-        birthDate: "2000-01-01",
-        studyYear: "2",
-        studyLevel: "Master",
-        fundingForm: "Buget",
-        graduatedHighSchool: "Nu"
-    };
+async function setFormValues(form, studentId) {
+    fetch(`http://localhost:8081/api/students/${studentId}`)
+        .then(response => response.json())
+        .then(studentData => {
+            form.querySelector('input[name="firstName"]').value = studentData.firstName;
+            form.querySelector('input[name="lastName"]').value = studentData.lastName;
+            form.querySelector('input[name="cnp"]').value = studentData.cnp;
+            form.querySelector('input[name="birthDate"]').value = studentData.birthDate;
+            form.querySelector('select[name="studyYear"]').value = studentData.studyYear;
+            form.querySelector('select[name="studyLevel"]').value = studentData.studyLevel;
+            form.querySelector('select[name="fundingForm"]').value = studentData.fundingForm;
+            form.querySelector('select[name="graduatedHighSchool"]').value = studentData.graduatedHighSchool;
+        })
+        .catch(error => console.error('Error fetching students:', error));
 }
 
 function saveNewStudent(button, form) {
     addStudent(form);
+    studentDataList.splice(0,studentDataList.length);
     generateStudentBoxes();
-
 }
 
 async function saveEditedInfo(studentId, form) {
@@ -169,9 +153,8 @@ function addStudentForm() {
     const nextStudentId = getNextStudentId();
     const form = createNewEditForm(nextStudentId);
     const scrollableDiv = document.querySelector('.scrollableDiv');
-    scrollableDiv.appendChild(form);
+    scrollableDiv.insertBefore(form, scrollableDiv.firstChild);
 }
-
 
 function getNextStudentId() {
     const existingIds = studentDataList.map(student => student.id);
@@ -234,11 +217,9 @@ async function updateStudentInDatabase(studentId, updatedStudentData) {
             },
             body: JSON.stringify(updatedStudentData)
         });
-
         if (!response.ok) {
             throw new Error(`Failed to update student data: ${response.status} ${response.statusText}`);
         }
-
         console.log('Student data updated successfully.');
     } catch (error) {
         console.error('Error updating student data:', error);
@@ -254,30 +235,27 @@ async function addStudent(form) {
         graduatedHighSchool: form.elements['graduatedHighSchool'].value,
         lastName: form.elements['lastName'].value,
         studyLevel: form.elements['studyLevel'].value,
-        studyYear: form.elements['studyYear'].value
+        studyYear: parseInt(form.elements['studyYear'].value, 10)
     };
-    const jsonString = `{
-        "firstName":${formData.firstName},
-        "lastName":${formData.lastName},
-        "cnp":${formData.cnp},
-        "birthDate":${formData.birthDate},
-        "studyYear":${formData.studyYear},
-        "studyLevel":${formData.studyLevel},
-        "fundingForm":${formData.fundingForm},
-        "graduatedHighSchool":${formData.graduatedHighSchool}
-    }`;
-    const response = await fetch('http://localhost:8081/api/students/addStudent', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData),
-    });
+    console.log('Request Payload:', formData);
     try {
-        const data = await response.json();
-        console.log(data);
+        const response = await fetch('http://localhost:8081/api/students/addStudent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Server Response:', data);
+        } else {
+            console.error('Server responded with an error:', response.status, response.statusText);
+            const errorData = await response.text();
+            console.error('Server error details:', errorData);
+        }
     } catch (error) {
-        console.error(error);
+        console.error('An error occurred during the fetch:', error);
     }
 }
 
