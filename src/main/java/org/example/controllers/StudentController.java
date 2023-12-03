@@ -39,23 +39,6 @@ public class StudentController {
 
     }
 
-//    @PostMapping(value = "/addStudent", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<?> addStudent(
-//            @RequestParam String firstName,
-//            @RequestParam String lastName,
-//            @RequestParam String cnp,
-//            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthDate,
-//            @RequestParam int studyYear,
-//            @RequestParam String studyLevel,
-//            @RequestParam String fundingForm,
-//            @RequestParam String graduatedHighSchool) {
-//
-//        Students addedStudent = studentService.addStudent(
-//                firstName, lastName, cnp, birthDate, studyYear, studyLevel, fundingForm, graduatedHighSchool);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
-//    }
-
     @PostMapping("/addStudent")
     public ResponseEntity<?> addStudent(
             @RequestParam String firstName,
@@ -67,11 +50,20 @@ public class StudentController {
             @RequestParam String fundingForm,
             @RequestParam String graduatedHighSchool) {
 
-        Students addedStudent = studentService.addStudent(
-                firstName, lastName, cnp, birthDate, studyYear, studyLevel, fundingForm, graduatedHighSchool);
+        try {
+            System.out.println("Received request: " + firstName + ", " + lastName + ", " + cnp + ", " + birthDate + ", " +
+                    studyYear + ", " + studyLevel + ", " + fundingForm + ", " + graduatedHighSchool);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
+            Students addedStudent = studentService.addStudent(
+                    firstName, lastName, cnp, birthDate, studyYear, studyLevel, fundingForm, graduatedHighSchool);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
+        } catch (Exception e) {
+            System.err.println("Error processing request: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error processing request");
+        }
     }
+
 
 
 //    @PostMapping

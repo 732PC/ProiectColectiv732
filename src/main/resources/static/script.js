@@ -68,7 +68,7 @@ function createEditForm(studentId) {
                 onkeypress='return event.charCode >= 48 && event.charCode <= 57'
                 required/>
             <label>Data de nastere:</label>
-            <input type="datetime-local" name="birthDate" required>
+            <input type="date" name="birthDate" required>
             <label>Anul de studiu</label>
             <select required class="selectstyle" name="studyYear">
                 <option value="1">1</option>
@@ -153,7 +153,7 @@ function addStudentForm() {
     const nextStudentId = getNextStudentId();
     const form = createNewEditForm(nextStudentId);
     const scrollableDiv = document.querySelector('.scrollableDiv');
-    scrollableDiv.appendChild(form);
+    scrollableDiv.insertBefore(form, scrollableDiv.firstChild);
 }
 
 function getNextStudentId() {
@@ -237,28 +237,25 @@ async function addStudent(form) {
         studyLevel: form.elements['studyLevel'].value,
         studyYear: parseInt(form.elements['studyYear'].value, 10)
     };
-    const jsonString = `{
-        "firstName":${formData.firstName},
-        "lastName":${formData.lastName},
-        "cnp":${formData.cnp},
-        "birthDate":${formData.birthDate},
-        "studyYear":${formData.studyYear},
-        "studyLevel":${formData.studyLevel},
-        "fundingForm":${formData.fundingForm},
-        "graduatedHighSchool":${formData.graduatedHighSchool}
-    }`;
-    const response = await fetch('http://localhost:8081/api/students/addStudent', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData),
-    });
+    console.log('Request Payload:', formData);
     try {
-        const data = await response.json();
-        console.log(data);
+        const response = await fetch('http://localhost:8081/api/students/addStudent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Server Response:', data);
+        } else {
+            console.error('Server responded with an error:', response.status, response.statusText);
+            const errorData = await response.text();
+            console.error('Server error details:', errorData);
+        }
     } catch (error) {
-        console.error(error);
+        console.error('An error occurred during the fetch:', error);
     }
 }
 
