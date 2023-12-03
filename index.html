@@ -5,35 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Allocation</title>
     <script src="https://unpkg.com/htmx.org@1.6.1/dist/htmx.js"></script>
-<!--    <script>-->
-<!--        // Fetch and populate study years-->
-<!--        function fetchStudyYears() {-->
-<!--            var yearSelect = document.getElementById("yearSelect");-->
-<!--            var getYearsEndpoint = "/getStudyYears";-->
-
-<!--            htmx.ajax(getYearsEndpoint, 'get', {-->
-<!--                target: yearSelect,-->
-<!--                headers: {'Accept': 'application/json'},-->
-<!--                evalScripts: true,-->
-<!--                onComplete: function(xhr) {-->
-<!--                    console.log("Request completed. Status:", xhr.status);-->
-
-<!--                    try {-->
-<!--                        // Parse the JSON response-->
-<!--                        var yearData = JSON.parse(xhr.responseText);-->
-
-<!--                        // Log the received data-->
-<!--                        console.log("Year data:", yearData);-->
-<!--                    } catch (error) {-->
-<!--                        console.error("Error parsing JSON:", error);-->
-<!--                    }-->
-<!--                }-->
-<!--            });-->
-<!--        }-->
-
-<!--        // Fetch study years when the page loads-->
-<!--        window.onload = fetchStudyYears;-->
-<!--    </script>-->
     <style>
         body {
             background-color: #3d5a80;
@@ -112,17 +83,17 @@
     </div>
     <div class="overlay">
         <h1 class="text" >Course Allocation</h1>
-        <!-- Select Year of Study -->
+
         <label class="text" for="yearSelect">Select Year of Study:</label>
-        <select id="yearSelect" hx-trigger="change" hx-get="http://localhost:8080/getStudyYears" hx-target="#yearSelect">
+        <select id="yearSelect" hx-trigger="change" hx-get="/course-allocation/getStudyYears" hx-target="#yearSelect">
         </select>
 
-        <!-- Button to Allocate Courses -->
-        <button hx-post="http://localhost:8080/course-allocation/assign-courses-for-study-year" hx-trigger="click" hx-target="#allocatedCourses">Allocate Courses</button>
+        <button hx-post="/course-allocation/assign-courses-for-study-year" hx-trigger="click" hx-target="#allocatedCourses">
+            Allocate Courses
+        </button>
 
-        <!-- Display Allocated Courses -->
-        <div id="allocatedCourses">
-            <!-- The allocated courses will be displayed here -->
+        <div id="allocatedCourses" hx-trigger="load" hx-get="/course-allocation/assign-courses-for-study-year?studyYear=${value}">
+
         </div>
     </div>
 </body>
