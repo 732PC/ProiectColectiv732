@@ -79,21 +79,12 @@ class StudentServiceTest {
         Students student = createSampleStudent();
         when(studentRepository.save(any(Students.class))).thenReturn(student);
 
-        Students addedStudent = studentService.addStudent(
-                "John",
-                "Doe",
-                "1234567890123",
-                LocalDate.of(2000, 1, 1),
-                1,
-                "Bachelor",
-                "Self-funding",
-                "High School");
+        Students addedStudent = studentService.addStudent("John", "Doe", "1234567890123", LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
 
         assertEquals(student, addedStudent);
     }
 
     private Students createSampleStudent() {
-        return new Students(1, "John", "Doe", "1234567890123",
-                LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
+        return new Students(1, "John", "Doe", "1234567890123", LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
     }
 }

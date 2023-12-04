@@ -71,16 +71,11 @@ class StudentControllerTest {
         student.setLastName("Doe");
         student.setCnp("1234567890123");
 
-        when(studentService.addStudent(anyString(), anyString(), anyString(), any(LocalDate.class),
-                anyInt(), anyString(), anyString(), anyString())).thenReturn(student);
+        when(studentService.addStudent(anyString(), anyString(), anyString(), any(LocalDate.class), anyInt(), anyString(), anyString(), anyString())).thenReturn(student);
 
-        ResponseEntity<?> responseEntity = studentController.addStudent(
-                "John", "Doe", "1234567890123",
-                LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
+        ResponseEntity<?> responseEntity = studentController.addStudent("John", "Doe", "1234567890123", LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
 
-        verify(studentService, times(1)).addStudent(
-                anyString(), anyString(), anyString(), any(LocalDate.class),
-                anyInt(), anyString(), anyString(), anyString());
+        verify(studentService, times(1)).addStudent(anyString(), anyString(), anyString(), any(LocalDate.class), anyInt(), anyString(), anyString(), anyString());
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(student, responseEntity.getBody());
