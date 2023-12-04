@@ -3,34 +3,38 @@ package org.example.entities;
 import lombok.NoArgsConstructor;
 import org.example.enums.Countries;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-@Table(name = "professor")
+@Table(name = "professors")
 public class Professor {
-    @Column(name = "firstName")
+    @Column(name = "firstName", nullable = false)
     private String firstName;
-    @Column(name = "lastName")
+    @Column(name = "lastName", nullable = false)
     private String lastName;
-    @Column(name = "cnp")
+    @Column(name = "cnp", nullable = false)
     private Long cnp;
-    @Column(name = "birthdate")
+    @Column(name = "birthdate", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date birthdate;
     @Column(name = "country")
     @Enumerated(EnumType.STRING)
     private Countries country;
 
+    @OneToMany(mappedBy = "prof", cascade = CascadeType.ALL)
+    List<Course> courses;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+
     public Professor(String firstName, String lastName, Long cnp, Date birthdate, Countries country) {
         this.firstName = firstName;
         this.lastName = lastName;
