@@ -7,6 +7,7 @@ import org.example.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,13 @@ public class CourseController {
     public ResponseEntity<List<Course>> getAllCourses(){
         List<Course> courses=courseService.getAllCourses();
         return new ResponseEntity<>(courses,HttpStatus.OK);
+    }
+
+    @PostMapping("/courses")
+    public String listAllCourses(Model model){
+        List<Course> courses=courseService.getAllCourses();
+        model.addAttribute("courses",courses);
+        return "courses";
     }
 
     @GetMapping("/{id}")

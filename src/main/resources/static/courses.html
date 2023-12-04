@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Management</title>
+    <style>
+        pCName{
+            color: #3D5A80;
+            font-size: 30px;
+            font-family: Arial,serif;
+            font-weight: 400;
+            word-wrap: break-word;
+            alignment: center;
+            align-content: center;
+        }
+        pCAbr{
+            color: #3D5A80;
+            font-size: 30px;
+            font-family: Arial,serif;
+            font-weight: 600;
+            word-wrap: break-word
+        }
+        pCMisc{
+            color: black;
+            font-size: 24px;
+            font-family: Arial,serif;
+            font-weight: 400;
+            word-wrap: break-word;
+            margin-left: 10px;
+        }
+        .transparent-button {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            font-size: inherit;
+            color: inherit;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<div style="width: 1501px; height: 2222px; left: -31px; top: 3px; position: absolute; background: #3D5A80"></div>
+<div style="left: 951px; top: 128px; position: absolute; color: white; font-size: 24px; font-family: Inter; font-weight: 600; word-wrap: break-word">
+    <button type="button" class="transparent-button">Cursuri</button>
+</div>
+<div style="left: 1079px; top: 128px; position: absolute; color: white; font-size: 24px; font-family: Inter; font-weight: 600; word-wrap: break-word">
+    <button type="button" class="transparent-button">Contul meu</button>
+</div>
+<div style="left: 102px; top: 116px; position: absolute"><span style="color: #EE6C4D; font-size: 45px; font-family: Inter; font-weight: 600; word-wrap: break-word">UBB</span><span style="color: #293241; font-size: 45px; font-family: Inter; font-weight: 600; word-wrap: break-word">oard</span></div>
+<div style="left: 813px; top: 128px; position: absolute; color: white; font-size: 24px; font-family: Inter; font-weight: 600; word-wrap: break-word">
+    <button type="button" class="transparent-button">Membrii</button>
+</div>
+<div style="width: 1188px; height: 1743px; left: 126px; top: 324px; position: absolute; background: #D9D9D9">
+
+<button style="width: 10%; margin-bottom: 10px; height: 2.5%; margin-left: 10px;margin-top: 10px; background: #293241; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 30px">
+    <p style="color: #D9D9D9"> New Course</p>
+</button>
+
+    <ul style="list-style: none; padding: 0; margin: 0" th:each="course : ${courses}">
+
+        <li style="margin-bottom: 10px; margin-left: 20px">
+            <div  style="text-align:center; margin-left:10px;width: 454px; height: 120px; left: 231px; top: 652px;  background: #F5F5F5; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)">
+                <strong>ID</strong> <span th:text="${course.id}"></span><br>
+                <pcname>Name</pcname> <span th:text="${course.name}"></span><br>
+                <pcabr>ABR</pcabr> <span th:text="${course.abbreviation}"></span><br>
+            </div>
+            <div style="margin-left:10px;width: 454px; height: 150px; left: 231px; top: 652px;  background: #F5F5F5; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)"><pcmisc>Credit Number</pcmisc> <span th:text="${course.creditNr}"></span><br>
+                <pcmisc>Professor</pcmisc> <span th:text="${course.prof.name}"></span><br>
+                <pcmisc>Year of Study</pcmisc> <span th:text="${course.yearOfStudy}"></span><br>
+                <pcmisc>Type</pcmisc> <span th:text="${course.type}"></span><br>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
