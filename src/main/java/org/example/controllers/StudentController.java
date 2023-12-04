@@ -33,7 +33,7 @@ public class StudentController {
 
     }
 
-    @PostMapping("/addStudent")
+    @PostMapping("")
     public ResponseEntity<?> addStudent(
             @RequestParam String firstName,
             @RequestParam String lastName,
@@ -49,6 +49,7 @@ public class StudentController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Students>> updateStudent(@PathVariable Integer id, @RequestBody Students student) {
