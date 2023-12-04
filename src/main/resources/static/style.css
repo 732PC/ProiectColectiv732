@@ -13,7 +13,6 @@ body {
     display: flex;
     justify-content: center;
 }
-/*                     */
 .student-box {
     padding: 10px;
     padding-top: calc(5px + 2px);
@@ -25,10 +24,6 @@ body {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
 }
 
-.edit-form {
-    /*display: none;*/
-}
-/*                     */
 
 .intermediateDiv {
     width: 30%;
@@ -79,15 +74,8 @@ body {
     background: white;
 }
 
-/*#student-list {*/
-/*    margin: 20px;*/
-/*    padding: 20px;*/
-/*    background-color: white;*/
-/*    border-radius: 10px;*/
-/*}*/
 
 .add-student-form {
-    /*margin: 40px;*/
     padding: 40px;
     color: black;
     background: linear-gradient(to right, #3D5A80 29px, #EAEAEA 0);
