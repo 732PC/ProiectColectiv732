@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
