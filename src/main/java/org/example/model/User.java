@@ -30,6 +30,6 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="role", length = 20)
+    @Column(name="role", length = 20,insertable=false, updatable=false)
     private ERole role;
 }
