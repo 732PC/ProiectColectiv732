@@ -1,14 +1,12 @@
-package org.example.services;
+package org.example.service;
 
-import org.example.models.Students;
+import jakarta.persistence.EntityNotFoundException;
+import org.example.model.Students;
 import org.example.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +16,11 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+
+    private static final int CNP_LENGTH = 13;
+
     private boolean isValidCnpLength(String cnp) {
-        return cnp != null && cnp.length() >= 13;
+        return cnp != null && cnp.length() == CNP_LENGTH;
     }
 
     public List<Students> getAllStudents() {
@@ -89,6 +90,5 @@ public class StudentService {
             throw new IllegalArgumentException("Invalid CNP length. CNP must be exactly 13 digits.");
         }
     }
-
 
 }
