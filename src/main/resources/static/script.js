@@ -8,6 +8,17 @@ function fetchStudents() {
         .catch(error => console.error('Error fetching students:', error));
 }
 
+const popupContainer = document.getElementById('popup-container');
+
+function displayFeedback(message) {
+    popupContainer.innerText = message;
+    popupContainer.style.display = 'block';
+    setTimeout(() => {
+        popupContainer.style.display = 'none';
+        location.reload();
+    }, 2500);
+}
+
 fetchStudents();
 const studentDataList = [];
 
@@ -113,9 +124,9 @@ async function setFormValues(form, studentId) {
         .catch(error => console.error('Error fetching students:', error));
 }
 
-function saveNewStudent(button, form) {
-    addStudent(form);
-    studentDataList.splice(0,studentDataList.length);
+async function saveNewStudent(button, form) {
+    await addStudent(form);
+    studentDataList.splice(0, studentDataList.length);
     generateStudentBoxes();
 }
 
@@ -145,8 +156,9 @@ async function saveEditedInfo(studentId, form) {
         <p>Nivelul de studiu: ${updatedStudentData.studyLevel}</p>
         <p>Forma de finantare: ${updatedStudentData.fundingForm}</p>
         <p>Liceu absolvit: ${updatedStudentData.graduatedHighSchool}</p>
-        <button class="buttonModify" onclick="editStudent('${studentId}')">Modifica student</button>
+        <button class="buttonModify" id="buttonModify" onclick="editStudent('${studentId}')">Modifica student</button>
     `;
+    document.getElementById('buttonModify').addEventListener('click', displayFeedback("Student adaugat cu succes!"));
 }
 
 function addStudentForm() {
@@ -168,7 +180,7 @@ function getNextStudentId() {
 function createNewEditForm(studentId) {
     const form = document.createElement('div');
     form.innerHTML = `
-        <form onsubmit="event.preventDefault();">
+        <form hx-post='http://localhost:8081/api/students/addStudent' hx-trigger="submit">
             <label>Nume:</label>
             <input type="text" name="firstName" required>
             <label>Prenume:</label>
@@ -201,8 +213,9 @@ function createNewEditForm(studentId) {
                 <option value="Da">Da</option>
                 <option value="Nu">Nu</option>
             </select>
-             <button onclick="saveNewStudent(this, this.form)">Salvare</button>
-
+             <button onclick="addStudent(this.form)">Salvare</button>
+<!--             <button type="submit">Salvare</button>-->
+                
         </form>
     `;
     return form;
@@ -227,24 +240,24 @@ async function updateStudentInDatabase(studentId, updatedStudentData) {
 }
 
 async function addStudent(form) {
-    const formData = {
-        birthDate: form.elements['birthDate'].value,
-        cnp: form.elements['cnp'].value,
-        firstName: form.elements['firstName'].value,
-        fundingForm: form.elements['fundingForm'].value,
-        graduatedHighSchool: form.elements['graduatedHighSchool'].value,
-        lastName: form.elements['lastName'].value,
-        studyLevel: form.elements['studyLevel'].value,
-        studyYear: parseInt(form.elements['studyYear'].value, 10)
-    };
-    console.log('Request Payload:', formData);
+    // const formData = {
+    //     birthDate: form.elements['birthDate'].value,
+    //     cnp: form.elements['cnp'].value,
+    //     firstName: form.elements['firstName'].value,
+    //     fundingForm: form.elements['fundingForm'].value,
+    //     graduatedHighSchool: form.elements['graduatedHighSchool'].value,
+    //     lastName: form.elements['lastName'].value,
+    //     studyLevel: form.elements['studyLevel'].value,
+    //     studyYear: parseInt(form.elements['studyYear'].value, 10)
+    // };
+    console.log('Request Payload:', form);
     try {
-        const response = await fetch('http://localhost:8081/api/students/addStudent', {
+        const response = await fetch('http://localhost:8081/api/students', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body:JSON.stringify(form),
         });
         if (response.ok) {
             const data = await response.json();

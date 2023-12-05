@@ -32,13 +32,13 @@ public class StudentController {
 
     }
 
-    @PostMapping("")
+    @PostMapping("/addStudent")
     public ResponseEntity<?> addStudent(
             @RequestParam String firstName,
             @RequestParam String lastName,
             @RequestParam String cnp,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
-            @RequestParam int studyYear,
+            @RequestParam Integer studyYear,
             @RequestParam String studyLevel,
             @RequestParam String fundingForm,
             @RequestParam String graduatedHighSchool) {
