@@ -35,7 +35,7 @@ public class EnrollmentService {
     @Transactional
     public void assignRequiredCoursesToStudentAutomatically(int studentId, int courseId) {
         Students student = studentsRepository.findById(studentId).orElse(null);
-        Course course = courseRepository.findById(courseId).orElse(null);
+
 
         if (student != null) {
 

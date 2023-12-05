@@ -4,7 +4,6 @@ import org.example.Model.Course;
 import org.example.Model.Students;
 import org.example.Service.EnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +14,12 @@ import java.util.Set;
 @RequestMapping("/course-allocation")
 public class CourseAllocationController {
 
-    @Autowired
-    private EnrollmentService enrollmentService;
 
+    private EnrollmentService enrollmentService;
+    @Autowired
+    public CourseAllocationController(EnrollmentService enrollmentService) {
+        this.enrollmentService = enrollmentService;
+    }
     @PostMapping("/assign-courses-for-study-year")
     public ResponseEntity<String> assignCoursesToStudentForStudyYear(
 
@@ -32,7 +34,6 @@ public class CourseAllocationController {
     public void assignCoursesToStudentAutomatically(@PathVariable("studentId") int studentId,@PathVariable("courseId") int courseId) {
         enrollmentService.assignRequiredCoursesToStudentAutomatically(studentId,courseId);
 
-//     /   return ResponseEntity.ok("Courses assigned automatically based on current study year");
 
     }
     @GetMapping("/all")
