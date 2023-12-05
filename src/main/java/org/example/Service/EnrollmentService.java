@@ -16,11 +16,17 @@ import java.util.Set;
 @Service
 public class EnrollmentService {
 
-    @Autowired
+
     private courseRepo courseRepository;
 
-    @Autowired
+
     private studentRepo studentsRepository;
+
+    @Autowired
+    public EnrollmentService(courseRepo courseRepository, studentRepo studentsRepository) {
+        this.courseRepository = courseRepository;
+        this.studentsRepository = studentsRepository;
+    }
 
     @Transactional
     public void assignRequiredCoursesToStudentForStudyYear( int studyYear) {
