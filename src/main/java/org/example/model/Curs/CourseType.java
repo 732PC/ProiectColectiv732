@@ -1,6 +1,6 @@
 package org.example.model.Curs;
 
-public enum TipCurs {
+public enum CourseType {
 
     Obligatoriu,
     Optional

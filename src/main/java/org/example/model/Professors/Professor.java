@@ -7,11 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.model.Curs.Curs;
-import org.example.model.ERole;
 import org.example.model.User;
 
 import java.util.Date;
 import java.util.List;
+
 
 
 @AllArgsConstructor
@@ -22,19 +22,16 @@ import java.util.List;
 @Table(name="professors")
 public class Professor extends User {
 
-    public Professor(long cnp, Date datanastere, String materie, @Nullable TaraOrigine taraorigine) {
+    public Professor(long cnp, Date datanastere, String materie, @Nullable String taraorigine) {
         this.cnp = cnp;
         this.datanastere = datanastere;
         this.materie = materie;
         this.taraorigine = taraorigine;
     }
 
-    @OneToMany(mappedBy = "professor")
-    private List<Curs> cursList;
-
-    @MapsId
-    @OneToOne
-    private User user;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name="cnp")
     private long cnp;
@@ -47,7 +44,6 @@ public class Professor extends User {
 
     @Nullable
     @Column(name="taraorigine", length = 20)
-    @Enumerated(EnumType.STRING)
-    private TaraOrigine taraorigine;
+    private String taraorigine;
 }
 

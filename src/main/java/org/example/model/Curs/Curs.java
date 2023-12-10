@@ -1,7 +1,6 @@
 package org.example.model.Curs;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +9,6 @@ import org.example.model.Professors.Professor;
 import java.util.Date;
 
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -18,7 +16,7 @@ import java.util.Date;
 @Table(name="curs")
 public class Curs {
 
-    public Curs(Professor professor, String numecurs, int numarcredite, Date oracurs, AnStudiu an, TipCurs tip) {
+    public Curs(Professor professor, String numecurs, int numarcredite, Date oracurs, StudyYear an, CourseType tip) {
         this.professor = professor;
         this.numecurs = numecurs;
         this.numarcredite = numarcredite;
@@ -34,7 +32,7 @@ public class Curs {
     @ManyToOne(cascade = CascadeType.ALL)
     private Professor professor;
 
-    @Column(name="nume")
+    @Column(name="numecurs")
     private String numecurs;
 
     @Column(name="numarcredite")
@@ -45,10 +43,10 @@ public class Curs {
 
     @Enumerated(EnumType.STRING)
     @Column(name="an", length = 5)
-    private AnStudiu an;
+    private StudyYear an;
 
     @Enumerated(EnumType.STRING)
     @Column(name="tip", length = 10)
-    private TipCurs tip;
+    private CourseType tip;
 
 }

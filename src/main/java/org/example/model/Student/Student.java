@@ -6,9 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.model.Curs.AnStudiu;
-import org.example.model.Curs.Curs;
-import org.example.model.Enrollment;
+import org.example.model.Curs.StudyYear;
 import org.example.model.User;
 
 import java.util.Date;
@@ -22,7 +20,7 @@ import java.util.List;
 @Table(name="students")
 public class Student extends User {
 
-    public Student(long cnp, AnStudiu an, Nivel nivel, Finantare finantare, Date datanastere, @Nullable String liceu) {
+    public Student(long cnp, StudyYear an, Level nivel, Financing finantare, Date datanastere, @Nullable String liceu) {
         this.cnp = cnp;
         this.an = an;
         this.nivel = nivel;
@@ -31,27 +29,25 @@ public class Student extends User {
         this.liceu = liceu;
     }
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Enrollment> enrollments;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @MapsId
-    @OneToOne
-    private User user;
 
     @Column(name="cnp")
     private long cnp;
 
     @Column(name="an", length = 10)
     @Enumerated(EnumType.STRING)
-    private AnStudiu an;
+    private StudyYear an;
 
     @Column(name="nivel",length = 10)
     @Enumerated(EnumType.STRING)
-    private Nivel nivel;
+    private Level nivel;
 
     @Column(name="finantare", length = 20)
     @Enumerated(EnumType.STRING)
-    private Finantare finantare;
+    private Financing finantare;
 
     @Column(name="liceu")
     @Nullable

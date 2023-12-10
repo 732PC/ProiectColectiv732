@@ -1,6 +1,6 @@
 package org.example.model.Student;
 
-public enum Finantare {
+public enum Financing {
     BUGET,
     TAXA
 }

@@ -1,6 +1,6 @@
 package org.example.model.Student;
 
-public enum Nivel {
+public enum Level {
 
     LICENTA,
 
