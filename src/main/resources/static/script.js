@@ -35,15 +35,11 @@ function createStudentBox(studentData) {
     studentBox.classList.add('student-box');
     studentBox.id = studentData.id;
     const content = `
-    <p>Nume: ${studentData.firstName}</p>
-    <p>Prenume: ${studentData.lastName}</p>
-    <p>CNP: ${studentData.cnp}</p>
-    <p>Data de nastere: ${studentData.birthDate}</p>
+    <h3>${studentData.firstName} ${studentData.lastName}</h3>
     <p>Anul de studiu: ${studentData.studyYear}</p>
     <p>Nivelul de studiu: ${studentData.studyLevel}</p>
     <p>Forma de finantare: ${studentData.fundingForm}</p>
-    <p>Liceu absolvit: ${studentData.graduatedHighSchool}</p>
-    <button class="buttonModify" onclick="editStudent('${studentData.id}')">Modifica student</button>
+    <button class="buttonModify" onclick="editStudent('${studentData.id}')" style="display: ">Modifica student</button>
   `;
     studentBox.innerHTML = content;
     return studentBox;
@@ -91,8 +87,8 @@ function createEditForm(studentId) {
             <select required class="selectstyle" name="studyLevel">
                 <option value="Licenta">Licenta</option>
                 <option value="Master">Master</option>
-            </select>
             <label>Forma de finantare</label>
+            </select>
             <select required class="selectstyle" name="fundingForm">
                 <option value="Buget">Buget</option>
                 <option value="Taxa">Taxa</option>
@@ -142,26 +138,13 @@ async function saveEditedInfo(studentId, form) {
         studentDataList[studentDataIndex] = {id: studentId, ...updatedStudentData};
     }
     studentBox.innerHTML = `
-        <p>Nume: ${updatedStudentData.firstName}</p>
-        <p>Prenume: ${updatedStudentData.lastName}</p>
-        <p>CNP: ${updatedStudentData.cnp}</p>
-        <p>Data de nastere: ${updatedStudentData.birthDate}</p>
-        <p>Anul de studiu: ${updatedStudentData.studyYear}</p>
-        <p>Nivelul de studiu: ${updatedStudentData.studyLevel}</p>
-        <p>Forma de finantare: ${updatedStudentData.fundingForm}</p>
-        <p>Liceu absolvit: ${updatedStudentData.graduatedHighSchool}</p>
-        <button class="buttonModify" id="buttonModify" onclick="editStudent('${studentId}')">Modifica student</button>
-    `;
+        <h3>${updatedStudentData.firstName} ${updatedStudentData.lastName}</h3>
+    <p>Anul de studiu: ${updatedStudentData.studyYear}</p>
+    <p>Nivelul de studiu: ${updatedStudentData.studyLevel}</p>
+    <p>Forma de finantare: ${updatedStudentData.fundingForm}</p>
+    <button id="buttonModify" class="buttonModify" onclick="editStudent('${updatedStudentData.id}')" style="display: ">Modifica student</button>
+        `;
     document.getElementById('buttonModify').addEventListener('click', displayFeedback("Student modificat cu succes!"));
-}
-
-function getNextStudentId() {
-    const existingIds = studentDataList.map(student => student.id);
-    if (existingIds.length === 0) {
-        return 1;
-    }
-    const nextId = Math.max(...existingIds) + 1;
-    return nextId;
 }
 
 function showAddStudentForm() {

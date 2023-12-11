@@ -26,18 +26,21 @@ body {
 }
 
 .intermediateDiv {
-    width: 30%;
+    width: 50%;
     background: #EAEAEA;
-    margin-top: 20px;
+    margin: auto;
     padding: 20px;
     border-radius: 20px;
 }
 
 .scrollableDiv {
-    height: calc(100vh - 100px);
+    height: calc(60vh - 20px);
     overflow-y: auto;
     padding-right: 20px;
-    flex:1;
+}
+#addStudentDiv{
+    height: calc(60vh - 20px);
+    overflow-y: auto;
 }
 
 #content {
@@ -58,27 +61,45 @@ body {
     z-index: 9999;
 }
 
-.navigation {
-    font-family: Inter;
-    background-color: #D9D9D9;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    overflow: hidden;
-}
-
-.navigation a {
-    display: inline-flex;
-    justify-content: center;
+.h3{
+    font-size: 20px;
     text-align: center;
-    padding: 25px;
-    color: #293241;
-    font-size: 30px;
+    padding: 0px;
 }
 
-.navigation a.active {
-    background: #293241;
-    color: white;
+header h1 {
+    color: #3d5a80;
+}
+header {
+    background-color: #3d5a80;
+    color: #ffffff;
+    padding: 50px;
+    padding-bottom: 0px;
+    text-align: center;
+    position: relative;
+}
+
+#header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#brand-title {
+    font-size: 34px;
+    font-weight: bold;
+}
+
+#navigation-links {
+    display: flex;
+    gap: 15px;
+}
+
+.navigation-link {
+    color: #ffffff;
+    text-decoration: none;
+    /*font-weight: bold;*/
+    font-size: 20px;
 }
 
 .option {
@@ -131,7 +152,8 @@ button {
 
 .buttonModify {
     padding: 10px;
-    position: center;
+    position : center;
+    align-content: end;
     background-color: #293241;
     color: white;
     border: none;
@@ -141,4 +163,24 @@ button {
 
 button:hover {
     background-color: rgba(33, 39, 52, 0.91);
+}
+
+.toggle-button {
+    background-color: rgba(185, 185, 185, 0.49);
+    padding: 15px 20px;
+    min-width: 350px;
+    margin: 0 19px;
+    color: black;
+    border-radius: 0px;
+    flex: 1;
+    margin-right: 1px;
+    cursor: pointer;
+    font-size: 28px;
+    border: 1px solid rgba(234, 234, 234, 0.75);
+}
+
+.toggle-button:hover,
+.toggle-button.active {
+    background-color: #293241;
+    color: #fff;
 }
