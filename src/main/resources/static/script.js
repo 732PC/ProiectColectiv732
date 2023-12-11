@@ -160,13 +160,13 @@ async function saveEditedInfo(studentId, form) {
     `;
     document.getElementById('buttonModify').addEventListener('click', displayFeedback("Student adaugat cu succes!"));
 }
-
-function addStudentForm() {
-    // const nextStudentId = getNextStudentId();
-    const form = createNewEditForm();
-    const scrollableDiv = document.querySelector('.scrollableDiv');
-    scrollableDiv.insertBefore(form, scrollableDiv.firstChild);
-}
+//
+// function addStudentForm() {
+//     // const nextStudentId = getNextStudentId();
+//     const form = createNewEditForm();
+//     const scrollableDiv = document.querySelector('.scrollableDiv');
+//     scrollableDiv.insertBefore(form, scrollableDiv.firstChild);
+// }
 
 function getNextStudentId() {
     const existingIds = studentDataList.map(student => student.id);
@@ -220,6 +220,13 @@ function createNewEditForm() {
     return form;
 }
 
+function showAddStudentForm() {
+    const addStudentSection = document.getElementById('addStudentDiv');
+    addStudentSection.style.display = 'block';
+
+    document.getElementById('addStudentForm').reset();
+}
+
 async function updateStudentInDatabase(studentId, updatedStudentData) {
     try {
         const response = await fetch(`http://localhost:8081/api/students/${studentId}`, {
@@ -239,16 +246,6 @@ async function updateStudentInDatabase(studentId, updatedStudentData) {
 }
 
 async function addStudent() {
-    // const formData = {
-    //     birthDate: form.elements['birthDate'].value,
-    //     cnp: form.elements['cnp'].value,
-    //     firstName: form.elements['firstName'].value,
-    //     fundingForm: form.elements['fundingForm'].value,
-    //     graduatedHighSchool: form.elements['graduatedHighSchool'].value,
-    //     lastName: form.elements['lastName'].value,
-    //     studyLevel: form.elements['studyLevel'].value,
-    //     studyYear: parseInt(form.elements['studyYear'].value, 10)
-    // };
     const formData = {
         birthDate: document.getElementById('birthDate').value,
         cnp: document.getElementById('cnp').value,
@@ -270,6 +267,7 @@ async function addStudent() {
             body: JSON.stringify(formData),
         });
         if (response.ok) {
+            // document.getElementById('addStudentDiv').style.display = 'none';
             const data = await response.json();
             console.log('Server Response:', data);
         } else {

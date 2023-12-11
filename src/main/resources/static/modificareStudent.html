@@ -12,9 +12,47 @@
 <div id="popup-container"></div>
 <div class="mainDiv">
     <div class="intermediateDiv">
+        <div id="addStudentDiv" style="display:none;">
+            <form id="addStudentForm" hx-post='http://localhost:8081/api/students/addStudent' hx-trigger="submit">
+                <label>Nume:</label>
+                <input type="text" id="firstName" name="firstName" required>
+                <label>Prenume:</label>
+                <input type="text" id="lastName" name="lastName" required>
+                <label>CNP:</label>
+                <input type="text" id="cnp" minlength="13" maxlength="13"
+                       onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                       required/>
+                <label>Data de nastere:</label>
+                <input type="date" id="birthDate" name="birthDate" required>
+                <label>Anul de studiu</label>
+                <select required class="selectstyle" id="studyYear" name="studyYear" pattern="[0-9]+">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <label>Nivelul de studiu</label>
+                <select required class="selectstyle" id="studyLevel" name="studyLevel">
+                    <option value="Licenta">Licenta</option>
+                    <option value="Master">Master</option>
+                </select>
+                <label>Forma de finantare</label>
+                <select required class="selectstyle" id="fundingForm" name="fundingForm">
+                    <option value="Buget">Buget</option>
+                    <option value="Taxa">Taxa</option>
+                </select>
+                <label>Liceu absolvit</label>
+                <select class="selectstyle" id="graduatedHighSchool" name="graduatedHighSchool">
+                    <option value="Da">Da</option>
+                    <option value="Nu">Nu</option>
+                </select>
+                <button type="button" onclick="addStudent()">Salvare</button>
+            </form>
+        </div>
         <div class="scrollableDiv">
         </div>
-        <button class="addStudentButton" onclick="addStudentForm()">Adaugare student</button>
+        <button class="addStudentButton" onclick="showAddStudentForm()">Adaugare student</button>
+
     </div>
 </div>
 <script src="script.js"></script>
