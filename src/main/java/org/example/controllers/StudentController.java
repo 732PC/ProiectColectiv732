@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
@@ -51,10 +52,6 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
-
-
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Students>> updateStudent(@PathVariable Integer id, @RequestBody Students student) {
