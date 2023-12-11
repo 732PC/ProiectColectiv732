@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
@@ -43,11 +42,18 @@ public class StudentController {
             @RequestParam String fundingForm,
             @RequestParam String graduatedHighSchool) {
 
-        Students addedStudent = studentService.addStudent(
-                firstName, lastName, cnp, birthDate, studyYear, studyLevel, fundingForm, graduatedHighSchool);
+        try {
+            Students addedStudent = studentService.addStudent(
+                    firstName, lastName, cnp, birthDate, studyYear, studyLevel, fundingForm, graduatedHighSchool);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
+            return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
+
+
+
 
 
     @PutMapping("/{id}")
