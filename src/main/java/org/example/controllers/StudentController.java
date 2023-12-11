@@ -43,12 +43,15 @@ public class StudentController {
             @RequestParam String fundingForm,
             @RequestParam String graduatedHighSchool) {
 
-        Students addedStudent = studentService.addStudent(
-                firstName, lastName, cnp, birthDate, studyYear, studyLevel, fundingForm, graduatedHighSchool);
+        try {
+            Students addedStudent = studentService.addStudent(
+                    firstName, lastName, cnp, birthDate, studyYear, studyLevel, fundingForm, graduatedHighSchool);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
+            return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Students>> updateStudent(@PathVariable Integer id, @RequestBody Students student) {

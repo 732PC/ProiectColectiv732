@@ -257,23 +257,34 @@ async function addStudent() {
     };
 
     console.log('Request Payload:', formData);
-    fetch('http://localhost:8081/api/students/addStudent', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error adding student');
-            }
-            document.getElementById('addStudentDiv').style.display = 'none';
-            // setTimeout(() => {
-            //     location.reload();
-            // }, 500);
-        })
-        .catch(error => console.error('Error adding student:', error));
+
+    // Convert form data to URLSearchParams for query parameters
+    const queryParams = new URLSearchParams(formData);
+
+    try {
+        const url = `http://localhost:8081/api/students/addStudent?${queryParams.toString()}`;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+            // document.getElementById('addStudentDiv').style.display = 'none';
+            const data = await response.json();
+            console.log('Server Response:', data);
+        } else {
+            console.error('Server responded with an error:', response.status, response.statusText);
+            const errorData = await response.text();
+            console.error('Server error details:', errorData);
+        }
+    } catch (error) {
+        console.error('An error occurred during the fetch:', error);
+    }
 }
+
 
 generateStudentBoxes();
