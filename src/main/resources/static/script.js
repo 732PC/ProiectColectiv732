@@ -214,7 +214,6 @@ function createNewEditForm() {
                 <option value="Nu">Nu</option>
             </select>
              <button onclick="addStudent()">Salvare</button>
-<!--             <button type="submit">Salvare</button>-->
         </form>
     `;
     return form;
@@ -247,37 +246,34 @@ async function updateStudentInDatabase(studentId, updatedStudentData) {
 
 async function addStudent() {
     const formData = {
-        birthDate: document.getElementById('birthDate').value,
-        cnp: document.getElementById('cnp').value,
         firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        cnp: document.getElementById('cnp').value,
+        birthDate: document.getElementById('birthDate').value,
+        studyYear: parseInt(document.getElementById('studyYear').value),
+        studyLevel: document.getElementById('studyLevel').value,
         fundingForm: document.getElementById('fundingForm').value,
         graduatedHighSchool: document.getElementById('graduatedHighSchool').value,
-        lastName: document.getElementById('lastName').value,
-        studyLevel: document.getElementById('studyLevel').value,
-        studyYear: document.getElementById('studyYear').value,
     };
 
     console.log('Request Payload:', formData);
-    try {
-        const response = await fetch('http://localhost:8081/api/students/addStudent', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        });
-        if (response.ok) {
-            // document.getElementById('addStudentDiv').style.display = 'none';
-            const data = await response.json();
-            console.log('Server Response:', data);
-        } else {
-            console.error('Server responded with an error:', response.status, response.statusText);
-            const errorData = await response.text();
-            console.error('Server error details:', errorData);
-        }
-    } catch (error) {
-        console.error('An error occurred during the fetch:', error);
-    }
+    fetch('http://localhost:8081/api/students/addStudent', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error adding student');
+            }
+            document.getElementById('addStudentDiv').style.display = 'none';
+            // setTimeout(() => {
+            //     location.reload();
+            // }, 500);
+        })
+        .catch(error => console.error('Error adding student:', error));
 }
 
 generateStudentBoxes();
