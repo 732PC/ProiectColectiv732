@@ -16,15 +16,6 @@ import java.util.Date;
 @Table(name="curs")
 public class Curs {
 
-    public Curs(Professor professor, String numecurs, int numarcredite, Date oracurs, StudyYear an, CourseType tip) {
-        this.professor = professor;
-        this.numecurs = numecurs;
-        this.numarcredite = numarcredite;
-        this.oracurs = oracurs;
-        this.an = an;
-        this.tip = tip;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

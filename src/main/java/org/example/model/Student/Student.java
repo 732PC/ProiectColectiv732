@@ -9,8 +9,8 @@ import lombok.Setter;
 import org.example.model.Curs.StudyYear;
 import org.example.model.User;
 
+
 import java.util.Date;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,21 +18,16 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="students")
-public class Student extends User {
+public class Student {
 
-    public Student(long cnp, StudyYear an, Level nivel, Financing finantare, Date datanastere, @Nullable String liceu) {
-        this.cnp = cnp;
-        this.an = an;
-        this.nivel = nivel;
-        this.finantare = finantare;
-        this.datanastere = datanastere;
-        this.liceu = liceu;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @Column(name="cnp")
     private long cnp;
