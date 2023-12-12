@@ -8,6 +8,17 @@ function fetchStudents() {
         .catch(error => console.error('Error fetching students:', error));
 }
 
+const popupContainer = document.getElementById('popup-container');
+
+function displayFeedback(message) {
+    popupContainer.innerText = message;
+    popupContainer.style.display = 'block';
+    setTimeout(() => {
+        popupContainer.style.display = 'none';
+        location.reload();
+    }, 2000);
+}
+
 fetchStudents();
 const studentDataList = [];
 
@@ -24,15 +35,11 @@ function createStudentBox(studentData) {
     studentBox.classList.add('student-box');
     studentBox.id = studentData.id;
     const content = `
-    <p>Nume: ${studentData.firstName}</p>
-    <p>Prenume: ${studentData.lastName}</p>
-    <p>CNP: ${studentData.cnp}</p>
-    <p>Data de nastere: ${studentData.birthDate}</p>
+    <h3>${studentData.firstName} ${studentData.lastName}</h3>
     <p>Anul de studiu: ${studentData.studyYear}</p>
     <p>Nivelul de studiu: ${studentData.studyLevel}</p>
     <p>Forma de finantare: ${studentData.fundingForm}</p>
-    <p>Liceu absolvit: ${studentData.graduatedHighSchool}</p>
-    <button class="buttonModify" onclick="editStudent('${studentData.id}')">Modifica student</button>
+    <button class="buttonModify" onclick="editStudent('${studentData.id}')" style="display: ">Modifica student</button>
   `;
     studentBox.innerHTML = content;
     return studentBox;
@@ -80,8 +87,8 @@ function createEditForm(studentId) {
             <select required class="selectstyle" name="studyLevel">
                 <option value="Licenta">Licenta</option>
                 <option value="Master">Master</option>
-            </select>
             <label>Forma de finantare</label>
+            </select>
             <select required class="selectstyle" name="fundingForm">
                 <option value="Buget">Buget</option>
                 <option value="Taxa">Taxa</option>
@@ -113,12 +120,6 @@ async function setFormValues(form, studentId) {
         .catch(error => console.error('Error fetching students:', error));
 }
 
-function saveNewStudent(button, form) {
-    addStudent(form);
-    studentDataList.splice(0,studentDataList.length);
-    generateStudentBoxes();
-}
-
 async function saveEditedInfo(studentId, form) {
     const studentBox = document.getElementById(studentId);
     const updatedStudentData = {
@@ -137,75 +138,19 @@ async function saveEditedInfo(studentId, form) {
         studentDataList[studentDataIndex] = {id: studentId, ...updatedStudentData};
     }
     studentBox.innerHTML = `
-        <p>Nume: ${updatedStudentData.firstName}</p>
-        <p>Prenume: ${updatedStudentData.lastName}</p>
-        <p>CNP: ${updatedStudentData.cnp}</p>
-        <p>Data de nastere: ${updatedStudentData.birthDate}</p>
-        <p>Anul de studiu: ${updatedStudentData.studyYear}</p>
-        <p>Nivelul de studiu: ${updatedStudentData.studyLevel}</p>
-        <p>Forma de finantare: ${updatedStudentData.fundingForm}</p>
-        <p>Liceu absolvit: ${updatedStudentData.graduatedHighSchool}</p>
-        <button class="buttonModify" onclick="editStudent('${studentId}')">Modifica student</button>
-    `;
+        <h3>${updatedStudentData.firstName} ${updatedStudentData.lastName}</h3>
+    <p>Anul de studiu: ${updatedStudentData.studyYear}</p>
+    <p>Nivelul de studiu: ${updatedStudentData.studyLevel}</p>
+    <p>Forma de finantare: ${updatedStudentData.fundingForm}</p>
+    <button id="buttonModify" class="buttonModify" onclick="editStudent('${updatedStudentData.id}')" style="display: ">Modifica student</button>
+        `;
+    document.getElementById('buttonModify').addEventListener('click', displayFeedback("Student modificat cu succes!"));
 }
 
-function addStudentForm() {
-    const nextStudentId = getNextStudentId();
-    const form = createNewEditForm(nextStudentId);
-    const scrollableDiv = document.querySelector('.scrollableDiv');
-    scrollableDiv.insertBefore(form, scrollableDiv.firstChild);
-}
-
-function getNextStudentId() {
-    const existingIds = studentDataList.map(student => student.id);
-    if (existingIds.length === 0) {
-        return 1;
-    }
-    const nextId = Math.max(...existingIds) + 1;
-    return nextId;
-}
-
-function createNewEditForm(studentId) {
-    const form = document.createElement('div');
-    form.innerHTML = `
-        <form onsubmit="event.preventDefault();">
-            <label>Nume:</label>
-            <input type="text" name="firstName" required>
-            <label>Prenume:</label>
-            <input type="text" name="lastName" required>
-            <label>CNP:</label>
-            <input type="text" name="cnp" minlength="13" maxlength="13"
-                onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-                required/>
-            <label>Data de nastere:</label>
-            <input type="date" name="birthDate" required>
-            <label>Anul de studiu</label>
-            <select required class="selectstyle" name="studyYear">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
-            <label>Nivelul de studiu</label>
-            <select required class="selectstyle" name="studyLevel">
-                <option value="Licenta">Licenta</option>
-                <option value="Master">Master</option>
-            </select>
-            <label>Forma de finantare</label>
-            <select required class="selectstyle" name="fundingForm">
-                <option value="Buget">Buget</option>
-                <option value="Taxa">Taxa</option>
-            </select>
-            <label>Liceu absolvit</label>
-            <select class="selectstyle" name="graduatedHighSchool">
-                <option value="Da">Da</option>
-                <option value="Nu">Nu</option>
-            </select>
-             <button onclick="saveNewStudent(this, this.form)">Salvare</button>
-
-        </form>
-    `;
-    return form;
+function showAddStudentForm() {
+    const addStudentSection = document.getElementById('addStudentDiv');
+    addStudentSection.style.display = 'block';
+    document.getElementById('addStudentForm').reset();
 }
 
 async function updateStudentInDatabase(studentId, updatedStudentData) {
@@ -226,28 +171,34 @@ async function updateStudentInDatabase(studentId, updatedStudentData) {
     }
 }
 
-async function addStudent(form) {
+async function addStudent() {
     const formData = {
-        birthDate: form.elements['birthDate'].value,
-        cnp: form.elements['cnp'].value,
-        firstName: form.elements['firstName'].value,
-        fundingForm: form.elements['fundingForm'].value,
-        graduatedHighSchool: form.elements['graduatedHighSchool'].value,
-        lastName: form.elements['lastName'].value,
-        studyLevel: form.elements['studyLevel'].value,
-        studyYear: parseInt(form.elements['studyYear'].value, 10)
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        cnp: document.getElementById('cnp').value,
+        birthDate: document.getElementById('birthDate').value,
+        studyYear: parseInt(document.getElementById('studyYear').value),
+        studyLevel: document.getElementById('studyLevel').value,
+        fundingForm: document.getElementById('fundingForm').value,
+        graduatedHighSchool: document.getElementById('graduatedHighSchool').value,
     };
     console.log('Request Payload:', formData);
+    const queryParams = new URLSearchParams(formData);
     try {
-        const response = await fetch('http://localhost:8081/api/students/addStudent', {
+        const url = `http://localhost:8081/api/students/addStudent?${queryParams.toString()}`;
+
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(formData),
         });
+
         if (response.ok) {
             const data = await response.json();
+            document.getElementById('addStudentDiv').style.display = 'none';
+            displayFeedback("Student adaugat cu succes!");
             console.log('Server Response:', data);
         } else {
             console.error('Server responded with an error:', response.status, response.statusText);
