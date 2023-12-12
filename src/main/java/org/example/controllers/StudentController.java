@@ -64,15 +64,15 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Optional<Students>> updateStudent(@PathVariable Integer id, @RequestBody Students student) {
-        Optional<Students> updatedStudent = studentService.updateStudent(id, student);
+    public ResponseEntity<Students> updateStudent(@PathVariable Integer id, @RequestBody Students updatedStudent) {
+        Optional<Students> existingStudent = studentService.updateStudent(id, updatedStudent);
 
-        if (updatedStudent.isPresent()) {
-            return ResponseEntity.ok(updatedStudent);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return existingStudent.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStudent(@PathVariable Integer id) {

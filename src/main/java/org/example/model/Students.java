@@ -6,11 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
@@ -27,28 +23,36 @@ public class Students {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "studentID")
     private Integer studentID;
+
     @Column(name = "firstname")
-    @NotNull
+  @NonNull
     private String firstname;
+
     @Column(name = "lastname")
-    @NotNull
+    @NonNull
     private String lastname;
+
     @Column(name = "cnp")
-    @NotNull
+    @NonNull
     private String cnp;
+
     @Column(name = "birthDate")
-    @NotNull
+    @NonNull
     private LocalDate birthDate;
+
     @Column(name = "studyYear")
-    @NotNull
+    @NonNull
     private int studyYear;
+
     @Column(name = "studyLevel")
-    @NotNull
+    @NonNull
     private String studyLevel;
+
     @Column(name = "fundingForm")
-    @NotNull
+    @NonNull
     private String fundingForm;
+
     @Column(name = "graduatedHighSchool")
-    @NotNull
+    @NonNull
     private String graduatedHighSchool;
 }

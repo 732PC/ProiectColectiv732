@@ -18,8 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,8 +69,8 @@ class StudentControllerTest {
     @Test
     void addStudent() {
         Students student = new Students();
-        student.setFirstName("John");
-        student.setLastName("Doe");
+        student.setFirstname("John");
+        student.setLastname("Doe");
         student.setCnp("1234567890123");
 
         when(studentService.addStudent(anyString(), anyString(), anyString(), any(LocalDate.class), anyInt(), anyString(), anyString(), anyString())).thenReturn(student);
@@ -93,10 +92,11 @@ class StudentControllerTest {
 
         when(studentService.updateStudent(studentId, updatedStudent)).thenReturn(existingStudent);
 
-        ResponseEntity<Optional<Students>> responseEntity = studentController.updateStudent(studentId, updatedStudent);
+        ResponseEntity<Students> responseEntity = studentController.updateStudent(studentId, updatedStudent);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(existingStudent, responseEntity.getBody());
+        assertTrue(existingStudent.isPresent());
+        assertEquals(existingStudent.get(), responseEntity.getBody());
     }
 
     @Test
@@ -106,7 +106,7 @@ class StudentControllerTest {
 
         when(studentService.updateStudent(nonExistingStudentId, updatedStudent)).thenReturn(Optional.empty());
 
-        ResponseEntity<Optional<Students>> responseEntity = studentController.updateStudent(nonExistingStudentId, updatedStudent);
+        ResponseEntity<Students> responseEntity = studentController.updateStudent(nonExistingStudentId, updatedStudent);
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());

@@ -37,14 +37,30 @@ public class StudentService {
         if (existingStudent.isPresent()) {
             Students savedStudent = existingStudent.get();
 
-            savedStudent.setFirstname(updatedStudent.getFirstname());
-            savedStudent.setLastname(updatedStudent.getFirstname());
-            savedStudent.setCnp(updatedStudent.getCnp());
-            savedStudent.setBirthDate(updatedStudent.getBirthDate());
-            savedStudent.setStudyYear(updatedStudent.getStudyYear());
-            savedStudent.setStudyLevel(updatedStudent.getStudyLevel());
-            savedStudent.setFundingForm(updatedStudent.getFundingForm());
-            savedStudent.setGraduatedHighSchool(updatedStudent.getGraduatedHighSchool());
+            if (updatedStudent.getFirstname() != null) {
+                savedStudent.setFirstname(updatedStudent.getFirstname());
+            }
+            if (updatedStudent.getLastname() != null) {
+                savedStudent.setLastname(updatedStudent.getLastname());
+            }
+            if (updatedStudent.getCnp() != null) {
+                savedStudent.setCnp(updatedStudent.getCnp());
+            }
+            if (updatedStudent.getBirthDate() != null) {
+                savedStudent.setBirthDate(updatedStudent.getBirthDate());
+            }
+            if (updatedStudent.getStudyYear() != 0) {
+                savedStudent.setStudyYear(updatedStudent.getStudyYear());
+            }
+            if (updatedStudent.getStudyLevel() != null) {
+                savedStudent.setStudyLevel(updatedStudent.getStudyLevel());
+            }
+            if (updatedStudent.getFundingForm() != null) {
+                savedStudent.setFundingForm(updatedStudent.getFundingForm());
+            }
+            if (updatedStudent.getGraduatedHighSchool() != null) {
+                savedStudent.setGraduatedHighSchool(updatedStudent.getGraduatedHighSchool());
+            }
 
             Students updatedSavedStudent = studentRepository.save(savedStudent);
 
@@ -53,6 +69,8 @@ public class StudentService {
             return Optional.empty();
         }
     }
+
+
 
     public boolean deleteStudent(Integer id) {
         Optional<Students> existingStudent = studentRepository.findById(id);
