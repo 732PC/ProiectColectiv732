@@ -21,14 +21,14 @@ import java.time.LocalDate;
 public class Students {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "firstName")
+    @Column(name = "studentID")
+    private Integer studentID;
+    @Column(name = "firstname")
     @NotNull
-    private String firstName;
-    @Column(name = "lastName")
+    private String firstname;
+    @Column(name = "lastname")
     @NotNull
-    private String lastName;
+    private String lastname;
     @Column(name = "cnp")
     @NotNull
     private String cnp;

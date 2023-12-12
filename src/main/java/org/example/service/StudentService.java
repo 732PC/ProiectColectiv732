@@ -37,8 +37,8 @@ public class StudentService {
         if (existingStudent.isPresent()) {
             Students savedStudent = existingStudent.get();
 
-            savedStudent.setFirstName(updatedStudent.getFirstName());
-            savedStudent.setLastName(updatedStudent.getLastName());
+            savedStudent.setFirstname(updatedStudent.getFirstname());
+            savedStudent.setLastname(updatedStudent.getFirstname());
             savedStudent.setCnp(updatedStudent.getCnp());
             savedStudent.setBirthDate(updatedStudent.getBirthDate());
             savedStudent.setStudyYear(updatedStudent.getStudyYear());
@@ -75,8 +75,8 @@ public class StudentService {
             String graduatedHighSchool) {
 
         Students student = new Students();
-        student.setFirstName(firstName);
-        student.setLastName(lastName);
+        student.setFirstname(firstName);
+        student.setLastname(lastName);
         student.setCnp(cnp);
         student.setBirthDate(birthDate);
         student.setStudyYear(studyYear);
