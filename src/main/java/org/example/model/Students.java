@@ -1,13 +1,7 @@
 package org.example.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
 
@@ -24,11 +18,11 @@ public class Students {
     @Column(name = "studentID")
     private Integer studentID;
 
-    @Column(name = "firstname")
-  @NonNull
+    @Column(name = "first_name")
+    @NonNull
     private String firstname;
 
-    @Column(name = "lastname")
+    @Column(name = "last_name")
     @NonNull
     private String lastname;
 
@@ -40,19 +34,19 @@ public class Students {
     @NonNull
     private LocalDate birthDate;
 
-    @Column(name = "studyYear")
+    @Column(name = "study_Year")
     @NonNull
     private int studyYear;
 
-    @Column(name = "studyLevel")
+    @Column(name = "study_Level")
     @NonNull
     private String studyLevel;
 
-    @Column(name = "fundingForm")
+    @Column(name = "funding_Form")
     @NonNull
     private String fundingForm;
 
-    @Column(name = "graduatedHighSchool")
+    @Column(name = "graduated_HighSchool")
     @NonNull
     private String graduatedHighSchool;
 }
