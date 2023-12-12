@@ -35,7 +35,7 @@ function createStudentBox(studentData) {
     studentBox.classList.add('student-box');
     studentBox.id = studentData.id;
     const content = `
-    <h3>${studentData.firstName} ${studentData.lastName}</h3>
+    <h3>${studentData.firstname} ${studentData.lastname}</h3>
     <p>Anul de studiu: ${studentData.studyYear}</p>
     <p>Nivelul de studiu: ${studentData.studyLevel}</p>
     <p>Forma de finantare: ${studentData.fundingForm}</p>
@@ -108,8 +108,8 @@ async function setFormValues(form, studentId) {
     fetch(`http://localhost:8081/api/students/${studentId}`)
         .then(response => response.json())
         .then(studentData => {
-            form.querySelector('input[name="firstName"]').value = studentData.firstName;
-            form.querySelector('input[name="lastName"]').value = studentData.lastName;
+            form.querySelector('input[name="firstName"]').value = studentData.firstname;
+            form.querySelector('input[name="lastName"]').value = studentData.lastname;
             form.querySelector('input[name="cnp"]').value = studentData.cnp;
             form.querySelector('input[name="birthDate"]').value = studentData.birthDate;
             form.querySelector('select[name="studyYear"]').value = studentData.studyYear;
@@ -123,8 +123,8 @@ async function setFormValues(form, studentId) {
 async function saveEditedInfo(studentId, form) {
     const studentBox = document.getElementById(studentId);
     const updatedStudentData = {
-        firstName: form.elements['firstName'].value,
-        lastName: form.elements['lastName'].value,
+        firstname: form.elements['firstName'].value,
+        lastname: form.elements['lastName'].value,
         cnp: form.elements['cnp'].value,
         birthDate: form.elements['birthDate'].value,
         studyYear: form.elements['studyYear'].value,
@@ -138,7 +138,7 @@ async function saveEditedInfo(studentId, form) {
         studentDataList[studentDataIndex] = {id: studentId, ...updatedStudentData};
     }
     studentBox.innerHTML = `
-        <h3>${updatedStudentData.firstName} ${updatedStudentData.lastName}</h3>
+        <h3>${updatedStudentData.firstname} ${updatedStudentData.lastname}</h3>
     <p>Anul de studiu: ${updatedStudentData.studyYear}</p>
     <p>Nivelul de studiu: ${updatedStudentData.studyLevel}</p>
     <p>Forma de finantare: ${updatedStudentData.fundingForm}</p>
@@ -173,8 +173,8 @@ async function updateStudentInDatabase(studentId, updatedStudentData) {
 
 async function addStudent() {
     const formData = {
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
+        firstname: document.getElementById('firstName').value,
+        lastname: document.getElementById('lastName').value,
         cnp: document.getElementById('cnp').value,
         birthDate: document.getElementById('birthDate').value,
         studyYear: parseInt(document.getElementById('studyYear').value),
