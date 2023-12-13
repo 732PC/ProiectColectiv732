@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -17,6 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -73,7 +73,7 @@ class StudentServiceTest {
         boolean deleted = studentService.deleteStudent(1);
 
         assertTrue(deleted);
-        Mockito.verify(studentRepository, Mockito.times(1)).deleteById(1);
+        Mockito.verify(studentRepository, times(1)).deleteById(1);
     }
 
     @Test
@@ -89,4 +89,7 @@ class StudentServiceTest {
     private Students createSampleStudent() {
         return new Students(1, "John", "Doe", "1234567890123", LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
     }
+
+
+
 }

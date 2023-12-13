@@ -1,20 +1,30 @@
 package org.example.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.example.model.HomeworkSubmission;
+import org.example.model.HomeworkSubmissionResponse;
 import org.example.model.Students;
+import org.example.repository.HomeworkSubmissionRepository;
 import org.example.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import java.util.ArrayList;
+
 
 @Service
 public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private HomeworkSubmissionRepository homeworkSubmissionRepository;
 
 
     private static final int CNP_LENGTH = 13;
@@ -107,6 +117,32 @@ public class StudentService {
         } else {
             throw new IllegalArgumentException("Invalid CNP length. CNP must be exactly 13 digits.");
         }
+    }
+
+    public HomeworkSubmissionResponse addHomeworkSubmission(Integer studentId, String submissionText) {
+        Students student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student with ID " + studentId + " not found"));
+
+        HomeworkSubmission homeworkSubmission = new HomeworkSubmission();
+        homeworkSubmission.setSubmissionText(submissionText);
+        homeworkSubmission.setSubmissionDate(LocalDateTime.now());
+
+        homeworkSubmission.setStudent(student);
+
+        if (student.getHomeworkSubmissions() == null) {
+            student.setHomeworkSubmissions(new ArrayList<>());
+        }
+
+        student.getHomeworkSubmissions().add(homeworkSubmission);
+
+        HomeworkSubmission savedSubmission = homeworkSubmissionRepository.save(homeworkSubmission);
+
+        student.getHomeworkSubmissions().add(savedSubmission);
+
+        HomeworkSubmissionResponse response = new HomeworkSubmissionResponse();
+        response.setSubmissionId(savedSubmission.getSubmissionId());
+
+        return response;
     }
 
 }

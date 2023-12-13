@@ -2,6 +2,7 @@ package org.example.controllers;
 
 
 import jakarta.persistence.EntityNotFoundException;
+import org.example.model.HomeworkSubmissionResponse;
 import org.example.model.Students;
 import org.example.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:63342")
@@ -72,8 +74,6 @@ public class StudentController {
     }
 
 
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStudent(@PathVariable Integer id) {
         try {
@@ -85,4 +85,26 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @PostMapping("/{id}/homework-submissions")
+    public ResponseEntity<?> addHomeworkSubmission(
+            @PathVariable Integer id,
+            @RequestBody Map<String, String> requestBody) {
+
+        String submissionText = requestBody.get("homeworkText");
+
+        try {
+            studentService.addHomeworkSubmission(id, submissionText);
+            return ResponseEntity.ok("Homework submission added successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 }
+
+

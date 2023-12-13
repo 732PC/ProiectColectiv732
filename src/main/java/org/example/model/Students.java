@@ -1,18 +1,22 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "students")
 public class Students {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "studentID")
@@ -49,4 +53,10 @@ public class Students {
     @Column(name = "graduated_HighSchool")
     @NonNull
     private String graduatedHighSchool;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HomeworkSubmission> homeworkSubmissions = new ArrayList<>();
+
+    public Students(int i, String john, String doe, String s, LocalDate of, int i1, String bachelor, String s1, String highSchool) {
+    }
 }

@@ -1,6 +1,7 @@
 package org.example.controllers;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.example.model.HomeworkSubmissionResponse;
 import org.example.model.Students;
 import org.example.service.StudentService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -135,5 +134,36 @@ class StudentControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertEquals("Student not found", responseEntity.getBody());
     }
+
+    @Test
+    public void testAddHomeworkSubmission() {
+        Integer studentId = 1;
+        Map<String, String> requestBody = Collections.singletonMap("homeworkText", "Homework Text");
+        when(studentService.addHomeworkSubmission(studentId, "Homework Text")).thenReturn(new HomeworkSubmissionResponse());
+
+        ResponseEntity<?> result = studentController.addHomeworkSubmission(studentId, requestBody);
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        verify(studentService, times(1)).addHomeworkSubmission(studentId, "Homework Text");
+    }
+
+    @Test
+    void testAddHomeworkSubmissionBadRequest() {
+        Integer studentId = 1;
+        Map<String, String> requestBody = Collections.singletonMap("homeworkText", "Homework Text");
+
+        when(studentService.addHomeworkSubmission(studentId, "Homework Text"))
+                .thenThrow(new IllegalArgumentException("Invalid request"));
+
+        ResponseEntity<?> result = studentController.addHomeworkSubmission(studentId, requestBody);
+
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertNotNull(result.getBody());
+
+        verify(studentService, times(1)).addHomeworkSubmission(studentId, "Homework Text");
+    }
+
+
 
 }
