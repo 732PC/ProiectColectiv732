@@ -1,15 +1,10 @@
 package org.example.Controller;
 
-import org.example.Model.Course;
-import org.example.Model.Students;
 import org.example.Service.EnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/course-allocation")
@@ -40,19 +35,6 @@ public class CourseAllocationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error assigning courses: " + e.getMessage());
         }
     }
-    @GetMapping("/all")
-    public List<Students> getStudents(){
-        return enrollmentService.getStudents();
-    }
 
-    @GetMapping("/allCourses")
-    public List<Course> getCourses(){
-        return enrollmentService.getCourses();
-    }
-
-    @GetMapping("/getStudyYears")
-    public Set<Integer> getAllStudyYears(){
-        return enrollmentService.getAllStudyYears();
-    }
 
 }
