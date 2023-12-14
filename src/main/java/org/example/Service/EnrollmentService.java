@@ -9,9 +9,7 @@ import org.example.Repository.studentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class EnrollmentService {
@@ -39,23 +37,18 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public void assignRequiredCoursesToStudentAutomatically(int studentId, int courseId) {
-        Students student = studentsRepository.findById(studentId).orElse(null);
+    public void assignRequiredCoursesToStudentAutomatically(int studyYear) {
+        List<Students> allStudents = studentsRepository.findAll();
 
-
-        if (student != null) {
-
-            int currentStudyYear = student.getStudyYear();
-
-
-            List<Course> requiredCourses = courseRepository.findRequiredCoursesByStudyYear(currentStudyYear);
-
-
-            assignCoursesToStudentAvoidOverallocation(student, requiredCourses);
+        for (Students student : allStudents) {
+            if (student.getStudyYear() != null && student.getStudyYear() == studyYear) {
+                List<Course> requiredCourses = courseRepository.findRequiredCoursesByStudyYear(studyYear);
+                assignCoursesToStudentAvoidOverallocation(student, requiredCourses);
+            }
         }
     }
 
-     private void assignCoursesToStudentAvoidOverallocation(Students student, List<Course> courses) {
+     public void assignCoursesToStudentAvoidOverallocation(Students student, List<Course> courses) {
 
         student.getEnrollments().clear();
 
@@ -76,26 +69,7 @@ public class EnrollmentService {
         studentsRepository.save(student);
     }
 
-    public List<Students> getStudents(){
-        return studentsRepository.findAll();
 
-    }
-
-    public List<Course> getCourses(){
-        return courseRepository.findAll();
-    }
-
-    public Set<Integer> getAllStudyYears() {
-        Set<Integer> studyYears = new HashSet<>();
-
-        List<Students> allStudents = studentsRepository.findAll();
-
-        for (Students student : allStudents) {
-            studyYears.add(student.getStudyYear());
-        }
-
-        return studyYears;
-    }
 
 
 }

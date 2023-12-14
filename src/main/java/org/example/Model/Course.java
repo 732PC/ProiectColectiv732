@@ -1,11 +1,8 @@
 package org.example.Model;
-
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.HashSet;
 import java.util.Set;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

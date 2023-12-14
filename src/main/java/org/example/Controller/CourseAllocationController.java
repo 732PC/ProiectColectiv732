@@ -4,6 +4,7 @@ import org.example.Model.Course;
 import org.example.Model.Students;
 import org.example.Service.EnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +31,14 @@ public class CourseAllocationController {
         return ResponseEntity.ok("Courses assigned successfully for the specified study year");
     }
 
-    @PostMapping("/assign-courses-automatically/{studentId}/{courseId}")
-    public void assignCoursesToStudentAutomatically(@PathVariable("studentId") int studentId,@PathVariable("courseId") int courseId) {
-        enrollmentService.assignRequiredCoursesToStudentAutomatically(studentId,courseId);
-
-
+    @PostMapping("/assign-courses-automatically/{studyYear}")
+    public ResponseEntity<String> assignCoursesAutomatically(@PathVariable("studyYear") int studyYear) {
+        try {
+            enrollmentService.assignRequiredCoursesToStudentAutomatically(studyYear);
+            return ResponseEntity.ok("Courses assigned automatically for the specified study year");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error assigning courses: " + e.getMessage());
+        }
     }
     @GetMapping("/all")
     public List<Students> getStudents(){
