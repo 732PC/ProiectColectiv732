@@ -4,23 +4,10 @@
     <title>Select Courses</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.min.js"></script>
     <script>
-        function loadCourses() {
-            fetch('/courses/getLoggedInUserEmail') // Fetches user's email
-                .then(response => response.json())
-                .then(data => {
-                    const email = data.email; // Extracts email from JSON response
-
-                    fetch(`/courses/course?type=allOptionals&email=${email}`)
-                        .then(response => response.text())
-                        .then(coursesData => {
-                            document.getElementById('courseTable').innerHTML += coursesData;
-                        })
-                        .catch(error => console.error('Error fetching courses:', error));
-                })
-                .catch(error => console.error('Error fetching user email:', error));
+        function getCurrentUser() {
+            // Get the value from the email1 input field
+            return "test@example.com";
         }
-
-        document.addEventListener('DOMContentLoaded', loadCourses);
     </script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -48,11 +35,11 @@
         </div>
 
         <button type="button" hx-get="/courses/course?type=allOptionals" hx-target="#courseTable"
-                hx-swap="outerHTML">Load Courses
+                hx-vals="js:{email: getCurrentUser()}" hx-swap="innerHTML">Load Courses
         </button>
 
         <button type="button" id="saveCoursesBtn" hx-trigger="click" hx-target="#courseForm"
-                hx-vals="closest('form').serialize()" hx-swap="outerHTML">Save Courses
+                hx-vals="js:{email: getCurrentUser()}" hx-include="#courseForm" hx-swap="none">Save Courses
         </button>
 
     </form>
