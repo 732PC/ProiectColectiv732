@@ -8,7 +8,7 @@
     <script>
         function getCurrentUser() {
             // Get the value from the email1 input field
-            return "test@example.com";
+            return document.getElementById("email1").value;
         }
     </script>
     <link rel="stylesheet" href="styles.css">
@@ -21,6 +21,8 @@
 <div class="spacer"></div>
 <div class="centered content">
     <p class="title">Select Courses</p>
+
+    <input type="email" id="email1" name="email1" required placeholder="Current E-mail" style="width: 85%">
 
     <form id="courseForm">
         <div class="table-wrapper">
