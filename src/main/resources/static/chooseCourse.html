@@ -5,10 +5,10 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.min.js"></script>
     <script>
         function loadCourses() {
-            fetch('/getLoggedInUserEmail') // actual endpoint to fetch user emali
+            fetch('/courses/getLoggedInUserEmail') // Fetches user's email
                 .then(response => response.json())
                 .then(data => {
-                    const email = data.email; // Assuming the email is in the JSON response
+                    const email = data.email; // Extracts email from JSON response
 
                     fetch(`/courses/course?type=allOptionals&email=${email}`)
                         .then(response => response.text())
@@ -35,7 +35,7 @@
 
     <form id="courseForm">
         <div class="table-wrapper">
-            <table  id="courseTable">
+            <table id="courseTable">
                 <tr>
                     <th>Select</th>
                     <th>Course Name</th>
@@ -44,17 +44,6 @@
                     <th>Day of Week</th>
                     <th>Time</th>
                 </tr>
-                <!-- Placeholder -->
-                <tr>
-                    <td><label>
-                        <input type='checkbox' name='ids' value='Course 1'>
-                    </label></td>
-                    <td>Course 1</td>
-                    <td>true</td>
-                    <td>Teacher Name</td>
-                    <td>Monday</td>
-                    <td>10:00 AM</td>
-                </tr>
             </table>
         </div>
 
@@ -62,7 +51,7 @@
                 hx-swap="outerHTML">Load Courses
         </button>
 
-        <button type="button" hx-post="/courses/course" hx-trigger="click" hx-target="#courseForm"
+        <button type="button" id="saveCoursesBtn" hx-trigger="click" hx-target="#courseForm"
                 hx-vals="closest('form').serialize()" hx-swap="outerHTML">Save Courses
         </button>
 
