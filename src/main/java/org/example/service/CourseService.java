@@ -29,7 +29,14 @@ public class CourseService {
     public String getAllOptionalCourses(){
 
         List<Object[]> courseResults = this.courseRepository.findOptionalCourses();
-        String response = "";
+        String response = "<tr>\n" +
+                "                    <th>Select</th>\n" +
+                "                    <th>Course Name</th>\n" +
+                "                    <th>Optional</th>\n" +
+                "                    <th>Teacher</th>\n" +
+                "                    <th>Day of Week</th>\n" +
+                "                    <th>Time</th>\n" +
+                "                </tr>";
 
         for(Object[] row: courseResults){
             String courseName = (String) row[0];

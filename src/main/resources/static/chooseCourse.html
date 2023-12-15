@@ -4,24 +4,30 @@
     <title>Select Courses</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.min.js"></script>
     <script>
-        function loadCourses() {
-            fetch('/getLoggedInUserEmail') // actual endpoint to fetch user emali
-                .then(response => response.json())
-                .then(data => {
-                    const email = data.email; // Assuming the email is in the JSON response
-
-                    fetch(`/courses/course?type=allOptionals&email=${email}`)
-                        .then(response => response.text())
-                        .then(coursesData => {
-                            document.getElementById('courseTable').innerHTML += coursesData;
-                        })
-                        .catch(error => console.error('Error fetching courses:', error));
-                })
-                .catch(error => console.error('Error fetching user email:', error));
+        function getCurrentUser() {
+            // Get the value from the email1 input field
+            return "test@example.com";
         }
-
-        document.addEventListener('DOMContentLoaded', loadCourses);
     </script>
+<!--    <script>-->
+<!--        function loadCourses() {-->
+<!--            fetch('/getLoggedInUserEmail') // actual endpoint to fetch user emali-->
+<!--                .then(response => response.json())-->
+<!--                .then(data => {-->
+<!--                    const email = data.email; // Assuming the email is in the JSON response-->
+
+<!--                    fetch(`/courses/course?type=allOptionals&email=${email}`)-->
+<!--                        .then(response => response.text())-->
+<!--                        .then(coursesData => {-->
+<!--                            document.getElementById('courseTable').innerHTML += coursesData;-->
+<!--                        })-->
+<!--                        .catch(error => console.error('Error fetching courses:', error));-->
+<!--                })-->
+<!--                .catch(error => console.error('Error fetching user email:', error));-->
+<!--        }-->
+
+<!--        document.addEventListener('DOMContentLoaded', loadCourses);-->
+<!--    </script>-->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -34,8 +40,8 @@
     <p class="title">Select Courses</p>
 
     <form id="courseForm">
-        <div class="table-wrapper" id="courseTable">
-            <table>
+        <div class="table-wrapper">
+            <table id="courseTable">
                 <tr>
                     <th>Select</th>
                     <th>Course Name</th>
@@ -44,26 +50,15 @@
                     <th>Day of Week</th>
                     <th>Time</th>
                 </tr>
-                <!-- Placeholder -->
-                <tr>
-                    <td><label>
-                        <input type='checkbox' name='ids' value='Course 1'>
-                    </label></td>
-                    <td>Course 1</td>
-                    <td>true</td>
-                    <td>Teacher Name</td>
-                    <td>Monday</td>
-                    <td>10:00 AM</td>
-                </tr>
             </table>
         </div>
 
         <button type="button" hx-get="/courses/course?type=allOptionals" hx-target="#courseTable"
-                hx-swap="outerHTML">Load Courses
+                hx-vals="js:{email: getCurrentUser()}" hx-swap="innerHTML">Load Courses
         </button>
 
         <button type="button" hx-post="/courses/course" hx-trigger="click" hx-target="#courseForm"
-                hx-vals="closest('form').serialize()" hx-swap="outerHTML">Save Courses
+                hx-vals="js:{email: getCurrentUser()}" hx-include="#courseForm" hx-swap="none">Save Courses
         </button>
 
     </form>
