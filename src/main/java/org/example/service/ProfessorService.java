@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.model.Course;
 import org.example.model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,9 @@ public class ProfessorService {
     }
 
     public void remove(Integer id){
-        professorRepository.deleteById(id);
+        if(professorRepository.findById(id).get().getCourses().isEmpty()){
+            professorRepository.deleteById(id);
+        }
     }
     public void update(Integer id, Professor newProfessor){
         for(Professor professor: professorRepository.findAll())
@@ -48,7 +51,6 @@ public class ProfessorService {
                 if(newProfessor.getCountry() != null) {
                     professor.setCountry(newProfessor.getCountry());
                 }
-
                 professorRepository.save(professor);
             }
     }
