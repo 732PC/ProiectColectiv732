@@ -1,4 +1,4 @@
-package org.example.entities;
+package org.example.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +10,6 @@ import lombok.*;
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public class User {
 
     @Id
@@ -29,7 +28,7 @@ public class User {
     @Column(name="password")
     private String password;
 
-    //@Enumerated(EnumType.STRING)
-    //@Column(name="role", length = 20)
-    //private ERole role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", length = 20)
+    private ERole role;
 }

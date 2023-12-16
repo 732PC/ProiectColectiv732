@@ -1,9 +1,8 @@
 package org.example.controller;
 
-import org.example.entities.Professor;
+import org.example.model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.example.service.ProfessorService;

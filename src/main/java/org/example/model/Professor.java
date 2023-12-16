@@ -1,4 +1,4 @@
-package org.example.entities;
+package org.example.model;
 
 import lombok.NoArgsConstructor;
 import org.example.enums.Countries;
@@ -14,6 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "professors")
 public class Professor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Column(name = "firstName", nullable = false)
     private String firstName;
     @Column(name = "lastName", nullable = false)
@@ -29,10 +33,6 @@ public class Professor {
 
     @OneToMany(mappedBy = "prof", cascade = CascadeType.ALL)
     List<Course> courses;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
 
     public Professor(String firstName, String lastName, Long cnp, Date birthdate, Countries country) {

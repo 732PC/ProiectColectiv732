@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.entities.Professor;
+import org.example.model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.example.repository.ProfessorRepository;
