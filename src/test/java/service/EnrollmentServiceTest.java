@@ -2,8 +2,8 @@ package service;
 
 import org.example.Model.Course;
 import org.example.Model.Students;
-import org.example.Repository.courseRepo;
-import org.example.Repository.studentRepo;
+import org.example.Repository.studentsRepository;
+import org.example.Repository.courseRepository;
 import org.example.Service.EnrollmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,9 +22,12 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class EnrollmentServiceTest {
     @Mock
-    private studentRepo studentRepo;
+    private studentsRepository studentsRepository;
     @Mock
-    private courseRepo courseRepository;
+    private courseRepository courseRepository;
+
+
+
 
 
     @InjectMocks
@@ -49,44 +52,62 @@ public class EnrollmentServiceTest {
         List<Students> studentsInYear = Arrays.asList(students);
         List<Course> requiredCourses = Arrays.asList(new Course());
 
-        when(studentRepo.findRequiredStudentsByStudyYear(studyYear)).thenReturn(studentsInYear);
+        when(studentsRepository.findRequiredStudentsByStudyYear(studyYear)).thenReturn(studentsInYear);
         when(courseRepository.findRequiredCoursesByStudyYear(studyYear)).thenReturn(requiredCourses);
 
         enrollmentService.assignRequiredCoursesToStudentForStudyYear(studyYear);
 
-        verify(studentRepo, times(1)).save(students);
+        verify(studentsRepository, times(1)).save(students);
     }
 
-//    @Test
-//    void assignRequiredCoursesToStudentAutomatically() {
-//        int studyYear = 2023;
-//
-//
-//        List<Students> allStudents = Arrays.asList(new Students()); // Mock data for students
-//        List<Course> requiredCourses = Arrays.asList(new Course()); // Mock data for courses
-//
-//        when(studentRepo.findAll()).thenReturn(allStudents);
-//        when(courseRepository.findRequiredCoursesByStudyYear(studyYear)).thenReturn(requiredCourses);
-//
-//
-//        enrollmentService.assignRequiredCoursesToStudentAutomatically(studyYear);
-//
-//
-//        verify(studentRepo, times(1)).save(any(Students.class));
-//    }
+    @Test
+    void assignRequiredCoursesToStudentAutomatically() {
+        // Mock data
+        Students student1 = new Students();
+        student1.setStudyYear(1);
+
+        Students student2 = new Students();
+        student2.setStudyYear(2);
+
+        List<Students> allStudents = Arrays.asList(student1, student2);
+
+        Course course1 = new Course();
+        course1.setStudyYear(1);
+
+        Course course2 = new Course();
+        course2.setStudyYear(2);
+
+        List<Course> allCourses = Arrays.asList(course1, course2);
+
+        // Mock repository calls
+        when(studentsRepository.findAll()).thenReturn(allStudents);
+        when(courseRepository.findAll()).thenReturn(allCourses);
+        when(courseRepository.findRequiredCoursesByStudyYear(1)).thenReturn(Arrays.asList(course1));
+        when(courseRepository.findRequiredCoursesByStudyYear(2)).thenReturn(Arrays.asList(course2));
+
+        // Call the method to be tested
+        enrollmentService.assignRequiredCoursesToStudentAutomatically();
+
+        // Ensure that the save method is called for each student
+        verify(studentsRepository, times(1)).save(eq(student1));
+        verify(studentsRepository, times(1)).save(eq(student2));
+    }
+
+
+
 
     @Test
     void assignCoursesToStudentAvoidOverallocation() {
         List<Course> courses = Arrays.asList(new Course());
 
         // Mock the behavior of studentRepo
-        when(studentRepo.save(any())).thenReturn(null);
+        when(studentsRepository.save(any())).thenReturn(null);
 
         // Call the method to be tested
         enrollmentService.assignCoursesToStudentAvoidOverallocation(students, courses);
 
         // Verify that the save method is called on the studentRepo
-        verify(studentRepo, times(1)).save(students);
+        verify(studentsRepository, times(1)).save(students);
     }
 
 

@@ -27,9 +27,9 @@ public class CourseAllocationController {
     }
 
     @PostMapping("/assign-courses-automatically/{studyYear}")
-    public ResponseEntity<String> assignCoursesAutomatically(@PathVariable("studyYear") int studyYear) {
+    public ResponseEntity<String> assignCoursesAutomatically() {
         try {
-            enrollmentService.assignRequiredCoursesToStudentAutomatically(studyYear);
+            enrollmentService.assignRequiredCoursesToStudentAutomatically();
             return ResponseEntity.ok("Courses assigned automatically for the specified study year");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error assigning courses: " + e.getMessage());

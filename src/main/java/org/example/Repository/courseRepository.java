@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface courseRepo extends JpaRepository<Course,Integer> {
+public interface courseRepository extends JpaRepository<Course,Integer> {
     List<Course> findRequiredCoursesByStudyYear(int studyYear);
 
 }

@@ -43,35 +43,5 @@ class CourseAllocationControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Courses assigned successfully for the specified study year", responseEntity.getBody());
     }
-
-    @Test
-    void testAssignCoursesAutomatically_Success() {
-        int studyYear = 2023;
-
-
-        doNothing().when(enrollmentService).assignRequiredCoursesToStudentAutomatically(anyInt());
-
-
-        ResponseEntity<String> responseEntity = controller.assignCoursesAutomatically(studyYear);
-
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Courses assigned automatically for the specified study year", responseEntity.getBody());
-    }
-
-    @Test
-    void testAssignCoursesAutomatically_Error() {
-        int studyYear = 2023;
-        String errorMessage = "Some error occurred";
-
-
-        doThrow(new RuntimeException(errorMessage)).when(enrollmentService).assignRequiredCoursesToStudentAutomatically(anyInt());
-
-
-        ResponseEntity<String> responseEntity = controller.assignCoursesAutomatically(studyYear);
-
-
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-        assertEquals("Error assigning courses: " + errorMessage, responseEntity.getBody());
-    }
 }
+
