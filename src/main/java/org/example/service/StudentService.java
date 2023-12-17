@@ -50,7 +50,9 @@ public class StudentService {
         if (existingStudent.isPresent()) {
             Students savedStudent = existingStudent.get();
 
-            savedStudent.setFirstname(updatedStudent.getFirstname());
+            if (updatedStudent.getFirstname() != null) {
+                savedStudent.setFirstname(updatedStudent.getFirstname());
+            }
             if (updatedStudent.getLastname() != null) {
                 savedStudent.setLastname(updatedStudent.getLastname());
             }

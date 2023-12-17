@@ -306,49 +306,7 @@ class StudentServiceTest {
         verify(homeworkSubmissionRepository, never()).save(any());
     }
 
-//    @Test
-//    void testGetHomeworkSubmissionById() {
-//        Students student = new Students();
-//        student.setStudentID(1);
-//
-//        HomeworkSubmission submission1 = new HomeworkSubmission();
-//        submission1.setSubmissionId(1L);
-//        submission1.setSubmissionText("Homework 1");
-//
-//        HomeworkSubmission submission2 = new HomeworkSubmission();
-//        submission2.setSubmissionId(2L);
-//        submission2.setSubmissionText("Homework 2");
-//
-//        student.setHomeworkSubmissions(Arrays.asList(submission1, submission2));
-//
-//        when(studentRepository.findById(1)).thenReturn(Optional.of(student));
-//
-//        Optional<HomeworkSubmission> result = studentService.getHomeworkSubmissionById(1, 1);
-//
-//        assertTrue(result.isPresent(), "Expected a submission to be present");
-//        assertEquals("Homework 1", result.get().getSubmissionText(), "Unexpected submission text");
-//        verify(studentRepository, times(1)).findById(1);
-//    }
-//
-//    @Test
-//    void testUpdateHomeworkSubmissionById() {
-//        Students student = new Students();
-//        student.setStudentID(1);
-//
-//        HomeworkSubmission submission = new HomeworkSubmission();
-//        submission.setSubmissionId(1L);
-//        submission.setSubmissionText("Homework Text");
-//
-//        when(studentRepository.findById(1)).thenReturn(Optional.of(student));
-//        when(homeworkSubmissionRepository.save(any())).thenReturn(submission);
-//
-//        Optional<HomeworkSubmission> result = studentService.updateHomeworkSubmissionById(1, 1, "Updated Text");
-//
-//        assertTrue(result.isPresent(), "Expected an updated submission to be present");
-//        assertEquals("Updated Text", result.get().getSubmissionText(), "Unexpected updated submission text");
-//        verify(studentRepository, times(1)).findById(1);
-//        verify(homeworkSubmissionRepository, times(1)).save(any());
-//    }
+
 
 }
 
