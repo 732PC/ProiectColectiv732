@@ -1,6 +1,5 @@
 package org.example.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.model.HomeworkSubmission;
 import org.example.model.HomeworkSubmissionResponse;
@@ -16,7 +15,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
@@ -24,8 +22,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class StudentControllerTest {
@@ -185,6 +181,34 @@ class StudentControllerTest {
 
         Assert.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
     }
+
+
+
+    @Test
+    void updateHomeworkSubmissionCustomWithId() {
+        Integer studentId = 1;
+        Integer submissionId = 1;
+        boolean updateById = true;
+        Map<String, Object> request = Collections.singletonMap("updatedText", "Updated Text");
+
+        ResponseEntity<String> responseEntity = studentController.updateHomeworkSubmissionCustomWithId(studentId, submissionId, updateById, request);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Updated homework submission with custom logic and ID", responseEntity.getBody());
+    }
+
+    @Test
+    void updateHomeworkSubmissionCustomWithoutId() {
+        Integer studentId = 1;
+        Integer submissionId = 1;
+        Map<String, Object> request = Collections.singletonMap("updatedText", "Updated Text");
+
+        ResponseEntity<String> responseEntity = studentController.updateHomeworkSubmissionCustomWithoutId(studentId, submissionId, request);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Updated homework submission with custom logic without ID", responseEntity.getBody());
+    }
+
 
 
 }

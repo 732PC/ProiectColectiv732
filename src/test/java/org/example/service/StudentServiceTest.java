@@ -230,6 +230,36 @@ class StudentServiceTest {
         Assert.assertTrue(deleted);
     }
 
+
+    @Test
+    void updateHomeworkSubmissionSubmissionNotFound() {
+        long studentId = 1;
+        long submissionId = 1;
+        String updatedText = "Updated Text";
+
+        lenient().when(homeworkSubmissionRepository.findById(studentId, submissionId)).thenReturn(Optional.empty());
+
+        Optional<HomeworkSubmission> result = studentService.updateHomeworkSubmission((int) studentId, submissionId, updatedText);
+
+        assertFalse(result.isPresent(), "The result should be empty");
+    }
+
+
+
+    @Test
+    void deleteHomeworkSubmissionNotFound() {
+        Integer studentId = 1;
+        Long submissionId = 1L;
+
+        when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+
+        boolean result = studentService.deleteHomeworkSubmission(studentId, submissionId);
+
+        assertFalse(result);
+        verify(studentRepository, times(1)).findById(studentId);
+        verify(homeworkSubmissionRepository, never()).deleteById(submissionId);
+    }
+
 }
 
 
