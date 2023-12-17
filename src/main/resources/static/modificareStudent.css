@@ -1,0 +1,186 @@
+body {
+    font-family: Inter;
+    background-color: #3D5A80;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.mainDiv {
+    max-width: border-box;
+    margin: 0 auto;
+    background: #3D5A80;
+    display: flex;
+    justify-content: center;
+}
+
+.student-box {
+    padding: 10px;
+    padding-top: calc(5px + 2px);
+    margin: 10px 0;
+    border: 1px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #3D5A80 29px, #D9D9D9 0);
+    padding-left: 40px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+}
+
+.intermediateDiv {
+    width: 50%;
+    background: #EAEAEA;
+    margin: auto;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.scrollableDiv {
+    height: calc(60vh - 20px);
+    overflow-y: auto;
+    padding-right: 20px;
+}
+#addStudentDiv{
+    height: calc(60vh - 20px);
+    overflow-y: auto;
+}
+
+#content {
+    margin-top: 20px;
+}
+
+#popup-container {
+    display: none;
+    position: fixed;
+    font-size: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}
+
+.h3{
+    font-size: 20px;
+    text-align: center;
+    padding: 0px;
+}
+
+header h1 {
+    color: #3d5a80;
+}
+header {
+    background-color: #3d5a80;
+    color: #ffffff;
+    padding: 50px;
+    padding-bottom: 0px;
+    text-align: center;
+    position: relative;
+}
+
+#header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#brand-title {
+    font-size: 34px;
+    font-weight: bold;
+}
+
+#navigation-links {
+    display: flex;
+    gap: 15px;
+}
+
+.navigation-link {
+    color: #ffffff;
+    text-decoration: none;
+    /*font-weight: bold;*/
+    font-size: 20px;
+}
+
+.option {
+    font-size: 20px;
+}
+
+.selectstyle {
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #fffdfd;
+    border-radius: 5px;
+    background: white;
+}
+
+.add-student-form {
+    padding: 40px;
+    color: black;
+    background: linear-gradient(to right, #3D5A80 29px, #EAEAEA 0);
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px;
+    margin: auto;
+}
+
+label {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+input {
+    padding: 4px;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+button {
+    padding: 10px;
+    background-color: #293241;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: auto;
+}
+
+.buttonModify {
+    padding: 10px;
+    position : center;
+    align-content: end;
+    background-color: #293241;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: auto;
+}
+
+button:hover {
+    background-color: rgba(33, 39, 52, 0.91);
+}
+
+.toggle-button {
+    background-color: rgba(185, 185, 185, 0.49);
+    padding: 15px 20px;
+    min-width: 350px;
+    margin: 0 19px;
+    color: black;
+    border-radius: 0px;
+    flex: 1;
+    margin-right: 1px;
+    cursor: pointer;
+    font-size: 28px;
+    border: 1px solid rgba(234, 234, 234, 0.75);
+}
+
+.toggle-button:hover,
+.toggle-button.active {
+    background-color: #293241;
+    color: #fff;
+}
