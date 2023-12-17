@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-//@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
@@ -37,7 +36,7 @@ public class StudentController {
     }
 
     @PostMapping("/addStudent")
-    public ResponseEntity<?> addStudent(
+    public ResponseEntity<Students> addStudent(
             @RequestParam String firstName,
             @RequestParam String lastName,
             @RequestParam String cnp,
@@ -53,9 +52,30 @@ public class StudentController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(addedStudent);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+    @PostMapping("/{id}/homework-submissions")
+    public ResponseEntity<String> addHomeworkSubmission(
+            @PathVariable Integer id,
+            @RequestBody Map<String, String> requestBody) {
+
+        String submissionText = requestBody.get("homeworkText");
+
+        try {
+            studentService.addHomeworkSubmission(id, submissionText);
+            return ResponseEntity.ok("Homework submission added successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Students> updateStudent(@PathVariable Integer id, @RequestBody Students updatedStudent) {
@@ -78,24 +98,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/{id}/homework-submissions")
-    public ResponseEntity<?> addHomeworkSubmission(
-            @PathVariable Integer id,
-            @RequestBody Map<String, String> requestBody) {
 
-        String submissionText = requestBody.get("homeworkText");
-
-        try {
-            studentService.addHomeworkSubmission(id, submissionText);
-            return ResponseEntity.ok("Homework submission added successfully");
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
 
     @GetMapping("/{id}/homework-submissions")
     public ResponseEntity<List<HomeworkSubmission>> getAllHomeworkSubmissions(@PathVariable Integer id) {
