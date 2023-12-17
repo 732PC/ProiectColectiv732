@@ -29,6 +29,9 @@ public class StudentService {
 
     private static final int CNP_LENGTH = 13;
 
+    public StudentService(StudentRepository studentRepository, HomeworkSubmissionRepository homeworkSubmissionRepository) {
+    }
+
     private boolean isValidCnpLength(String cnp) {
         return cnp != null && cnp.length() == CNP_LENGTH;
     }
@@ -143,6 +146,103 @@ public class StudentService {
         response.setSubmissionId(savedSubmission.getSubmissionId());
 
         return response;
+    }
+
+    public List<HomeworkSubmission> getAllHomeworkSubmissions(Integer studentId) {
+        Students student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student with ID " + studentId +
+                        " not found"));
+
+        return student.getHomeworkSubmissions();
+    }
+
+    public Optional<HomeworkSubmission> getHomeworkSubmissionById(Integer studentId, Integer submissionId) {
+        Students student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student with ID " + studentId + " not found"));
+
+        return student.getHomeworkSubmissions().stream()
+                .filter(submission -> submission.getSubmissionId().equals(submissionId))
+                .findFirst();
+    }
+
+    public Optional<HomeworkSubmission> updateHomeworkSubmission(Integer studentId, Integer submissionId, String updatedText) {
+        Optional<Students> existingStudent = studentRepository.findById(studentId);
+
+        if (existingStudent.isPresent()) {
+            Students student = existingStudent.get();
+            Optional<HomeworkSubmission> existingSubmission = student.getHomeworkSubmissions().stream()
+                    .filter(submission -> submission.getSubmissionId().equals(submissionId))
+                    .findFirst();
+
+            if (existingSubmission.isPresent()) {
+                HomeworkSubmission submission = existingSubmission.get();
+                submission.setSubmissionText(updatedText);
+
+                return Optional.of(homeworkSubmissionRepository.save(submission));
+            }
+        }
+
+        return Optional.empty();
+    }
+
+
+
+    public boolean deleteHomeworkSubmission(Integer studentId, Long submissionId) {
+        Optional<Students> existingStudent = studentRepository.findById(studentId);
+
+        if (existingStudent.isPresent()) {
+            Students student = existingStudent.get();
+
+            student.getHomeworkSubmissions().removeIf(submission -> submission.getSubmissionId().equals(submissionId));
+
+            studentRepository.save(student);
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public Optional<HomeworkSubmission> updateHomeworkSubmission(Integer studentId, Long submissionId, String updatedText) {
+        Optional<Students> existingStudent = studentRepository.findById(studentId);
+
+        if (existingStudent.isPresent()) {
+            Students student = existingStudent.get();
+            Optional<HomeworkSubmission> existingSubmission = student.getHomeworkSubmissions().stream()
+                    .filter(submission -> submission.getSubmissionId().equals(submissionId))
+                    .findFirst();
+
+            if (existingSubmission.isPresent()) {
+                HomeworkSubmission submission = existingSubmission.get();
+                submission.setSubmissionText(updatedText);
+
+                return Optional.of(homeworkSubmissionRepository.save(submission));
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<HomeworkSubmission> updateHomeworkSubmissionById(Integer studentId, Integer submissionId, String updatedText) {
+        Optional<Students> existingStudent = studentRepository.findById(studentId);
+
+        if (existingStudent.isPresent()) {
+            Students student = existingStudent.get();
+            Optional<HomeworkSubmission> existingSubmission = student.getHomeworkSubmissions().stream()
+                    .filter(submission -> submission.getSubmissionId().equals(submissionId))
+                    .findFirst();
+
+            if (existingSubmission.isPresent()) {
+                HomeworkSubmission submission = existingSubmission.get();
+                submission.setSubmissionText(updatedText);
+
+                HomeworkSubmission updatedSubmission = homeworkSubmissionRepository.save(submission);
+                return Optional.of(updatedSubmission);
+            }
+        }
+
+        return Optional.empty();
     }
 
 }

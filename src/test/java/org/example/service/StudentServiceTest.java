@@ -1,23 +1,29 @@
 package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.example.model.HomeworkSubmission;
+import org.example.model.HomeworkSubmissionResponse;
 import org.example.model.Students;
+import org.example.repository.HomeworkSubmissionRepository;
 import org.example.repository.StudentRepository;
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class StudentServiceTest {
@@ -25,71 +31,206 @@ class StudentServiceTest {
     @Mock
     private StudentRepository studentRepository;
 
+    @Mock
+    private HomeworkSubmissionRepository homeworkSubmissionRepository;
+
     @InjectMocks
     private StudentService studentService;
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     void testGetAllStudents() {
-        Students student = createSampleStudent();
-        when(studentRepository.findAll()).thenReturn(Arrays.asList(student));
+        Students student1 = new Students();
+        Students student2 = new Students();
+        List<Students> studentsList = Arrays.asList(student1, student2);
 
-        List<Students> students = studentService.getAllStudents();
+        when(studentRepository.findAll()).thenReturn(studentsList);
 
-        assertFalse(students.isEmpty());
-        assertEquals(1, students.size());
-        assertEquals(student, students.get(0));
+        List<Students> result = studentService.getAllStudents();
+
+        assertEquals(2, result.size());
+        verify(studentRepository, times(1)).findAll();
     }
 
     @Test
     void testGetStudentById() {
-        Students student = createSampleStudent();
+        Students student = new Students();
         when(studentRepository.findById(1)).thenReturn(Optional.of(student));
 
-        Optional<Students> foundStudent = studentService.getStudentById(1);
+        Optional<Students> result = studentService.getStudentById(1);
 
-        assertTrue(foundStudent.isPresent());
-        assertEquals(student, foundStudent.get());
+        assertTrue(result.isPresent());
+        verify(studentRepository, times(1)).findById(1);
+    }
+
+    @Test
+    void testGetStudentByIdNotFound() {
+        when(studentRepository.findById(1)).thenReturn(Optional.empty());
+
+        Optional<Students> result = studentService.getStudentById(1);
+
+        assertTrue(result.isEmpty());
+        verify(studentRepository, times(1)).findById(1);
     }
 
     @Test
     void testUpdateStudent() {
-        Students existingStudent = createSampleStudent();
-        Students updatedStudent = createSampleStudent();
+        Students existingStudent = new Students();
+        existingStudent.setFirstname("John");
+
+        Students updatedStudent = new Students();
+        updatedStudent.setFirstname("Doe");
 
         when(studentRepository.findById(1)).thenReturn(Optional.of(existingStudent));
-        when(studentRepository.save(any(Students.class))).thenReturn(updatedStudent);
+        when(studentRepository.save(existingStudent)).thenReturn(updatedStudent);
 
         Optional<Students> result = studentService.updateStudent(1, updatedStudent);
 
         assertTrue(result.isPresent());
-        assertEquals(updatedStudent, result.get());
+        assertEquals("Doe", result.get().getFirstname());
+        verify(studentRepository, times(1)).findById(1);
+        verify(studentRepository, times(1)).save(existingStudent);
+    }
+
+    @Test
+    void testUpdateStudentNotFound() {
+        when(studentRepository.findById(1)).thenReturn(Optional.empty());
+
+        Optional<Students> result = studentService.updateStudent(1, new Students());
+
+        assertTrue(result.isEmpty());
+        verify(studentRepository, times(1)).findById(1);
+        verify(studentRepository, never()).save(any());
     }
 
     @Test
     void testDeleteStudent() {
-        Students student = createSampleStudent();
-        when(studentRepository.findById(1)).thenReturn(Optional.of(student));
+        when(studentRepository.findById(1)).thenReturn(Optional.of(new Students()));
 
-        boolean deleted = studentService.deleteStudent(1);
-
-        assertTrue(deleted);
-        Mockito.verify(studentRepository, times(1)).deleteById(1);
+        assertTrue(studentService.deleteStudent(1));
+        verify(studentRepository, times(1)).findById(1);
+        verify(studentRepository, times(1)).deleteById(1);
     }
 
     @Test
-    void testAddStudent() {
-        Students student = createSampleStudent();
-        when(studentRepository.save(any(Students.class))).thenReturn(student);
+    void testDeleteStudentNotFound() {
+        when(studentRepository.findById(1)).thenReturn(Optional.empty());
 
-        Students addedStudent = studentService.addStudent("John", "Doe", "1234567890123", LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
-
-        assertEquals(student, addedStudent);
+        assertThrows(EntityNotFoundException.class, () -> studentService.deleteStudent(1));
+        verify(studentRepository, times(1)).findById(1);
+        verify(studentRepository, never()).deleteById(1);
     }
 
-    private Students createSampleStudent() {
-        return new Students(1, "John", "Doe", "1234567890123", LocalDate.of(2000, 1, 1), 1, "Bachelor", "Self-funding", "High School");
+    @Test
+    void testAddStudentValidCnp() {
+        Students student = new Students();
+        student.setCnp("1234567890123");
+
+        when(studentRepository.save(any())).thenReturn(student);
+
+        Students result = studentService.addStudent("John", "Doe", "1234567890123",
+                LocalDate.now(), 1, "Bachelor", "Funding", "High School");
+
+        assertNotNull(result);
+        verify(studentRepository, times(1)).save(any());
     }
 
+    @Test
+    void testAddStudentInvalidCnp() {
+        assertThrows(IllegalArgumentException.class, () ->
+                studentService.addStudent("John", "Doe", "1234567890",
+                        LocalDate.now(), 1, "Bachelor", "Funding", "High School"));
+        verify(studentRepository, never()).save(any());
+    }
+    @Test
+    void testAddHomeworkSubmission() {
+        Students student = new Students();
+        student.setStudentID(1);
 
+        when(studentRepository.findById(1)).thenReturn(Optional.of(student));
+
+        HomeworkSubmission savedSubmission = new HomeworkSubmission();
+        savedSubmission.setSubmissionId(1L);
+
+        when(homeworkSubmissionRepository.save(any())).thenReturn(savedSubmission);
+
+        HomeworkSubmissionResponse response = studentService.addHomeworkSubmission(1, "Homework text");
+
+        assertNotNull(response);
+        assertEquals(1, response.getSubmissionId());
+        verify(studentRepository, times(1)).findById(1);
+        verify(homeworkSubmissionRepository, times(1)).save(any());
+    }
+
+    @Test
+    void testAddHomeworkSubmissionStudentNotFound() {
+        when(studentRepository.findById(1)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                studentService.addHomeworkSubmission(1, "Homework text"));
+
+        verify(studentRepository, times(1)).findById(1);
+        verify(homeworkSubmissionRepository, never()).save(any());
+    }
+
+    @Test
+    void testAddHomeworkSubmissionEmptyHomeworkSubmissionsList() {
+        Students student = new Students();
+        student.setStudentID(1);
+        student.setHomeworkSubmissions(new ArrayList<>());
+
+        when(studentRepository.findById(1)).thenReturn(Optional.of(student));
+
+        HomeworkSubmission savedSubmission = new HomeworkSubmission();
+        savedSubmission.setSubmissionId(1L);
+
+        when(homeworkSubmissionRepository.save(any())).thenReturn(savedSubmission);
+
+        HomeworkSubmissionResponse response = studentService.addHomeworkSubmission(1, "Homework text");
+
+        assertNotNull(response);
+        assertEquals(1, response.getSubmissionId());
+        verify(studentRepository, times(1)).findById(1);
+        verify(homeworkSubmissionRepository, times(1)).save(any());
+    }
+
+    @Test
+    void testAddHomeworkSubmissionException() {
+        Students student = new Students();
+        student.setStudentID(1);
+
+        when(studentRepository.findById(1)).thenReturn(Optional.of(student));
+        when(homeworkSubmissionRepository.save(any())).thenThrow(new RuntimeException("Test exception"));
+
+        assertThrows(RuntimeException.class, () ->
+                studentService.addHomeworkSubmission(1, "Homework text"));
+
+        verify(studentRepository, times(1)).findById(1);
+        verify(homeworkSubmissionRepository, times(1)).save(any());
+    }
+
+    @Test
+    public void testDeleteHomeworkSubmission() {
+        Students student = new Students();
+        student.setStudentID(1);
+        HomeworkSubmission submission = new HomeworkSubmission();
+        submission.setSubmissionId(2L);
+        submission.setSubmissionText("Sample Text");
+        submission.setStudent(student);
+
+        Mockito.lenient().when(studentRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(student));
+        Mockito.lenient().when(homeworkSubmissionRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(submission));
+
+        boolean deleted = studentService.deleteHomeworkSubmission(1, 2L);
+
+        Assert.assertTrue(deleted);
+    }
 
 }
+
+
+

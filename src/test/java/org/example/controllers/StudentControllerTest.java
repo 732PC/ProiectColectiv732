@@ -1,17 +1,22 @@
 package org.example.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.example.model.HomeworkSubmission;
 import org.example.model.HomeworkSubmissionResponse;
 import org.example.model.Students;
 import org.example.service.StudentService;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
@@ -19,6 +24,8 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class StudentControllerTest {
@@ -135,6 +142,7 @@ class StudentControllerTest {
         assertEquals("Student not found", responseEntity.getBody());
     }
 
+
     @Test
     public void testAddHomeworkSubmission() {
         Integer studentId = 1;
@@ -147,6 +155,7 @@ class StudentControllerTest {
         assertNotNull(result.getBody());
         verify(studentService, times(1)).addHomeworkSubmission(studentId, "Homework Text");
     }
+
 
     @Test
     void testAddHomeworkSubmissionBadRequest() {
@@ -164,6 +173,18 @@ class StudentControllerTest {
         verify(studentService, times(1)).addHomeworkSubmission(studentId, "Homework Text");
     }
 
+
+    @Test
+    public void testDeleteHomeworkSubmission() {
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("homeworkText", "Sample Text");
+
+        Mockito.lenient().when(studentService.deleteHomeworkSubmission(Mockito.anyInt(), Mockito.anyLong())).thenReturn(true);
+
+        ResponseEntity<?> responseEntity = studentController.deleteHomeworkSubmission(1, 2L);
+
+        Assert.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
+    }
 
 
 }

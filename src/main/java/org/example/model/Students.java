@@ -1,6 +1,5 @@
 package org.example.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -55,6 +54,7 @@ public class Students {
     private String graduatedHighSchool;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("student")
     private List<HomeworkSubmission> homeworkSubmissions = new ArrayList<>();
 
     public Students(int i, String john, String doe, String s, LocalDate of, int i1, String bachelor, String s1, String highSchool) {

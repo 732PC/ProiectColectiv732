@@ -2,35 +2,27 @@ package org.example.controllers;
 
 
 import jakarta.persistence.EntityNotFoundException;
-import org.example.model.HomeworkSubmissionResponse;
+import org.example.model.HomeworkSubmission;
 import org.example.model.Students;
 import org.example.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:63342")
+//@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
     @Autowired
     private StudentService studentService;
+
 
     @GetMapping
     public List<Students> getAllStudents() {
@@ -105,6 +97,66 @@ public class StudentController {
         }
     }
 
-}
+    @GetMapping("/{id}/homework-submissions")
+    public ResponseEntity<List<HomeworkSubmission>> getAllHomeworkSubmissions(@PathVariable Integer id) {
+        List<HomeworkSubmission> homeworkSubmissions = studentService.getAllHomeworkSubmissions(id);
+        return ResponseEntity.ok(homeworkSubmissions);
+    }
 
+    @GetMapping("/{id}/homework-submissions/{submissionId}")
+    public ResponseEntity<HomeworkSubmission> getHomeworkSubmissionById(
+            @PathVariable Integer id, @PathVariable Integer submissionId) {
+        Optional<HomeworkSubmission> homeworkSubmission = studentService.getHomeworkSubmissionById(id, submissionId);
+        return homeworkSubmission.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+    @DeleteMapping("/{id}/homework-submissions/{submissionId}")
+    public ResponseEntity<?> deleteHomeworkSubmission(
+            @PathVariable Integer id,
+            @PathVariable Long submissionId) {
+
+        try {
+            boolean deleted = studentService.deleteHomeworkSubmission(id, submissionId);
+
+            return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/homework-submissions/{submissionId}")
+    public ResponseEntity<String> updateHomeworkSubmission(
+            @PathVariable Integer id,
+            @PathVariable Integer submissionId,
+            @RequestBody Map<String, Object> request) {
+        return ResponseEntity.ok("Updated homework submission");
+    }
+
+    @PutMapping("/{id}/homework-submissions/{submissionId}/custom")
+    public ResponseEntity<String> updateHomeworkSubmissionCustomWithId(
+            @PathVariable Integer id,
+            @PathVariable Integer submissionId,
+            @RequestParam(value = "updateById", required = false, defaultValue = "false") boolean updateById,
+            @RequestBody Map<String, Object> request) {
+        if (updateById) {
+            return ResponseEntity.ok("Updated homework submission with custom logic and ID");
+        } else {
+            return ResponseEntity.ok("Updated homework submission with custom logic");
+        }
+    }
+
+    @PutMapping("/{id}/homework-submissions/{submissionId}/custom-without-id")
+    public ResponseEntity<String> updateHomeworkSubmissionCustomWithoutId(
+            @PathVariable Integer id,
+            @PathVariable Integer submissionId,
+            @RequestBody Map<String, Object> request) {
+        return ResponseEntity.ok("Updated homework submission with custom logic without ID");
+    }
+
+
+}
 
