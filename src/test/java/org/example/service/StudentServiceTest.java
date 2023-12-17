@@ -260,7 +260,25 @@ class StudentServiceTest {
         verify(homeworkSubmissionRepository, never()).deleteById(submissionId);
     }
 
+
+    @Test
+    void testUpdateHomeworkSubmissionStudentNotFound() {
+        when(studentRepository.findById(1)).thenReturn(Optional.empty());
+
+        Optional<HomeworkSubmission> result = studentService.updateHomeworkSubmission(1, 1L, "Updated Text");
+
+        assertFalse(result.isPresent());
+        verify(studentRepository, times(1)).findById(1);
+        verify(homeworkSubmissionRepository, never()).findById(anyLong());
+        verify(homeworkSubmissionRepository, never()).save(any());
+    }
+
+   
+
+
 }
+
+
 
 
 
