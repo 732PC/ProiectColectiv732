@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.enums.Countries;
 import org.example.model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,16 @@ public class ProfessorController{
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating professor: " + e.getMessage());
         }
+    }
+    @RestController
+    @RequestMapping("/api/countries")
+    public class CountryController {
+
+        @GetMapping("/all")
+        public Countries[] getAllCountries() {
+            return Countries.values();
+        }
+
     }
 
 }

@@ -1,5 +1,6 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.NoArgsConstructor;
 import org.example.enums.Countries;
 import jakarta.persistence.*;
@@ -32,6 +33,7 @@ public class Professor {
     private Countries country;
 
     @OneToMany(mappedBy = "prof", cascade = CascadeType.ALL)
+    @JsonManagedReference
     List<Course> courses;
 
 
