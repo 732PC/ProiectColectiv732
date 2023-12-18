@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.model.Curs.Curs;
-import org.example.model.Student.Student;
+import org.example.model.Course;
+import org.example.model.Students;
 
 
 @AllArgsConstructor
@@ -24,11 +24,11 @@ public class Enrollment {
 
     @ManyToOne
     @JoinColumn(name = "student_id")
-    private Student student;
+    private Students student;
 
     @ManyToOne
     @JoinColumn(name = "curs_id")
-    private Curs curs;
+    private Course curs;
 
 
 }

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.model.Student.AttendanceStatus;
 
 
 @AllArgsConstructor
@@ -29,6 +28,6 @@ public class Attendencies {
 
     @Column(name="attendance", length = 20)
     @Enumerated(EnumType.STRING)
-    private AttendanceStatus attendance;
+    private Attendance attendance;
 
 }
