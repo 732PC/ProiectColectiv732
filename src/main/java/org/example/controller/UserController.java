@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.springframework.http.HttpHeaders;
 import org.example.model.ERole;
 import org.example.model.User;
 import org.example.model.dto.LoginUserRequestDTO;
@@ -37,10 +38,12 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password)
     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("HX-REDIRECT","home");
         if(this.userService.loginUser(new LoginUserRequestDTO(email, password))==null){
             return new ResponseEntity<>("Invalid credentials", HttpStatus.OK);
     }else{
-            return new ResponseEntity<>("Login succesfully", HttpStatus.OK);
+            return new ResponseEntity<>("Login succesfully",headers, HttpStatus.OK);
         }
     }
 }
