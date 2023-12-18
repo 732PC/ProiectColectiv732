@@ -1,0 +1,30 @@
+<div class="modal-dialog modal-dialog-centered modal-xl">
+  <div class="modal-content attendances-modal">
+    <div class="modal-body">
+      <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      <div class="text-center">
+        <h5 class="modal-title mx-auto">{courseTitle}</h5>
+      </div>
+
+      <div class="text-center" style="margin-bottom: 35px;">
+        <h6 class="modal-title mx-auto">Prof.  {professorName}</h6>
+      </div>
+
+      <table class="table attendances-modal-table">
+        <thead>
+        <tr>
+          <th>Last name</th>
+          <th>First name</th>
+          <th>Attendance</th>
+          <th>Grade</th>
+        </tr>
+        </thead>
+        {studentList}
+      </table>
+    </div>
+    <div class="modal-footer" style="border-top: none;">
+      <button type="button" class="btn modal-save-orange-btn w-25" id="saveChangesBtn">Save</button>
+    </div>
+  </div>
+</div>
