@@ -14,6 +14,7 @@ public class AttendanceService {
 
 
     public List<StudentCourse> getAllStudentCourse(){
+
         return attendanceRepository.findAll();
     }
 

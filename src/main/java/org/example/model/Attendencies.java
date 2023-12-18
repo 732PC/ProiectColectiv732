@@ -14,8 +14,6 @@ import lombok.Setter;
 @Entity
 @Table(name="attendencies")
 public class Attendencies {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -29,5 +27,8 @@ public class Attendencies {
     @Column(name="attendance", length = 20)
     @Enumerated(EnumType.STRING)
     private Attendance attendance;
+
+    @Column(name="grade")
+    private int grade;
 
 }

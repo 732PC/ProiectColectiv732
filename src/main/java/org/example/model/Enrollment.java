@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.model.Course;
-import org.example.model.Students;
 
 
 @AllArgsConstructor
