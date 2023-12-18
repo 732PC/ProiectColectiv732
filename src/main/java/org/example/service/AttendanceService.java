@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.model.Attendance;
 import org.example.model.StudentCourse;
 import org.example.repository.AttendanceRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,11 +11,11 @@ import java.util.List;
 @Service
 public class AttendanceService {
 
+    @Autowired
     private AttendanceRepository attendanceRepository;
 
 
     public List<StudentCourse> getAllStudentCourse(){
-
         return attendanceRepository.findAll();
     }
 
