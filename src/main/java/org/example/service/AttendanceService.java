@@ -24,6 +24,7 @@ public class AttendanceService {
         return attendanceRepository.save(studentCourse);
     }
 
+    //Com ca sa ia pushul
     public StudentCourse addAttendance(StudentCourse studentCourse, Attendance attendance){
         studentCourse.setAttendance(attendance);
         return attendanceRepository.save(studentCourse);
