@@ -23,7 +23,7 @@ public class StudentCourseController {
 
     @GetMapping(value = "/list")
     public ResponseEntity<List<StudentCourse>> getList(@RequestParam int courseId){
-        List<StudentCourse> studentCourseList = this.studentCourseService.getByStudentCourse(courseId);
+        List<StudentCourse> studentCourseList = this.studentCourseService.getAllById(courseId);
         
         if(studentCourseList == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
@@ -33,8 +33,8 @@ public class StudentCourseController {
     }
 
     @PostMapping(value="/nota")
-    public ResponseEntity<StudentCourse> updateNota(@RequestParam int studentId, @RequestParam int coruseId, @RequestParam double nota){
-        StudentCourse updatedNota = this.studentCourseService.addNote(studentId, coruseId, nota);
+    public ResponseEntity<StudentCourse> updateNota(@RequestParam int studentId, @RequestParam int courseId, @RequestParam double nota){
+        StudentCourse updatedNota = this.studentCourseService.addNote(studentId, courseId, nota);
 
         if(updatedNota == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
