@@ -2,8 +2,8 @@ package service;
 
 import org.example.model.Course;
 import org.example.model.Students;
-import org.example.repository.studentsRepository;
-import org.example.repository.courseRepository;
+import org.example.repository.StudentsRepository;
+import org.example.repository.CourseRepository;
 import org.example.service.EnrollmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,9 +22,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class EnrollmentServiceTest {
     @Mock
-    private studentsRepository studentsRepository;
+    private StudentsRepository studentsRepository;
     @Mock
-    private courseRepository courseRepository;
+    private CourseRepository courseRepository;
 
 
 
