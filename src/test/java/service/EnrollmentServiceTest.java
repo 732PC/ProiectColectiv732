@@ -1,10 +1,10 @@
 package service;
 
-import org.example.Model.Course;
-import org.example.Model.Students;
-import org.example.Repository.studentsRepository;
-import org.example.Repository.courseRepository;
-import org.example.Service.EnrollmentService;
+import org.example.model.Course;
+import org.example.model.Students;
+import org.example.repository.studentsRepository;
+import org.example.repository.courseRepository;
+import org.example.service.EnrollmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

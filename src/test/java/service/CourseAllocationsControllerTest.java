@@ -1,7 +1,7 @@
 package service;
 
-import org.example.Controller.CourseAllocationController;
-import org.example.Service.EnrollmentService;
+import org.example.controller.CourseAllocationController;
+import org.example.service.EnrollmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 
 class CourseAllocationControllerTest {
 

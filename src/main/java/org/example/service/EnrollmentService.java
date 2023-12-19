@@ -1,9 +1,9 @@
-package org.example.Service;
+package org.example.service;
 
 import jakarta.transaction.Transactional;
-import org.example.Model.Course;
-import org.example.Model.Enrollment;
-import org.example.Model.Students;
+import org.example.model.Course;
+import org.example.model.Enrollment;
+import org.example.model.Students;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 public class EnrollmentService {
 
 
-    private org.example.Repository.courseRepository courseRepository;
+    private org.example.repository.courseRepository courseRepository;
 
 
-    private org.example.Repository.studentsRepository studentsRepository;
+    private org.example.repository.studentsRepository studentsRepository;
 
     @Autowired
-    public EnrollmentService(org.example.Repository.courseRepository courseRepository, org.example.Repository.studentsRepository studentsRepository) {
+    public EnrollmentService(org.example.repository.courseRepository courseRepository, org.example.repository.studentsRepository studentsRepository) {
         this.courseRepository = courseRepository;
         this.studentsRepository = studentsRepository;
     }

@@ -1,7 +1,7 @@
-package org.example.Repository;
+package org.example.repository;
 
 
-import org.example.Model.Students;
+import org.example.model.Students;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
