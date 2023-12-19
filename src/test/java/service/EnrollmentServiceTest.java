@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-public class EnrollmentServiceTest {
+class EnrollmentServiceTest {
     @Mock
     private studentsRepository studentsRepository;
     @Mock
@@ -89,8 +89,8 @@ public class EnrollmentServiceTest {
         enrollmentService.assignRequiredCoursesToStudentAutomatically();
 
         // Ensure that the save method is called for each student
-        verify(studentsRepository, times(1)).save(eq(student1));
-        verify(studentsRepository, times(1)).save(eq(student2));
+        verify(studentsRepository, times(1)).save(student1);
+        verify(studentsRepository, times(1)).save(student2);
     }
 
 
