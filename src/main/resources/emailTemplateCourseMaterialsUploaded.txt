@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+<br><br>
+<body>
+Dear student, <br><br>
+New course materials for course {courseName} have been uploaded.
+<br><br> UBB Class Management Team
+</body>
+</html>
