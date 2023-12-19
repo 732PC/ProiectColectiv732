@@ -16,17 +16,10 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(request -> {
-                    CorsConfiguration corsConfiguration = new CorsConfiguration();
-                    corsConfiguration.addAllowedHeader("*");
-                    corsConfiguration.addAllowedMethod("*");
-                    corsConfiguration.setAllowCredentials(true);
-                    return corsConfiguration;
-                }))
-                .authorizeHttpRequests(request -> request.requestMatchers("/login").permitAll()
-                        .anyRequest().authenticated())
-                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS));
-        return http.build();
+        http.csrf().disable();
+                    return http.build();
+                }
+
+
     }
-}
+

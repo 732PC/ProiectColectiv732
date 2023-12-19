@@ -26,17 +26,17 @@ public class CourseService {
     }
 
     public boolean validateCourse(Course course){
-        if (course.getName() == null || course.getAbbreviation() == null ||
-                course.getProf() == null || course.getYearOfStudy() > 3 ||
-                course.getYearOfStudy() < 1 || course.getType() == null ||
-                course.getAbbreviation().length()>course.getName().length())
-            return false;
-        List<Course> courseList=this.courseRepository.findAll();
-        for(Course c:courseList){
-            if(Objects.equals(c,course) || Objects.equals(c.getName(),course.getName()) ||
-                    Objects.equals(c.getAbbreviation(),course.getAbbreviation()))
-                return false;
-        }
+//        if (course.getName() == null || course.getAbbreviation() == null ||
+//                course.getProf() == null || course.getYearOfStudy() > 3 ||
+//                course.getYearOfStudy() < 1 || course.getType() == null ||
+//                course.getAbbreviation().length()>course.getName().length())
+//            return false;
+//        List<Course> courseList=this.courseRepository.findAll();
+//        for(Course c:courseList){
+//            if(Objects.equals(c,course) || Objects.equals(c.getName(),course.getName()) ||
+//                    Objects.equals(c.getAbbreviation(),course.getAbbreviation()))
+//                return false;
+//        }
         return true;
     }
 

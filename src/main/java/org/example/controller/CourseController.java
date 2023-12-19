@@ -1,7 +1,7 @@
 package org.example.controller;
 
-import org.example.exception.BusinessException;
-import org.example.exception.BusinessExceptionCode;
+//import org.example.exception.BusinessException;
+//import org.example.exception.BusinessExceptionCode;
 import org.example.model.Course;
 import org.example.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,12 @@ public class CourseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Course> saveCourse(@RequestBody Course course) throws BusinessException{
+    public ResponseEntity<Course> saveCourse(@RequestBody Course course) {
         Course savedCourse = this.courseService.saveCourse(course);
 
-        if(savedCourse==null)
-            throw new BusinessException(BusinessExceptionCode.INVALID_COURSE);
-        else
+//        if(savedCourse==null)
+//            throw new BusinessException(BusinessExceptionCode.INVALID_COURSE);
+//        else
             return new ResponseEntity<>(savedCourse, HttpStatus.OK);
     }
 

@@ -24,9 +24,9 @@ public class Course {
     private String abbreviation;
     @Column(name="creditNr")
     private double creditNr;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private Professor prof;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id")
+//    private Professor prof;
     @Column(name="yearOfStudy")
     private int yearOfStudy;
     @Enumerated(EnumType.STRING)
