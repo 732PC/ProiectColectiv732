@@ -28,13 +28,13 @@ class StudentCourseServiceTest {
     void getAllById_ValidCourseId_ReturnsStudentCourses() {
         int courseId = 1;
         List<StudentCourse> studentCourses = Collections.singletonList(new StudentCourse());
-        when(studentCourseRepository.findAllByCourseCourseID(courseId)).thenReturn(studentCourses);
+        when(studentCourseRepository.findAllByCourse_CourseID(courseId)).thenReturn(studentCourses);
 
         List<StudentCourse> result = studentCourseService.getAllById(courseId);
 
         assertNotNull(result);
         assertEquals(studentCourses, result);
-        verify(studentCourseRepository, times(1)).findAllByCourseCourseID(courseId);
+        verify(studentCourseRepository, times(1)).findAllByCourse_CourseID(courseId);
     }
 
     @Test

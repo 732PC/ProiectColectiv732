@@ -19,7 +19,7 @@ public class StudentCourseService {
     }
 
     public List<StudentCourse> getAllById(int courseId){
-        return studentCourseRepository.findAllByCourseCourseID(courseId);
+        return studentCourseRepository.findAllByCourse_CourseID(courseId);
     }
 
     public StudentCourse addNote(int studentId, int courseId, double nota){

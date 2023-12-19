@@ -21,7 +21,7 @@ public class StudentCourseController {
     }
 
 
-    @GetMapping(value = "/list")
+    @GetMapping(value = "/studentCourses")
     public ResponseEntity<List<StudentCourse>> getList(@RequestParam int courseId){
         List<StudentCourse> studentCourseList = this.studentCourseService.getAllById(courseId);
         
@@ -32,25 +32,19 @@ public class StudentCourseController {
         }
     }
 
-    @PostMapping(value="/nota")
-    public ResponseEntity<StudentCourse> updateNota(@RequestParam int studentId, @RequestParam int courseId, @RequestParam double nota){
-        StudentCourse updatedNota = this.studentCourseService.addNote(studentId, courseId, nota);
+    @PostMapping("/studentCourses")
+    public ResponseEntity<StudentCourse> updateNotaAndAttendances(@RequestParam int studentId,
+                                                                  @RequestParam int courseId,
+                                                                  @RequestParam double nota,
+                                                                  @RequestParam Attendance attendance) {
+        this.studentCourseService.addNote(studentId, courseId, nota);
+        StudentCourse updatedStudentCourse = this.studentCourseService.addAttendance(studentId, courseId, attendance);
 
-        if(updatedNota == null){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
-            else{
-                return new ResponseEntity<>(updatedNota, HttpStatus.OK);
-            }
-        }
-
-    @PostMapping(value="/prezenta")
-    public ResponseEntity<StudentCourse> updateAttendance(@RequestParam int studentId, @RequestParam int courseId, @RequestParam Attendance attendance){
-        StudentCourse updatedAttendance = this.studentCourseService.addAttendance(studentId, courseId, attendance);
-
-        if(updatedAttendance == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
-        else{
-            return new ResponseEntity<>(updatedAttendance, HttpStatus.OK);
+        if (updatedStudentCourse == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(updatedStudentCourse, HttpStatus.OK);
         }
     }
+
 }

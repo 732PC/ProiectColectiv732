@@ -1,5 +1,7 @@
 package org.example.service;
 
+import org.example.model.Attendance;
+import org.example.model.StudentCourse;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,7 @@ import java.util.stream.IntStream;
 @Service
 public class ModalService {
 
-    public String generateModalContent(String courseTitle, String professorName, List<String[]> students) throws IOException {
+    public String generateModalContent(String courseTitle, String professorName, List<StudentCourse> students) throws IOException {
         ClassPathResource resource = new ClassPathResource("/static/attendances-content.html");
 
         try (InputStream inputStream = resource.getInputStream();
@@ -34,21 +36,27 @@ public class ModalService {
         }
     }
 
-    public String generateStudentListHtml(List<String[]> students) {
+    public String generateStudentListHtml(List<StudentCourse> students) {
         StringBuilder html = new StringBuilder("<tbody>");
 
         for (int i = 0; i < students.size(); i++) {
-            String[] student = students.get(i);
+            StudentCourse student = students.get(i);
             String checkboxId = "attendanceCheckbox" + i;
 
             html.append("<tr>")
-                    .append("<td>").append(student[0]).append("</td>")
-                    .append("<td>").append(student[1]).append("</td>")
+                    .append("<td>")
+                    .append("<input type=\"hidden\" name=\"studentId\" value=\"").append(student.getStudent().getStudentID()).append("\" data-student-id=\"").append(student.getStudent().getStudentID()).append("\" />")
+                    .append(student.getStudent().getLastname())
+                    .append("</td>")
+                    .append("<td>")
+                    .append("<input type=\"hidden\" name=\"courseId\" value=\"").append(student.getCourse().getCourseID()).append("\" data-course-id=\"").append(student.getCourse().getCourseID()).append("\" />")
+                    .append(student.getStudent().getFirstname())
+                    .append("</td>")
                     .append("<td>")
                     .append("<div class=\"form-check\">")
-                    .append("<input class=\"form-check-input\" type=\"checkbox\" id=\"").append(checkboxId).append("\"");
+                    .append("<input class=\"form-check-input\" type=\"checkbox\" id=\"").append(checkboxId).append("\" data-attendance=\"").append(student.getAttendance()).append("\"");
 
-            if (Boolean.parseBoolean(student[2])) {
+            if (student.getAttendance() == Attendance.PRZ) {
                 html.append(" checked=\"checked\"");
             }
 
@@ -56,8 +64,8 @@ public class ModalService {
                     .append("</div>")
                     .append("</td>")
                     .append("<td>")
-                    .append("<select class=\"form-select\" aria-label=\"Grade\">")
-                    .append(generateGradeOptions(Integer.parseInt(student[3])))
+                    .append("<select class=\"form-select\" aria-label=\"Grade\" data-grade=\"").append(student.getNote()).append("\">")
+                    .append(generateGradeOptions((int) student.getNote()))
                     .append("</select>")
                     .append("</td>")
                     .append("</tr>");
@@ -67,6 +75,7 @@ public class ModalService {
 
         return html.toString();
     }
+
 
 
     public String generateGradeOptions(int selectedGrade) {

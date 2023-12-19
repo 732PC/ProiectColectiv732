@@ -24,7 +24,11 @@
       </table>
     </div>
     <div class="modal-footer" style="border-top: none;">
-      <button type="button" class="btn modal-save-orange-btn w-25" id="saveChangesBtn">Save</button>
+      <button type="button" class="btn modal-save-orange-btn w-25" id="saveChangesBtn"
+              hx-post="http://localhost:8080/attendance/studentCourses"
+              hx-swap="outerHTML"
+              hx-vals=".attendances-modal-table :input">Save</button>
+
     </div>
   </div>
 </div>

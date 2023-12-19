@@ -1,8 +1,10 @@
 package org.example.controller;
 
 import org.example.model.Course;
+import org.example.model.StudentCourse;
 import org.example.service.CourseService;
 import org.example.service.ModalService;
+import org.example.service.StudentCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,11 +19,14 @@ public class ModalController {
 
     private final ModalService modalService;
     private final CourseService courseService;
+    private final StudentCourseService studentCourseService;
 
     @Autowired
-    public ModalController(ModalService modalService, CourseService courseService) {
+    public ModalController(ModalService modalService, CourseService courseService,
+                           StudentCourseService studentCourseService) {
         this.modalService = modalService;
         this.courseService = courseService;
+        this.studentCourseService = studentCourseService;
     }
 
     @GetMapping("/attendances-modal-content")
@@ -31,13 +36,7 @@ public class ModalController {
         String courseTitle = course.getName();
         String professorName = courseService.getProfessorFromCourse(course).getLastname();
 
-        List<String[]> students = List.of(
-                new String[]{"John", "Doe", "true", "1"},
-                new String[]{"Jane", "Smith", "false", "10"},
-                new String[]{"John", "Doe", "true", "8"},
-                new String[]{"Jane", "Smith", "false", "6"},
-                new String[]{"Jane", "Smith", "true", "1"}
-        );
+        List<StudentCourse> students = studentCourseService.getAllById(courseId);
 
         return modalService.generateModalContent(courseTitle, professorName, students);
     }

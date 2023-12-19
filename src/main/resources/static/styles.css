@@ -150,3 +150,7 @@ button:hover {
     --bs-table-color: white !important;
     --bs-table-bg: #3D5A80 !important;
 }
+
+.hidden-input {
+    display: none;
+}
