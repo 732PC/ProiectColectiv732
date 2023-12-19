@@ -2,7 +2,9 @@ package org.example.controller;
 
 //import org.example.exception.BusinessException;
 //import org.example.exception.BusinessExceptionCode;
+
 import org.example.model.Course;
+import org.example.model.User;
 import org.example.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,8 @@ public class CourseController {
     private final CourseService courseService;
 
     @Autowired
-    public CourseController(CourseService courseService){
-        this.courseService=courseService;
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
     }
 
     @PostMapping("/register")
@@ -30,25 +32,36 @@ public class CourseController {
 //        if(savedCourse==null)
 //            throw new BusinessException(BusinessExceptionCode.INVALID_COURSE);
 //        else
-            return new ResponseEntity<>(savedCourse, HttpStatus.OK);
+        return new ResponseEntity<>(savedCourse, HttpStatus.OK);
     }
+
+//    @PostMapping(value = "/register")
+//    public ResponseEntity<String> saveUser(@RequestParam String firstname, @RequestParam String lastname, @RequestParam String email, @RequestParam String password, @RequestParam ERole role) {
+//        User userToSave = new User(firstname, lastname, email, password, role);
+//        User savedUser = this.userService.saveUser(userToSave);
+//        if (savedUser == null) {
+//            return new ResponseEntity<>("Invalid user", HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>("User successfully created", HttpStatus.OK);
+//        }
+//    }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Course>> getAllCourses(){
-        List<Course> courses=courseService.getAllCourses();
-        return new ResponseEntity<>(courses,HttpStatus.OK);
+    public ResponseEntity<String> getAllCourses() {
+        String courses = courseService.getAllCourses();
+        return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
-    @PostMapping("/courses")
-    public String listAllCourses(Model model){
-        List<Course> courses=courseService.getAllCourses();
-        model.addAttribute("courses",courses);
-        return "courses";
-    }
+//    @PostMapping("/courses")
+//    public String listAllCourses(Model model) {
+//        String courses = courseService.getAllCourses();
+//        model.addAttribute("courses", courses);
+//        return "courses";
+//    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseById(@PathVariable int id){
-        Course course=courseService.getCourseById(id);
+    public ResponseEntity<Course> getCourseById(@PathVariable int id) {
+        Course course = courseService.getCourseById(id);
         if (course != null) {
             return new ResponseEntity<>(course, HttpStatus.OK);
         } else {

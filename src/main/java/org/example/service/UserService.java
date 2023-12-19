@@ -9,14 +9,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    //private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -26,7 +24,7 @@ public class UserService {
     public User saveUser(User user){
         if(validatePassword(user.getPassword()) && validateEmail(user.getEmail())
                 && validateNames(user.getFirstname()) && validateNames(user.getLastname())){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            //user.setPassword(passwordEncoder.encode(user.getPassword()));
             return this.userRepository.save(user);
         }
 

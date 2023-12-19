@@ -222,8 +222,12 @@
     <h1>Courses Page</h1>
 </header>
 
-<div id="white-rectangle" hx-post="/api/members" hx-trigger="load">
+<div id="white-rectangle" >
     <button class="add-course-button" onclick="showAddCourseForm()">Add Course</button>
+    <div id="courses-listed" hx-get="/courses/all" hx-trigger="load" hx-target="#courses-listed">
+
+
+    </div>
 </div>
 <div id="edit-course" style="display: none;">
     <h2>Edit Course</h2>
@@ -344,7 +348,7 @@
     }
 
     function createCourseBox(CourseData){
-        const courseBox=document.createElement('div');
+        const courseBox=document.createElement('div ');
         courseBox.classList.add('courseBox');
         courseBox.id= CourseData.id;
         const content=`
@@ -482,6 +486,6 @@
     function showAlert(message) {
         alert(message);
     }
-
+    fetchCourses();
 </script>
 </html>
