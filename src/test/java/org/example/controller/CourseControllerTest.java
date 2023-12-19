@@ -101,23 +101,6 @@ public class CourseControllerTest {
 
     }
 
-
-//    @Test
-//    void addCourseMaterial() throws Exception {
-//        CourseMaterialResponse response = new CourseMaterialResponse();
-//        response.setMaterialId(1L);
-//        Course course = new Course();
-//        course.setCourseID(1);
-//        CourseMaterial courseMaterial = new CourseMaterial(1L, "test", "test", null);
-//        when(courseService.addCourseMaterial(any(Integer.class), any(String.class), any(String.class))).
-//                thenReturn(response);
-//
-//        ResponseEntity<?> responseEntity = courseController.addCourseMaterial()
-//
-//        mockMvc.perform(post("/courses/1/course-materials").contentType(MediaType.APPLICATION_JSON).
-//                content(new ObjectMapper().writeValueAsString(courseMaterial))).andExpect(status().isCreated());
-//    }
-
     @Test
     public void addCourseMaterialTest() throws Exception {
         Integer courseId = 1;
@@ -176,11 +159,6 @@ public class CourseControllerTest {
         ResponseEntity<?> result1 = courseController.addCourseMaterial(courseId, requestBody);
         assertEquals(HttpStatus.OK, result1.getStatusCode());
         assertEquals("Course material added successfully but email was not sent", result1.getBody());
-    }
-
-
-    @Test
-    void deleteCourseMaterial() {
     }
 }
 
