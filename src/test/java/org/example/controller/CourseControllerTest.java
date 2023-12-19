@@ -2,6 +2,7 @@ package org.example.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.example.model.*;
 import org.example.service.CourseService;
 import org.example.service.EmailService;
@@ -21,13 +22,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -120,23 +121,61 @@ public class CourseControllerTest {
     @Test
     public void addCourseMaterialTest() throws Exception {
         Integer courseId = 1;
+        Course course = new Course();
+        course.setName("name");
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("content", "content");
+        requestBody.put("title", "title");
+        requestBody.put("course", "null");
+        ArrayList<String> studMails = new ArrayList<>();
+        studMails.add("test@test.com");
+
+        when(courseService.addCourseMaterial(courseId, "content", "title")).thenReturn(new CourseMaterialResponse());
+
+        when(courseService.getCourseById(any(Integer.class))).thenReturn(Optional.of(course));
+        when(emailService.configureEmailTemplateCourseMaterials(any(String.class), any(String.class))).thenReturn("test");
+        when(courseService.getStudentEmailsByCourse(any(Integer.class))).thenReturn(studMails);
+        doNothing().when(emailService).sendEmailFromTemplate(any(String.class), any(String.class), any(String.class));
+
+        ResponseEntity<?> result = courseController.addCourseMaterial(courseId, requestBody);
+
+        verify(emailService, times(1)).sendEmailFromTemplate("test@test.com", "New Course Material Loaded", "test");
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        verify(courseService, times(1)).addCourseMaterial(courseId, "content", "title");
+    }
+
+
+    @Test
+    public void addCourseMaterialTestThrowsEntityNotFoundException() {
+        Integer courseId = 1;
+        Course course = new Course();
+        course.setName("name");
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("content", "content");
         requestBody.put("title", "title");
         requestBody.put("course", "null");
 
-        when(courseService.addCourseMaterial(courseId, "content", "title")).thenReturn(new CourseMaterialResponse());
-
-        when(courseService.getCourseById(any(Integer.class))).thenReturn(Optional.of(new Course()));
-        when(emailService.configureEmailTemplateCourseMaterials(any(String.class), any(String.class))).thenReturn("test");
-        when(courseService.getStudentEmailsByCourse(any(Integer.class))).thenReturn(new ArrayList<>());
-        doNothing().when(emailService).sendEmailFromTemplate(any(String.class), any(String.class), any(String.class));
-
+        when(courseService.getCourseById(any(Integer.class))).thenReturn(Optional.empty());
         ResponseEntity<?> result = courseController.addCourseMaterial(courseId, requestBody);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
 
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertNotNull(result.getBody());
-        verify(courseService, times(1)).addCourseMaterial(courseId, "content", "title");
+    @Test
+    public void addCourseMaterialThrowsFileNotFoundException() throws Exception {
+        Integer courseId = 1;
+        Course course = new Course();
+        course.setName("name");
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("content", "content");
+        requestBody.put("title", "title");
+        requestBody.put("course", "null");
+
+        when(courseService.getCourseById(any(Integer.class))).thenReturn(Optional.of(course));
+        when(emailService.configureEmailTemplateCourseMaterials(any(String.class), any(String.class))).thenThrow(new FileNotFoundException());
+        ResponseEntity<?> result1 = courseController.addCourseMaterial(courseId, requestBody);
+        assertEquals(HttpStatus.OK, result1.getStatusCode());
+        assertEquals("Course material added successfully but email was not sent", result1.getBody());
     }
 
 

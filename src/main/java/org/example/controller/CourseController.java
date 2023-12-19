@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -64,9 +65,9 @@ public class CourseController {
         String content = requestBody.get("content");
         String title = requestBody.get("title");
         try {
-            courseService.addCourseMaterial(id, content, title);
             Optional<Course> courseOptional = courseService.getCourseById(id);
             if (courseOptional.isPresent()) {
+                courseService.addCourseMaterial(id, content, title);
                 Course course = courseOptional.get();
                 String courseName = course.getName();
                 String emailContent = emailService.configureEmailTemplateCourseMaterials(courseName, title);
@@ -78,10 +79,8 @@ public class CourseController {
             } else throw (new EntityNotFoundException());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (FileNotFoundException e) {
+            return ResponseEntity.ok("Course material added successfully but email was not sent");
         }
     }
 
