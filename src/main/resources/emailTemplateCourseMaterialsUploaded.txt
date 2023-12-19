@@ -3,7 +3,7 @@
 <br><br>
 <body>
 Dear student, <br><br>
-New course materials for course {courseName} have been uploaded.
+A new course material "{materialTitle}" for the {courseName} course has been uploaded.
 <br><br> UBB Class Management Team
 </body>
 </html>

@@ -1,7 +1,6 @@
 package org.example.service;
 
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -37,11 +36,12 @@ public class EmailService {
         return template;
     }
 
-    public String configureEmailTemplateCourseMaterials(String courseName)
+    public String configureEmailTemplateCourseMaterials(String courseName, String materialTitle)
             throws FileNotFoundException {
         File file = ResourceUtils.getFile("classpath:emailTemplateCourseMaterialsUploaded.txt");
         String template = readFile(file.getPath());
         template = template.replace("{courseName}", courseName);
+        template = template.replace("{materialTitle}", materialTitle);
         return template;
     }
 

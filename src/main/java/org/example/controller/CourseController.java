@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/courses")
@@ -63,16 +64,18 @@ public class CourseController {
         String content = requestBody.get("content");
         String title = requestBody.get("title");
         try {
-
             courseService.addCourseMaterial(id, content, title);
-            String courseName = courseService.getCourseById(id).get().getName();
-            String emailContent = emailService.configureEmailTemplateCourseMaterials(courseName);
-            List<String> studMails = courseService.getStudentEmailsByCourse(id);
-            for (String mail : studMails) {
-                emailService.sendEmailFromTemplate(mail, "New Course Material Loaded", emailContent);
-            }
-
-            return ResponseEntity.ok("Course material added successfully");
+            Optional<Course> courseOptional = courseService.getCourseById(id);
+            if (courseOptional.isPresent()) {
+                Course course = courseOptional.get();
+                String courseName = course.getName();
+                String emailContent = emailService.configureEmailTemplateCourseMaterials(courseName, title);
+                List<String> studMails = courseService.getStudentEmailsByCourse(id);
+                for (String mail : studMails) {
+                    emailService.sendEmailFromTemplate(mail, "New Course Material Loaded", emailContent);
+                }
+                return ResponseEntity.ok("Course material added successfully");
+            } else throw (new EntityNotFoundException());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalArgumentException e) {
