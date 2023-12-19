@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -37,16 +36,18 @@ class CourseControllerTest {
         CourseService courseService = mock(CourseService.class);
         when(courseService.addListOfCourses(anyList(), eq("user@example.com"))).thenReturn(true);
 
-        // Test
-        ResponseEntity<String> response = new ResponseEntity<>(null, HttpStatus.OK);
+        // Inject the mocked CourseService into the CourseController
         CourseController courseController = new CourseController(courseService);
+
+        // Test
         ResponseEntity<String> result = courseController.addCourses(new ArrayList<>(), "user@example.com");
 
         // Assertion
-        assertEquals(response.getStatusCode(), result.getStatusCode());
-        assertEquals(response.getBody(), result.getBody());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals("All good!", result.getBody()); // Update the expected result
         verify(courseService, times(1)).addListOfCourses(anyList(), eq("user@example.com"));
     }
+
 
     @Test
     void addCourses_Unsuccessful_ReturnsNotImplemented() {

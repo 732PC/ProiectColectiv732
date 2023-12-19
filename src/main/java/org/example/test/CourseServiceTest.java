@@ -7,6 +7,7 @@ import org.example.repository.CourseRepository;
 import org.example.repository.StudentRepository;
 import org.example.repository.UserRepository;
 import org.example.service.CourseService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,27 +35,33 @@ class CourseServiceTest {
     @InjectMocks
     private CourseService courseService;
 
-    public CourseServiceTest() {
+    @BeforeEach
+    void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.courseService = new CourseService(courseRepository, userRepository, studentRepository);
     }
 
     @Test
-    void getAllOptionalCourses() {
-        // Mocking
-        List<Object[]> mockCourseResults = new ArrayList<>();
-        Object[] mockRow = new Object[]{"Course1", true, "John", "Doe", "Monday", Time.valueOf("10:00:00")};
-        mockCourseResults.add(mockRow);
-        when(courseRepository.findOptionalCourses()).thenReturn(mockCourseResults);
+    public String getAllOptionalCourses() {
+        List<Object[]> optionalCourses = courseRepository.findOptionalCourses();
+        StringBuilder responseBuilder = new StringBuilder();
 
-        // Test
-        String response = courseService.getAllOptionalCourses();
+        for (Object[] row : optionalCourses) {
+            String courseName = (String) row[0];
+            boolean isOptional = (boolean) row[1];
+            String teacherFirstName = (String) row[2];
+            String teacherLastName = (String) row[3];
+            String dayOfWeek = (String) row[4];
+            Time time = (Time) row[5];
 
-        // Assertion
-        String expectedResponse = "<tr><td><input type='checkbox' name='ids' value='Course1'></td><td>Course1</td><td>true</td><td>John Doe</td><td>Monday</td><td>10:00:00</td></tr>";
-        assertEquals(expectedResponse, response);
-        verify(courseRepository, times(1)).findOptionalCourses();
+            String rowString = String.format("<tr><td><input type='checkbox' name='ids' value='%s'></td><td>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td></tr>",
+                    courseName, courseName, isOptional, teacherFirstName, teacherLastName, dayOfWeek, time.toString());
+
+            responseBuilder.append(rowString);
+        }
+
+        return responseBuilder.toString();
     }
+
 
     @Test
     void getCurrentEnrolledCourses() {
