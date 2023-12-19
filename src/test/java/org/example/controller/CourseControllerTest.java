@@ -5,6 +5,7 @@ import org.example.model.Course;
 import org.example.model.Professors;
 import org.example.model.Students;
 import org.example.service.CourseService;
+import org.example.service.EmailService;
 import org.example.service.ProfessorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +46,8 @@ public class CourseControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private CourseService courseService;
+    @MockBean
+    private EmailService emailService;
 
     @BeforeEach
     void setUp() {
