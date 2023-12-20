@@ -22,24 +22,28 @@ public class StudentCourseService {
         return studentCourseRepository.findAllByCourse_CourseID(courseId);
     }
 
-    public StudentCourse addNote(int studentId, int courseId, double nota){
-        if(nota > 0 && nota <= 10) {
-            StudentCourse studentCourse = studentCourseRepository.findByCourseCourseIDAndStudentStudentID(studentId, courseId);
-            if(studentCourse != null) {
-                studentCourse.setNote(nota);
-                return studentCourseRepository.save(studentCourse);
-            }
+    public StudentCourse addNote(int studentId, int courseId, double nota) {
+        StudentCourse studentCourse = studentCourseRepository
+                .findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(studentId, courseId);
+
+        if (studentCourse == null) {
+            return null;
+        } else {
+            studentCourse.setNote(nota);
+            return studentCourseRepository.save(studentCourse);
         }
-        return null;
     }
 
-    public StudentCourse addAttendance(int studentId, int courseId, Attendance attendance){
-        StudentCourse studentCourse = studentCourseRepository.findByCourseCourseIDAndStudentStudentID(studentId, courseId);
 
-        if(studentCourse != null) {
+    public StudentCourse addAttendance(int studentId, int courseId, Attendance attendance){
+        StudentCourse studentCourse = studentCourseRepository
+                .findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(studentId, courseId);
+
+        if (studentCourse == null) {
+            return null;
+        } else {
             studentCourse.setAttendance(attendance);
             return studentCourseRepository.save(studentCourse);
         }
-        return null;
     }
 }

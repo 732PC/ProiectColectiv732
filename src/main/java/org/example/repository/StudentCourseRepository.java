@@ -12,4 +12,6 @@ public interface StudentCourseRepository extends JpaRepository<StudentCourse, In
     List<StudentCourse> findAllByCourse_CourseID(int courseId);
 
     StudentCourse findByCourseCourseIDAndStudentStudentID(int studentFk, int courseId);
+
+    StudentCourse findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(int studentId, int courseId);
 }

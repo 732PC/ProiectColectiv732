@@ -24,11 +24,34 @@
       </table>
     </div>
     <div class="modal-footer" style="border-top: none;">
-      <button type="button" class="btn modal-save-orange-btn w-25" id="saveChangesBtn"
-              hx-post="http://localhost:8080/attendance/studentCourses"
-              hx-swap="outerHTML"
-              hx-vals=".attendances-modal-table :input">Save</button>
-
+      <button type="button" data-bs-dismiss="modal" class="btn modal-save-orange-btn w-25" id="saveChangesBtn">
+        Save
+      </button>
     </div>
   </div>
 </div>
+
+<script>
+  function updateFormattedData() {
+    const formData = [...document.querySelectorAll('.attendances-modal-table tbody tr')].map(row => ({
+      studentId: parseInt(row.querySelector('[name="studentId"]').value),
+      courseId: parseInt(row.querySelector('[name="courseId"]').value),
+      attendance: row.querySelector('[data-attendance]').checked,
+      grade: parseInt(row.querySelector('[data-grade]').value)
+    }));
+
+    console.log(JSON.stringify(formData));
+
+    fetch('http://localhost:8080/attendance/studentCourses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+  }
+
+  document.getElementById('saveChangesBtn').addEventListener('click', function () {
+    updateFormattedData();
+  });
+</script>

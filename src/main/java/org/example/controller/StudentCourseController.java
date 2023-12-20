@@ -3,9 +3,11 @@ package org.example.controller;
 
 import org.example.model.Attendance;
 import org.example.model.StudentCourse;
+import org.example.model.StudentCourseRequestDTO;
 import org.example.service.StudentCourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,18 +35,21 @@ public class StudentCourseController {
     }
 
     @PostMapping("/studentCourses")
-    public ResponseEntity<StudentCourse> updateNotaAndAttendances(@RequestParam int studentId,
-                                                                  @RequestParam int courseId,
-                                                                  @RequestParam double nota,
-                                                                  @RequestParam Attendance attendance) {
-        this.studentCourseService.addNote(studentId, courseId, nota);
-        StudentCourse updatedStudentCourse = this.studentCourseService.addAttendance(studentId, courseId, attendance);
+    public ResponseEntity<?> updateNotaAndAttendances(@RequestBody List<StudentCourseRequestDTO> studentCourseRequestDTOS) {
+        for(StudentCourseRequestDTO studentCourse : studentCourseRequestDTOS){
+            this.studentCourseService.addNote(studentCourse.getStudentId(), studentCourse.getCourseId(),
+                    studentCourse.getGrade());
 
-        if (updatedStudentCourse == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(updatedStudentCourse, HttpStatus.OK);
+            if(studentCourse.isAttendance()){
+                this.studentCourseService.addAttendance(studentCourse.getStudentId(),
+                        studentCourse.getCourseId(), Attendance.PRZ);
+            }
+            else {
+                this.studentCourseService.addAttendance(studentCourse.getStudentId(),
+                        studentCourse.getCourseId(), Attendance.ABS);
+            }
         }
-    }
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
