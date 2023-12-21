@@ -42,7 +42,7 @@ class StudentCourseServiceTest {
         StudentCourse existingStudentCourse = new StudentCourse();
         existingStudentCourse.setNote(8.0);
 
-        when(studentCourseRepository.findByCourseCourseIDAndStudentStudentID(1, 1))
+        when(studentCourseRepository.findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(1, 1))
                 .thenReturn(existingStudentCourse);
         when(studentCourseRepository.save(existingStudentCourse)).thenReturn(existingStudentCourse);
 
@@ -50,7 +50,7 @@ class StudentCourseServiceTest {
 
         assertNotNull(result);
         assertEquals(9.5, result.getNote());
-        verify(studentCourseRepository, times(1)).findByCourseCourseIDAndStudentStudentID(1, 1);
+        verify(studentCourseRepository, times(1)).findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(1, 1);
         verify(studentCourseRepository, times(1)).save(existingStudentCourse);
     }
 
@@ -66,13 +66,13 @@ class StudentCourseServiceTest {
     @Test
     void addNote_NonExistingStudentCourse_ReturnsNull() {
 
-        when(studentCourseRepository.findByCourseCourseIDAndStudentStudentID(1, 1))
+        when(studentCourseRepository.findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(1, 1))
                 .thenReturn(null);
 
         StudentCourse result = studentCourseService.addNote(1, 1, 9.5);
 
         assertNull(result);
-        verify(studentCourseRepository, times(1)).findByCourseCourseIDAndStudentStudentID(1, 1);
+        verify(studentCourseRepository, times(1)).findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(1, 1);
         verify(studentCourseRepository, never()).save(any());
     }
 
@@ -81,7 +81,7 @@ class StudentCourseServiceTest {
 
         StudentCourse existingStudentCourse = new StudentCourse();
 
-        when(studentCourseRepository.findByCourseCourseIDAndStudentStudentID(1, 1))
+        when(studentCourseRepository.findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(1, 1))
                 .thenReturn(existingStudentCourse);
         when(studentCourseRepository.save(existingStudentCourse)).thenReturn(existingStudentCourse);
 
@@ -89,20 +89,20 @@ class StudentCourseServiceTest {
 
         assertNotNull(result);
         assertEquals(Attendance.PRZ, result.getAttendance());
-        verify(studentCourseRepository, times(1)).findByCourseCourseIDAndStudentStudentID(1, 1);
+        verify(studentCourseRepository, times(1)).findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(1, 1);
         verify(studentCourseRepository, times(1)).save(existingStudentCourse);
     }
 
     @Test
     void addAttendance_NonExistingStudentCourse_ReturnsNull() {
 
-        when(studentCourseRepository.findByCourseCourseIDAndStudentStudentID(1, 1))
+        when(studentCourseRepository.findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(1, 1))
                 .thenReturn(null);
 
         StudentCourse result = studentCourseService.addAttendance(1, 1, Attendance.PRZ);
 
         assertNull(result);
-        verify(studentCourseRepository, times(1)).findByCourseCourseIDAndStudentStudentID(1, 1);
+        verify(studentCourseRepository, times(1)).findByStudentCourseID_StudentIDAndStudentCourseID_CourseID(1, 1);
         verify(studentCourseRepository, never()).save(any());
     }
 }
