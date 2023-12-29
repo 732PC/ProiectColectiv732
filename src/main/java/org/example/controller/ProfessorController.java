@@ -77,4 +77,16 @@ public class ProfessorController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProfessor(@PathVariable Integer id, @RequestBody Professors professor) {
+        try {
+            professorService.updateProfessor(id, professor);
+            return ResponseEntity.noContent().build();
+        }
+         catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }

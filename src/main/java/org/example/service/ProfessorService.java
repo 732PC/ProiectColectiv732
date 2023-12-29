@@ -38,4 +38,12 @@ public class ProfessorService {
     }
 
 
+    public void updateProfessor(Integer id, Professors professor) throws EntityNotFoundException {
+        if (professorRepository.findById(id).isPresent()) {
+            professor.setProfessorID(id);
+            professorRepository.save(professor);
+        } else {
+            throw new EntityNotFoundException("prof with id " + id + " has not been found");
+        }
+    }
 }

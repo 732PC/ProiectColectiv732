@@ -29,6 +29,9 @@ public class Professors {
     @Column(name = "role", length = 15)
     private ERole role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "country")
+    private Countries country;
 
     @Column(name = "email")
     private String email;
