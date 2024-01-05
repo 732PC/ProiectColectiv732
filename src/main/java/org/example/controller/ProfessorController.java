@@ -17,6 +17,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/professors")
+@CrossOrigin(origins = "http://localhost:8080")
 public class ProfessorController {
     @Autowired
     private ProfessorService professorService;
@@ -33,21 +34,13 @@ public class ProfessorController {
             Set<Course> courses = professor.getCourses();
             String professorFirstName = professor.getFirstname();
             String professorLastName = professor.getLastname();
-
             ProfessorCourseResponseDTO response = new ProfessorCourseResponseDTO();
-
             response.setLastName(professorLastName);
             response.setFirstName(professorFirstName);
             response.setCourses(courses != null ? courses : Collections.emptySet());
-
-
             return ResponseEntity.ok(response);
-
-
         } else return ResponseEntity.notFound().build();
-
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Professors> getProfessorById(@PathVariable Integer id) {
@@ -60,10 +53,8 @@ public class ProfessorController {
         {
             Professors addedProfessor = professorService.addProfessor(professor);
             return ResponseEntity.status(HttpStatus.CREATED).body(addedProfessor);
-
         }
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProfessor(@PathVariable Integer id) {

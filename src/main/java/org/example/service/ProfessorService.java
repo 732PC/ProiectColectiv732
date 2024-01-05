@@ -2,6 +2,7 @@ package org.example.service;
 
 
 import jakarta.persistence.EntityNotFoundException;
+import org.example.model.ERole;
 import org.example.model.Professors;
 import org.example.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,6 @@ public class ProfessorService {
             return true;
         } else throw new EntityNotFoundException("prof with id " + Id + " has not been found");
     }
-
 
     public void updateProfessor(Integer id, Professors professor) throws EntityNotFoundException {
         if (professorRepository.findById(id).isPresent()) {

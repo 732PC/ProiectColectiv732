@@ -27,12 +27,14 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<Students> getStudentById(@PathVariable Integer id){
         Students student = studentService.getStudentById(id).orElse(null);
         return (student!=null) ? ResponseEntity.ok(student):ResponseEntity.notFound().build();
-
     }
+
+
     @GetMapping("/{id}/courses")
     public ResponseEntity<Set<StudentCourse>> getCoursesForStudent(@PathVariable Integer id) {
         Students student = studentService.getStudentById(id).orElse(null);
@@ -61,7 +63,6 @@ public class StudentController {
     }
 
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStudent(@PathVariable Integer id) {
         try {
@@ -73,7 +74,6 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
 
 
 }
