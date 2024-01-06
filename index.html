@@ -1,11 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>HTMX-Demo</title>
+    <link rel="stylesheet" href="ui.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Allocation</title>
+    <script src="https://unpkg.com/htmx.org@1.6.1/dist/htmx.js"></script>
 </head>
-
 <body>
-WOW
-</body>
+    <div class="header">
+        <div class="logo-container">
+            <span class="ubb">UBB</span>
+            <span class="oard">oard</span>
+        </div>
+        <div class="button-container-menu">
+            <button class="button">Membrii</button>
+            <button class="button">Cursuri</button>
+            <button class="button">Contul meu</button>
+        </div>
+    </div>
+    <div class="overlay">
+        <h1 class="text" >Course Allocation</h1>
 
+        <label class="text" for="yearSelect">Select Year of Study:</label>
+        <select id="yearSelect" hx-trigger="change" hx-get="/course-allocation/getStudyYears" hx-target="#yearSelect">
+        </select>
+
+        <button hx-post="/course-allocation/assign-courses-for-study-year" hx-trigger="click" hx-target="#allocatedCourses">
+            Allocate Courses
+        </button>
+
+        <div id="allocatedCourses" hx-trigger="load" hx-get="/course-allocation/assign-courses-for-study-year?studyYear=${value}">
+
+        </div>
+    </div>
+</body>
 </html>
