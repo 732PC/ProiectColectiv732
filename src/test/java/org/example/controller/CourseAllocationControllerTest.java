@@ -1,4 +1,4 @@
-package org.example.controller.controller;
+package org.example.controller;
 
 import org.example.controller.CourseAllocationController;
 import org.example.service.EnrollmentService;

@@ -1,4 +1,4 @@
-package org.example.controller.service;
+package org.example.service;
 
 import org.example.model.Course;
 import org.example.model.Students;
