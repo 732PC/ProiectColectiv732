@@ -42,5 +42,19 @@ class CourseAllocationControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Courses assigned successfully for the specified study year", responseEntity.getBody());
     }
+
+    @Test
+    void testAssignCoursesAutomatically() {
+
+        doNothing().when(enrollmentService).assignRequiredCoursesToStudentAutomatically();
+
+
+        ResponseEntity<String> responseEntity = controller.assignCoursesAutomatically();
+
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Courses assigned automatically for the specified study year", responseEntity.getBody());
+    }
+
 }
 
