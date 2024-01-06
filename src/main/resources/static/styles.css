@@ -149,8 +149,15 @@ button:hover {
 .attendances-modal-table {
     --bs-table-color: white !important;
     --bs-table-bg: #3D5A80 !important;
+    text-align: start;
 }
+
+
 
 .hidden-input {
     display: none;
 }
+
+
+
+
