@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignIn</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://kit.fontawesome.com/3c8aef11b9.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.7.0/dist/htmx.js"></script>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="left-container">
+            <div class="login-details">
+                <img alt=" " th:src="@{book-stack.svg}" />
+
+                <details class="login-directions-summary">
+                    <summary>Login directions</summary>
+                    <div class="login-directions-content">
+                        <div style="border-right: 1px solid white; flex: 1; padding: 2px;">
+                            <p class="login-directions-title">For Teachers:</p>
+                            <p class="login-directions-text">Lorem ipsum lorem ipsum lorem ipsum</p>
+                        </div>
+                        <div style="flex: 1;">
+                            <p class="login-directions-title" style="padding-left: 1rem;">For Students:</p>
+                            <p class="login-directions-text" style="padding-left: 1rem;">asdasf asfasf afasf asdasf asfasf afasf asdasf asfasf afasf asdasf asfasf afasf</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="right-container">
+            <div class="login-container">
+                <div class="title">
+                    <p class="login-title"><span style="color: #EE6C4D">UBB</span>oard</p>
+                    <p class="login-subtitle">Your Virtual Course Catalog</p>
+                </div>
+                <form class="login-form" name="sign-in" hx-post="http://localhost:8080/users/login" hx-target="#login-message">
+                    <label>
+                        <input class="form-group" name="email" type="text" placeholder="E-mail">
+                    </label>
+
+                    <label>
+                        <input class="form-group" name="password" type="password" placeholder="Password">
+                    </label>
+
+                    <div class="login-bottom-options">
+                        <p style="display: none; color: red;">Incorrect username or password.</p>
+                        <a href="" class="forgot-password">Forgot your password?</a>
+                    </div>
+
+                    <input class="button" type="submit" value="LOG IN">
+                </form>
+            </div>
+        </div>
+    </div>
+
+<div id="login-message"></div>
+
+</body>
+</html>

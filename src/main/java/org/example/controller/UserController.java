@@ -40,10 +40,12 @@ public class UserController {
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add("HX-REDIRECT","home");
+        headers.add(HttpHeaders.SET_COOKIE,"myToken=audbsadus332432; Path=/;");
+
         if(this.userService.loginUser(new LoginUserRequestDTO(email, password))==null){
             return new ResponseEntity<>("Invalid credentials", HttpStatus.OK);
     }else{
-            return new ResponseEntity<>("Login succesfully",headers, HttpStatus.OK);
+            return new ResponseEntity<>("Login succesfully", headers, HttpStatus.OK);
         }
     }
 }
