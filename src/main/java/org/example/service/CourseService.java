@@ -1,6 +1,7 @@
 package org.example.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.example.model.Course;
 import org.example.model.Professors;
 import org.example.model.Students;
@@ -13,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.sql.Time;
+import java.util.*;
 
 @Service
 public class CourseService {
@@ -93,6 +92,74 @@ public class CourseService {
             studMails.add(x.getStudent().getEmail());
         }
         return studMails;
+    }
+
+    public String getAllOptionalCourses(){
+
+        List<Object[]> courseResults = this.courseRepository.findOptionalCourses();
+        String response = "<tr>\n" +
+                "                    <th>Select</th>\n" +
+                "                    <th>Course Name</th>\n" +
+                "                    <th>Optional</th>\n" +
+                "                    <th>Teacher</th>\n" +
+                "                    <th>Day of Week</th>\n" +
+                "                    <th>Time</th>\n" +
+                "                </tr>";
+
+        for(Object[] row: courseResults){
+            String courseName = (String) row[0];
+            String isOptional = (String) row[1];
+            String firstname = (String) row[2];
+            String lastname = (String) row[3];
+            response = response + "<tr>"+
+                    "<td><input type='checkbox' name='ids' value='" + courseName + "'></td>" +
+                    "<td>" + courseName + "</td>" +
+                    "<td>" + isOptional + "</td>" +
+                    "<td>" + firstname + " " + lastname + "</td>" +
+                    "</tr>";
+        }
+        return response;
+    }
+
+    public String getCurrentEnrolledCourses(String email){
+
+        List<Object[]> courseResults = this.courseRepository.findEnrolledCoursesOfStudent(email);
+        String response = "";
+
+        for(Object[] row: courseResults){
+            String courseName = (String) row[0];
+            String isOptional = (String) row[1];
+            String firstname = (String) row[2];
+            String lastname = (String) row[3];
+            response = response + "<tr>"+
+                    "<td><input type='checkbox' name='ids' value='" + courseName + "'></td>" +
+                    "<td>" + courseName + "</td>" +
+                    "<td>" + isOptional + "</td>" +
+                    "<td>" + firstname + " " + lastname + "</td>" +
+                    "</tr>";
+        }
+        return response;
+    }
+
+    public boolean addListOfCourses(List<String> ids, String email){
+        Students student = this.studentRepository.findByEmail(email);
+        for (String id : ids) {
+            Course course = this.courseRepository.findByName(id);
+
+            StudentCourse studentCourse = new StudentCourse();
+            studentCourse.setCourse(course);
+            studentCourse.setStudent(student);
+            studentCourse.setAttendance(Attendance.ABS);
+            studentCourse.setNote(0);
+
+            student.getStudentCourses().add(studentCourse);
+            course.getStudentCourses().add(studentCourse);
+
+            this.courseRepository.saveAndFlush(course);
+            this.studentRepository.saveAndFlush(student);
+            this.studentCourseRepository.save(studentCourse);
+        }
+        return true;
     }
 }
 

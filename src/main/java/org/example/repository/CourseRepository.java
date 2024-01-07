@@ -7,8 +7,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CourseRepository extends JpaRepository<Course,Integer> {
     @Query("SELECT c.professor FROM Course c WHERE c.courseID = :courseId")
     Professors findProfessorByCourseId(@Param("courseId") Integer courseId);
+
+    @Query(value = "SELECT c.courseName, c.type, p.firstname, p.lastname " +
+            "FROM courses c " +
+            "JOIN professors p ON c.ProfessorID = p.professorID " +
+            "WHERE c.type = 'optional'", nativeQuery = true)
+    List<Object[]> findOptionalCourses();
+
+    @Query(value = "SELECT c.courseName, c.type, p.firstname, p.lastname " +
+            "FROM courses c " +
+            "JOIN professors p ON c.ProfessorID = p.professorID " +
+            "JOIN enrollments e ON e.curs_id = c.courseID " +
+            "JOIN students s ON e.student_id = s.studentID " +
+            "WHERE s.email = :email", nativeQuery = true)
+    List<Object[]> findEnrolledCoursesOfStudent(String email);
+
+
+    Course findByName(String name);
 }
