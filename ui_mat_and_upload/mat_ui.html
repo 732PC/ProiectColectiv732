@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="ui.css">
+    <title>vizListe</title>
+    <script src="https://unpkg.com/htmx.org@1.6.1/dist/htmx.min.js"></script>
+    <script>
+        src="script_ui.js"
+    </script>
+</head>
+
+<body>
+<div class="header">
+    <div class="logo-container">
+        <span class="ubb">UBB</span>
+        <span class="oard">oard</span>
+    </div>
+    <div class="button-container-menu">
+        <button class="button">Membrii</button>
+        <button class="button">Cursuri</button>
+        <button class="button">Contul meu</button>
+    </div>
+</div>
+<div class="overlay_mat">
+    <button id="backToCourses" class="back_button" onclick="closeMateriale()">inapoi la cursurile mele</button>
+    <div class="title-overlay">Materiale</div>
+    <button id="addMaterial" class="back_button" onclick="addMat()">↑ Adauga material</button> <!--📤-->
+    <div class="course-container">
+        <div class="course-window">
+            <div class="blue-ribbon"></div>
+            <div class="course-details">
+                <div class="title">Nume Material</div>
+                <div class="text">Descriere</div>
+            </div>
+        </div>
+        <div class="course-window">
+            <div class="blue-ribbon"></div>
+            <div class="course-details">
+                <div class="title">Nume Material</div>
+                <div class="text">Descriere</div>
+            </div>
+        </div>
+        <div class="course-window">
+            <div class="blue-ribbon"></div>
+            <div class="course-details">
+                <div class="title">Nume Material</div>
+                <div class="text">Descriere</div>
+            </div>
+        </div>
+        <div class="course-window">
+            <div class="blue-ribbon"></div>
+            <div class="course-details">
+                <div class="title">Nume Material</div>
+                <div class="text">Descriere</div>
+            </div>
+        </div>
+        <div class="course-window">
+            <div class="blue-ribbon"></div>
+            <div class="course-details">
+                <div class="title">Nume Material</div>
+                <div class="text">Descriere</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
