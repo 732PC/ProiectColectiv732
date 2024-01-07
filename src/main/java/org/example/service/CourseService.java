@@ -2,6 +2,8 @@ package org.example.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.example.model.Course;
+import org.example.model.Professors;
+import org.example.model.Students;
 import org.example.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,9 @@ public class CourseService {
         } else throw new EntityNotFoundException("Course with id " + Id + " has not been found");
     }
 
-
+    public Professors getProfessorFromCourse(Course course){
+        return courseRepository.findProfessorByCourseId(course.getCourseID());
+    }
 }
 
 

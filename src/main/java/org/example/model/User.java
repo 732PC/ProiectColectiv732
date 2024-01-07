@@ -8,6 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
+
 @Table(name = "users")
 public class User {
 

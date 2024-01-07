@@ -85,7 +85,7 @@ button:hover {
     display: inline-block;
 }
 
-/* Style the button that will be used to open and close the dropdown */
+
 .dropdown-button {
     padding: 10px;
     background-color: #3D5A80;
@@ -104,7 +104,7 @@ button:hover {
     color: #EE6C4D;
 }
 
-/* Style the dropdown content (hidden by default) */
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -113,7 +113,7 @@ button:hover {
     z-index: 1;
 }
 
-/* Style the dropdown links */
+
 .dropdown-content a {
     color: #FFFFFF;
     padding: 12px 16px;
@@ -121,13 +121,43 @@ button:hover {
     display: block;
 }
 
-/* Change color on hover */
+
 .dropdown-content a:hover {
     color: #EE6C4D;
 }
 
-/* Show the dropdown content when the dropdown button is hovered over */
 .dropdown:hover .dropdown-content,
 .dropdown-content:hover {
     display: block;
 }
+
+.modal-save-orange-btn {
+    background-color: #EE6C4D;
+    color: white;
+}
+
+.modal-save-orange-btn:hover {
+    background-color: #EE4D30;
+    color: white;
+}
+
+.attendances-modal {
+    background-color: #3D5A80 !important;
+    color: white;
+}
+
+.attendances-modal-table {
+    --bs-table-color: white !important;
+    --bs-table-bg: #3D5A80 !important;
+    text-align: start;
+}
+
+
+
+.hidden-input {
+    display: none;
+}
+
+
+
+

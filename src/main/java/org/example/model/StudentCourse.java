@@ -32,6 +32,10 @@ public class StudentCourse {
     @Transient
     private String professorLastName;
 
+    @Column(name = "attendance")
+    @Enumerated(EnumType.STRING)
+    private Attendance attendance;
+
     @PostLoad
     private void onLoad() {
         if (course != null && course.getProfessor() != null) {
