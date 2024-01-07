@@ -1,0 +1,57 @@
+<div class="modal-dialog modal-dialog-centered modal-xl" style="margin: 0;">
+  <div class="modal-content attendances-modal">
+    <div class="modal-body">
+      <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      <div class="text-center">
+        <h5 class="modal-title mx-auto">{courseTitle}</h5>
+      </div>
+
+      <div class="text-center" style="margin-bottom: 35px;">
+        <h6 class="modal-title mx-auto">Prof.  {professorName}</h6>
+      </div>
+
+      <table class="table attendances-modal-table">
+        <thead>
+        <tr>
+          <th>Last name</th>
+          <th>First name</th>
+          <th>Attendance</th>
+          <th>Grade</th>
+        </tr>
+        </thead>
+        {studentList}
+      </table>
+    </div>
+    <div class="modal-footer" style="border-top: none;">
+      <button type="button" data-bs-dismiss="modal" class="btn modal-save-orange-btn w-25" id="saveChangesBtn">
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateFormattedData() {
+    const formData = [...document.querySelectorAll('.attendances-modal-table tbody tr')].map(row => ({
+      studentId: parseInt(row.querySelector('[name="studentId"]').value),
+      courseId: parseInt(row.querySelector('[name="courseId"]').value),
+      attendance: row.querySelector('[data-attendance]').checked,
+      grade: parseInt(row.querySelector('[data-grade]').value)
+    }));
+
+    console.log(JSON.stringify(formData));
+
+    fetch('http://localhost:8080/attendance/studentCourses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+  }
+
+  document.getElementById('saveChangesBtn').addEventListener('click', function () {
+    updateFormattedData();
+  });
+</script>

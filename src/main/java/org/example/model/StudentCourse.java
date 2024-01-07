@@ -24,13 +24,17 @@ public class StudentCourse {
     @ManyToOne
     @MapsId("courseID")
     @JoinColumn(name = "courseFK")
-    Course course;
+    private Course course;
     @Column(name = "note")
     private double note;
     @Transient
     private String professorFirstName;
     @Transient
     private String professorLastName;
+
+    @Column(name = "attendance")
+    @Enumerated(EnumType.STRING)
+    private Attendance attendance;
 
     @PostLoad
     private void onLoad() {

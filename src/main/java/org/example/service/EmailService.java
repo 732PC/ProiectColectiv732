@@ -1,15 +1,13 @@
 package org.example.service;
 
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 @Service
 public class EmailService {
@@ -24,27 +22,41 @@ public class EmailService {
                 sb.append(line);
                 line = reader.readLine();
             }
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
         return sb.toString();
     }
 
+    public String configureEmailTemplateUserCreated(String recipientAddress, String password)
+            throws FileNotFoundException {
+        File file = ResourceUtils.getFile("classpath:emailTemplateAccountConfirmation.txt");
+        String template = readFile(file.getPath());
+        template = template.replace("{name}", recipientAddress.substring(0, recipientAddress.indexOf("@")));
+        template = template.replace("{password}", password);
+        return template;
+    }
 
-    public void sendEmailFromTemplate(String recipientAddress, String filePath, String subject, String password) {
+    public String configureEmailTemplateCourseMaterials(String courseName, String materialTitle)
+            throws FileNotFoundException {
+        File file = ResourceUtils.getFile("classpath:emailTemplateCourseMaterialsUploaded.txt");
+        String template = readFile(file.getPath());
+        template = template.replace("{courseName}", courseName);
+        template = template.replace("{materialTitle}", materialTitle);
+        return template;
+    }
+
+    public void sendEmailFromTemplate(String recipientAddress, String subject, String messageContent) {
 
         try {
-            String htmlTemplate = readFile(filePath);
             MimeMessage message = mailSender.createMimeMessage();
-
             message.setFrom("proiectcolectiv732@outlook.com");
             message.setRecipients(MimeMessage.RecipientType.TO, recipientAddress);
             message.setSubject(subject);
-
-            htmlTemplate = htmlTemplate.replace("{name}", recipientAddress.substring(0, recipientAddress.indexOf("@")));
-            htmlTemplate = htmlTemplate.replace("{password}", password);
-
-            message.setContent(htmlTemplate, "text/html; charset=utf-8");
-
+            message.setContent(messageContent, "text/html; charset=utf-8");
             mailSender.send(message);
-        } catch (MessagingException ignored) {}
+        } catch (MessagingException ignored) {
+        }
     }
+
+
 }

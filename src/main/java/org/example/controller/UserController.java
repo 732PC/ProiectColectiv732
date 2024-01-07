@@ -33,20 +33,20 @@ public class UserController {
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         User savedUser = this.userService.saveUser(user);
 
-        if(savedUser == null){
+        if (savedUser == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else{
+        } else {
             return new ResponseEntity<>(savedUser, HttpStatus.OK);
         }
     }
 
     @GetMapping(value = "/user")
-    public ResponseEntity<User> getUser(@RequestParam String email){
+    public ResponseEntity<User> getUser(@RequestParam String email) {
         User updatedUser = this.userService.getUserByEmail(email);
 
-        if(updatedUser == null){
+        if (updatedUser == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else{
+        } else {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         }
     }
@@ -77,10 +77,8 @@ public class UserController {
             return new ResponseEntity<>("Invalid user", HttpStatus.OK);
         } else {
             try {
-                File file = ResourceUtils.getFile("classpath:emailTemplateAccountConfirmation.txt");
-                emailService.sendEmailFromTemplate(savedUser.getEmail(),
-                        file.getPath(),
-                        "UBB Account created", password);
+                String emailContent = emailService.configureEmailTemplateUserCreated(savedUser.getEmail(), password);
+                emailService.sendEmailFromTemplate(savedUser.getEmail(), "UBB Account created", emailContent);
             } catch (FileNotFoundException e) {
                 System.out.println("email template not found");
             }

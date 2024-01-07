@@ -42,11 +42,11 @@ public class EmailServiceTest {
     void sendEmailFromTemplate() {
 
         doNothing().when(emailService).sendEmailFromTemplate("test@example.com",
-                filePath, "test", "test");
+                "test", "test");
 
-        emailService.sendEmailFromTemplate("test@example.com", filePath, "test", "test");
+        emailService.sendEmailFromTemplate("test@example.com", "test", "test");
 
-        verify(emailService, times(1)).sendEmailFromTemplate("test@example.com", filePath, "test", "test");
+        verify(emailService, times(1)).sendEmailFromTemplate("test@example.com", "test", "test");
     }
 
 }
