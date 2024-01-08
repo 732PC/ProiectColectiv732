@@ -23,8 +23,8 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
     @Query(value = "SELECT c.courseName, c.type, p.firstname, p.lastname " +
             "FROM courses c " +
             "JOIN professors p ON c.ProfessorID = p.professorID " +
-            "JOIN enrollments e ON e.curs_id = c.courseID " +
-            "JOIN students s ON e.student_id = s.studentID " +
+            "JOIN studentcourse sc ON sc.courseFK = c.courseID " +
+            "JOIN students s ON cs.studentFK = s.studentID " +
             "WHERE s.email = :email", nativeQuery = true)
     List<Object[]> findEnrolledCoursesOfStudent(String email);
 

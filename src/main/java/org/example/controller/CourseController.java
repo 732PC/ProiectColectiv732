@@ -6,6 +6,7 @@ import org.example.service.CourseService;
 import org.example.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -122,7 +123,7 @@ public class CourseController {
             return new ResponseEntity<>("All good!", HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<>(null, HttpStatus.NOT_IMPLEMENTED);
+            return new ResponseEntity<>(null, HttpStatusCode.valueOf(500));
         }
     }
 }

@@ -2,6 +2,7 @@ package org.example.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.example.Key.StudentCourseKey;
 import org.example.model.Course;
 import org.example.model.Professors;
 import org.example.model.Students;
@@ -141,23 +142,31 @@ public class CourseService {
         return response;
     }
 
-    public boolean addListOfCourses(List<String> ids, String email){
+    public boolean addListOfCourses(List<String> ids, String email) {
         Students student = this.studentRepository.findByEmail(email);
+        Set<StudentCourse> studentCourses = new HashSet<>(); // Create a new set
+
         for (String id : ids) {
             Course course = this.courseRepository.findByName(id);
+
             StudentCourse studentCourse = new StudentCourse();
             studentCourse.setCourse(course);
             studentCourse.setStudent(student);
             studentCourse.setAttendance(Attendance.ABS);
             studentCourse.setNote(0);
+            StudentCourseKey studentCourseKey = new StudentCourseKey(student.getStudentID(), course.getCourseID());
+            studentCourse.setStudentCourseID(studentCourseKey);
+            studentCourses.add(studentCourse);
 
-            student.getStudentCourses().add(studentCourse);
-            course.getStudentCourses().add(studentCourse);
-
-            this.courseRepository.saveAndFlush(course);
-            this.studentRepository.saveAndFlush(student);
-            this.studentCourseRepository.save(studentCourse);
+            try {
+                this.studentCourseRepository.save(studentCourse);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println(e.getCause());
+                return false; // Return false in case of an exception
+            }
         }
+
         return true;
     }
 }
