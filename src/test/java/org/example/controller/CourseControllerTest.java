@@ -1,0 +1,165 @@
+package org.example.controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
+import org.example.model.*;
+import org.example.service.CourseService;
+import org.example.service.EmailService;
+import org.example.service.ProfessorService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.io.FileNotFoundException;
+import java.util.*;
+
+
+import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+
+@WebMvcTest(CourseController.class)
+@ExtendWith(MockitoExtension.class)
+public class CourseControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+    @InjectMocks
+    private CourseController courseController;
+    @Autowired
+    private ObjectMapper objectMapper;
+    @MockBean
+    private CourseService courseService;
+    @MockBean
+    private EmailService emailService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @BeforeEach
+    void init() {
+
+        mockMvc = MockMvcBuilders.standaloneSetup(courseController).build();
+    }
+
+    @Test
+    public void testGetAllCourses() throws Exception {
+        List<Course> coursesList = Arrays.asList(
+                new Course(),
+                new Course()
+        );
+
+        given(courseService.getAllCourses()).willReturn(coursesList);
+
+        mockMvc.perform(get("/courses"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+
+    }
+
+    @Test
+    public void testGetCourseById() throws Exception {
+        Course course = new Course();
+
+        given(courseService.getCourseById(1)).willReturn(Optional.of(course));
+
+        mockMvc.perform(get("/courses/1"))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void testAddCourse() throws Exception {
+        Course courseToAdd = new Course();
+
+        given(courseService.addCourses(any(Course.class))).willReturn(courseToAdd);
+
+        mockMvc.perform(post("/courses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(courseToAdd)))
+                .andExpect(status().isCreated());
+
+    }
+
+    @Test
+    public void addCourseMaterialTest() throws Exception {
+        Integer courseId = 1;
+        Course course = new Course();
+        course.setName("name");
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("content", "content");
+        requestBody.put("title", "title");
+        requestBody.put("course", "null");
+        ArrayList<String> studMails = new ArrayList<>();
+        studMails.add("test@test.com");
+
+        when(courseService.addCourseMaterial(courseId, "content", "title")).thenReturn(new CourseMaterialResponse());
+
+        when(courseService.getCourseById(any(Integer.class))).thenReturn(Optional.of(course));
+        when(emailService.configureEmailTemplateCourseMaterials(any(String.class), any(String.class))).thenReturn("test");
+        when(courseService.getStudentEmailsByCourse(any(Integer.class))).thenReturn(studMails);
+        doNothing().when(emailService).sendEmailFromTemplate(any(String.class), any(String.class), any(String.class));
+
+        ResponseEntity<?> result = courseController.addCourseMaterial(courseId, requestBody);
+
+        verify(emailService, times(1)).sendEmailFromTemplate("test@test.com", "New Course Material Loaded", "test");
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        verify(courseService, times(1)).addCourseMaterial(courseId, "content", "title");
+    }
+
+
+    @Test
+    public void addCourseMaterialTestThrowsEntityNotFoundException() {
+        Integer courseId = 1;
+        Course course = new Course();
+        course.setName("name");
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("content", "content");
+        requestBody.put("title", "title");
+        requestBody.put("course", "null");
+
+        when(courseService.getCourseById(any(Integer.class))).thenReturn(Optional.empty());
+        ResponseEntity<?> result = courseController.addCourseMaterial(courseId, requestBody);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
+    @Test
+    public void addCourseMaterialThrowsFileNotFoundException() throws Exception {
+        Integer courseId = 1;
+        Course course = new Course();
+        course.setName("name");
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("content", "content");
+        requestBody.put("title", "title");
+        requestBody.put("course", "null");
+
+        when(courseService.getCourseById(any(Integer.class))).thenReturn(Optional.of(course));
+        when(emailService.configureEmailTemplateCourseMaterials(any(String.class), any(String.class))).thenThrow(new FileNotFoundException());
+        ResponseEntity<?> result1 = courseController.addCourseMaterial(courseId, requestBody);
+        assertEquals(HttpStatus.OK, result1.getStatusCode());
+        assertEquals("Course material added successfully but email was not sent", result1.getBody());
+    }
+}
+
+
