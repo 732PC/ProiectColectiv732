@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.model.User;
+import org.example.model.dto.LoginUserRequestDTO;
 import org.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,6 +48,19 @@ public class UserService {
 
     public User getUserByEmail(String email){
         return this.userRepository.findByEmail(email);
+    }
+
+    public User loginUser(LoginUserRequestDTO loginUserRequestDTO) {
+
+        User temp_user = this.userRepository.findByEmail(loginUserRequestDTO.getEmail());
+        if (temp_user == null)
+            return null;
+        if (Objects.equals(temp_user.getEmail(), loginUserRequestDTO.getEmail()) &&
+                Objects.equals(temp_user.getPassword(), passwordEncoder.encode(loginUserRequestDTO.getPassword())))
+        {
+            return temp_user;
+        }
+        return temp_user;
     }
 
     public boolean validateEmail(String mail) {
