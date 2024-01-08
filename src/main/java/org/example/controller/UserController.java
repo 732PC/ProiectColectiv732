@@ -10,10 +10,8 @@ import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 @RestController
@@ -92,7 +90,7 @@ public class UserController {
     public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password)
     {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("HX-REDIRECT","home");
+        headers.add("HX-REDIRECT","home.html");
         headers.add(HttpHeaders.SET_COOKIE,"myToken=audbsadus332432; Path=/;");
 
         if(this.userService.loginUser(new LoginUserRequestDTO(email, password))==null){
