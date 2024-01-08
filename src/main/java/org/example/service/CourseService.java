@@ -145,7 +145,6 @@ public class CourseService {
         Students student = this.studentRepository.findByEmail(email);
         for (String id : ids) {
             Course course = this.courseRepository.findByName(id);
-
             StudentCourse studentCourse = new StudentCourse();
             studentCourse.setCourse(course);
             studentCourse.setStudent(student);
