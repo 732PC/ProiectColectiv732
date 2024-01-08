@@ -118,6 +118,9 @@ public class CourseController {
 
     @PostMapping(value = "/course")
     public ResponseEntity<String> addCourses(@RequestParam List<String> ids, @RequestParam String email){
+        if(ids.size() == 0 || email.length() == 0){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         boolean successful = this.courseService.addListOfCourses(ids, email);
         if(successful){
             return new ResponseEntity<>("All good!", HttpStatus.OK);

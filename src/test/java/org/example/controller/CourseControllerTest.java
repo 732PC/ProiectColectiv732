@@ -160,6 +160,32 @@ public class CourseControllerTest {
         assertEquals(HttpStatus.OK, result1.getStatusCode());
         assertEquals("Course material added successfully but email was not sent", result1.getBody());
     }
+
+    @Test
+    void getRouter_InvalidType_ReturnsIamATeapot() {
+        // Mocking
+        CourseService courseService = mock(CourseService.class);
+
+        // Test
+        ResponseEntity<String> response = new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
+        ResponseEntity<String> result = courseController.getRouter("invalidType", "user@example.com");
+
+        // Assertion
+        assertEquals(response.getStatusCode(), result.getStatusCode());
+        assertEquals(response.getBody(), result.getBody());
+        verify(courseService, never()).getAllOptionalCourses();
+        verify(courseService, never()).getCurrentEnrolledCourses("user@example.com");
+    }
+
+    @Test
+    void addCourses_InvalidArguments_ReturnBadRequest() {
+        // Test
+        ResponseEntity<String> result = courseController.addCourses(new ArrayList<>(), "user@example.com");
+
+        // Assertion
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertNull(result.getBody());
+    }
 }
 
 
